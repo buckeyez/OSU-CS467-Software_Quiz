@@ -5,6 +5,7 @@
 ### Members
 
 - Clifford (Mason) Reiselt
+- Miao Pan
 
 ## Prerequisites
 
