@@ -6,6 +6,7 @@
 
 - Clifford (Mason) Reiselt
 - Miao Pan
+- Adil Chaudhry
 
 ## Prerequisites
 
