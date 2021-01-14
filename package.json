@@ -2,6 +2,9 @@
   "name": "osu_cs467_software_quiz",
   "version": "0.1.0",
   "description": "OSU CS467 Winter 2021 Software Quiz Project",
+  "scripts": {
+    "start": ""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/buckeyez/OSU-CS467-Software_Quiz.git"
