@@ -11,6 +11,6 @@
 6. For this requirement:
 For the employer, to see the quiz respondents ranked, and also individual results and stats
 Questions:
-    1. If there are paragrapg type responses, how will the correctness of those be ranked, since they won't be graded automatically. 
+    1. If there are paragraph type responses, how will the correctness of those be ranked, since they won't be graded automatically. 
     2. About the stats, what should this include - Candidate info, quiz result, time taken, anything else?
     3. Does there need to be a pool of quiz questions? Or employers create each question for the quiz manually.
