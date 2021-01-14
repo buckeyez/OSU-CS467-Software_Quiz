@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace OSU_CS647_Software_Quiz.Controllers
+namespace OSU_CS467_Software_Quiz.Controllers
 {
   [ApiController]
   [Route("[controller]")]

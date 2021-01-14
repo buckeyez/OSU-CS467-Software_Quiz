@@ -1,0 +1,22 @@
+{
+  "name": "osu_cs467_software_quiz",
+  "version": "0.1.0",
+  "description": "OSU CS467 Winter 2021 Software Quiz Project",
+  "engines": {
+    "node": "14.x"
+  },
+  "scripts": {
+    "start": "node --version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buckeyez/OSU-CS467-Software_Quiz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/buckeyez/OSU-CS467-Software_Quiz/issues"
+  },
+  "homepage": "https://github.com/buckeyez/OSU-CS467-Software_Quiz#readme"
+}

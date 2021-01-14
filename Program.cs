@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace OSU_CS647_Software_Quiz
+namespace OSU_CS467_Software_Quiz
 {
   public class Program
   {

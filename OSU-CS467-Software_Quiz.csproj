@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    <RootNamespace>OSU_CS647_Software_Quiz</RootNamespace>
+    <RootNamespace>OSU_CS467_Software_Quiz</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
