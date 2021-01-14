@@ -9,7 +9,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bin/Debug/net5.0/OSU-CS647-Software_Quiz.dll",
+      "program": "${workspaceFolder}/bin/Debug/net5.0/OSU-CS467-Software_Quiz.dll",
       "args": [],
       "cwd": "${workspaceFolder}",
       "stopAtEntry": false,

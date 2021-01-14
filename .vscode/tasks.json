@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/OSU-CS647-Software_Quiz.csproj",
+                "${workspaceFolder}/OSU-CS467-Software_Quiz.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/OSU-CS647-Software_Quiz.csproj",
+                "${workspaceFolder}/OSU-CS467-Software_Quiz.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/OSU-CS647-Software_Quiz.csproj",
+                "${workspaceFolder}/OSU-CS467-Software_Quiz.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

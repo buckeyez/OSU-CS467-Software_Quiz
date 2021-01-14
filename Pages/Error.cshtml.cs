@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace OSU_CS647_Software_Quiz.Pages
+namespace OSU_CS467_Software_Quiz.Pages
 {
   [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
   public class ErrorModel : PageModel
