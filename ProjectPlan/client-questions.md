@@ -9,8 +9,6 @@
 5. Does the app need real world authentication (google auth, industry standard user and password handling), or can it be as simple as storing a user and password without concern?
 
 6. For this requirement:
-For the employer, to see the quiz respondents ranked, and also individual results and stats
-Questions:
-    1. If there are paragraph type responses, how will the correctness of those be ranked, since they won't be graded automatically. 
-    2. About the stats, what should this include - Candidate info, quiz result, time taken, anything else?
-    3. Does there need to be a pool of quiz questions? Or employers create each question for the quiz manually.
+   For the employer, to see the quiz respondents ranked, and also individual results and stats
+   Questions: 1. If there are paragraph type responses, how will the correctness of those be ranked, since they won't be graded automatically. 2. About the stats, what should this include - Candidate info, quiz result, time taken, anything else? 3. Does there need to be a pool of quiz questions? Or employers create each question for the quiz manually.
+7. When sending the email to the employer after the candidate has completed the quiz, are we required to provide a direct link to the candidates results? Or will a simple confirmation message in the email be enough.
