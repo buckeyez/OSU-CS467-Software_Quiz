@@ -7,7 +7,6 @@
 3. Does the client get feedback on answers (i.e. - know if they got an answer correct or incorrect)?
 4. For the free response types, is a single word, multiple words or paragraph format? If this is open to phrases or paragraph type responses, grading would have to be manual.
 5. Does the app need real world authentication (google auth, industry standard user and password handling), or can it be as simple as storing a user and password without concern?
-
 6. For this requirement:
    For the employer, to see the quiz respondents ranked, and also individual results and stats
    Questions:
