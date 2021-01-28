@@ -9,7 +9,8 @@ namespace OSU_CS467_Software_Quiz.IdentityPolicy
 {
   public class AppPasswordPolicy : PasswordValidator<AppUser>
   {
-    public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
+    public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user,
+      string password)
     {
       IdentityResult result = await base.ValidateAsync(manager, user, password);
       List<IdentityError> errors = result.Succeeded ? new() : result.Errors.ToList();
