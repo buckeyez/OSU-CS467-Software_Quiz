@@ -26,7 +26,6 @@ namespace OSU_CS467_Software_Quiz
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddTransient<IPasswordValidator<AppUser>, AppPasswordPolicy>();
-      services.AddTransient<IUserValidator<AppUser>, UserValidator<AppUser>>();
 
       string sqlConfig = Environment.GetEnvironmentVariable("NPGSQL");
       services.AddDbContext<AppDbContext>(options =>
