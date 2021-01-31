@@ -1,22 +1,35 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './pages/home';
+import Signin from './pages/signin';
+import Signup from './pages/signup';
+import * as ROUTES from './constants/routes';
+import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
 
-import './custom.css'
+import './custom.css';
 
-export default class App extends Component {
-  static displayName = App.name;
+export default function App() {
+  const user = null;
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+  return (
+    <Router>
+      <Switch>
+        <Route path={ROUTES.SIGN_IN}>
+          <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_IN} exact>
+            <Signin />
+          </IsUserRedirect>
+        </Route>
+
+        <Route path={ROUTES.SIGN_UP}>
+          <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_UP} exact>
+            <Signup />
+          </IsUserRedirect>
+        </Route>
+
+        <ProtectedRoute user={user} path={ROUTES.HOME} exact>
+          <Home />
+        </ProtectedRoute>
+      </Switch>
+    </Router>
+  );
 }
