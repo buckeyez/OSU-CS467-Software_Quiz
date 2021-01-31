@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OSU_CS467_Software_Quiz.Projections
 {
-  public class User
+  public class NewUser
   {
-    [Required]
-    public string Id { get; set; }
-
     [Required]
     public string Name { get; set; }
 
@@ -21,16 +18,7 @@ namespace OSU_CS467_Software_Quiz.Projections
     [EmailAddress]
     public string Email { get; set; }
 
-    public static User BuildUser(AppUser user)
-    {
-      return new User
-      {
-        Id = user.Id,
-        Name = user.UserName,
-        FirstName = user.FirstName,
-        LastName = user.LastName,
-        Email = user.Email,
-      };
-    }
+    [Required]
+    public string Password { get; set; }
   }
 }

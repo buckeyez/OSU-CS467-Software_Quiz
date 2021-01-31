@@ -5,20 +5,23 @@ using Microsoft.Extensions.Options;
 using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OSU_CS467_Software_Quiz.Controllers
 {
   [ApiController]
   [Route("[controller]")]
-  public class UserController : Controller
+  public class UsersController : Controller
   {
     private readonly IOptions<ApiBehaviorOptions> _apiBehaviorOptions;
     private readonly UserManager<AppUser> _userManager;
     private readonly IPasswordHasher<AppUser> _passwordHasher;
     private readonly IPasswordValidator<AppUser> _passwordValidator;
 
-    public UserController([FromServices] IOptions<ApiBehaviorOptions> apiBehaviorOptions,
+    public UsersController([FromServices] IOptions<ApiBehaviorOptions> apiBehaviorOptions,
       UserManager<AppUser> userManager, IPasswordHasher<AppUser> passwordHasher,
       IPasswordValidator<AppUser> passwordValidator)
     {
@@ -31,7 +34,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     [HttpPost("Add")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddAsync([FromBody] User user)
+    public async Task<IActionResult> AddAsync([FromBody] NewUser user)
     {
       if (ModelState.IsValid)
       {
@@ -62,7 +65,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     [HttpPost("Delete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteAsync([FromQuery] string id)
+    public async Task<IActionResult> DeleteAsync([FromQuery][Required] string id)
     {
       AppUser user = await _userManager.FindByIdAsync(id);
       if (user != null)
@@ -83,47 +86,36 @@ namespace OSU_CS467_Software_Quiz.Controllers
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<User>> GetUserAsync(string id)
     {
       AppUser user = await _userManager.FindByIdAsync(id);
       if (user != null)
       {
-        return Ok(new User()
-        {
-          Name = user.UserName,
-          FirstName = user.FirstName,
-          LastName = user.LastName,
-          Email = user.Email,
-        });
+        return Projections.User.BuildUser(user);
       }
 
       return NotFound(id);
+    }
+
+    [HttpGet]
+    public IEnumerable<User> GetUsers()
+    {
+      return _userManager.Users.Select(u => Projections.User.BuildUser(u));
     }
 
     [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateUserAsync([FromQuery] string id, [FromBody] User user)
+    public async Task<IActionResult> UpdateUserAsync([FromBody] User user)
     {
       if (ModelState.IsValid)
       {
-        AppUser appUser = await _userManager.FindByIdAsync(id);
+        AppUser appUser = await _userManager.FindByIdAsync(user.Id);
         if (user == null)
         {
-          return NotFound(id);
-        }
-
-        IdentityResult validPassword = await _passwordValidator.ValidateAsync(_userManager, appUser, user.Password);
-        if (validPassword.Succeeded)
-        {
-          appUser.PasswordHash = _passwordHasher.HashPassword(appUser, user.Password);
-        }
-        else
-        {
-          ModelState.AppendErrors("Password", validPassword);
+          return NotFound(user);
         }
 
         appUser.UserName = user.Name;
@@ -131,20 +123,52 @@ namespace OSU_CS467_Software_Quiz.Controllers
         appUser.FirstName = user.FirstName;
         appUser.LastName = user.LastName;
 
-        if (validPassword != null && validPassword.Succeeded)
+        IdentityResult result = await _userManager.UpdateAsync(appUser);
+        if (result.Succeeded)
         {
-          IdentityResult result = await _userManager.UpdateAsync(appUser);
-          if (result.Succeeded)
-          {
-            var userToReturn = user.DeepCopy();
-            userToReturn.Password = null;
-            return Ok(userToReturn);
-          }
-          else
-          {
-            ModelState.AppendErrors("User Manager", result);
-          }
+          return Ok(user);
         }
+        else
+        {
+          ModelState.AppendErrors("User Manager", result);
+        }
+
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
+
+    [HttpPost("UpdatePassword")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateUserPassword([FromQuery][Required] string id,
+      [FromQuery][Required] string password)
+    {
+      AppUser appUser = await _userManager.FindByIdAsync(id);
+      if (appUser == null)
+      {
+        return NotFound(id);
+      }
+
+      IdentityResult validPassword = await _passwordValidator.ValidateAsync(_userManager, appUser, password);
+      if (validPassword.Succeeded)
+      {
+        appUser.PasswordHash = _passwordHasher.HashPassword(appUser, password);
+
+        IdentityResult result = await _userManager.UpdateAsync(appUser);
+        if (result.Succeeded)
+        {
+          return Ok();
+        }
+        else
+        {
+          ModelState.AppendErrors("User Manager", result);
+        }
+      }
+      else
+      {
+        ModelState.AppendErrors("Password", validPassword);
       }
 
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
