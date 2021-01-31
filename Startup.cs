@@ -42,7 +42,7 @@ namespace OSU_CS467_Software_Quiz
         options.User.RequireUniqueEmail = true;
       });
 
-      string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENTID");
+      string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
       string googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET");
       services.AddAuthentication()
         .AddGoogle(options =>
