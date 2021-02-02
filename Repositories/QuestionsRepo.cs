@@ -118,8 +118,6 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .AsQueryable()
         .Where(q => q.Id == id)
         .Include(q => q.Type)
-        .Include(q => q.QuestionAnswers)
-        .ThenInclude(qa => qa.Answer)
         .FirstAsync();
 
       question.Question = updatedQuestion.Value;
