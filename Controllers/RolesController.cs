@@ -147,7 +147,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
       {
         IdentityResult result;
 
-        foreach (string userId in model.AddIds ?? System.Array.Empty<string>())
+        foreach (string userId in model.AddIds ?? new())
         {
           AppUser user = await _userManager.FindByIdAsync(userId);
           if (user != null)
@@ -160,7 +160,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
           }
         }
 
-        foreach (string userId in model.DeleteIds ?? System.Array.Empty<string>())
+        foreach (string userId in model.DeleteIds ?? new())
         {
           AppUser user = await _userManager.FindByIdAsync(userId);
           if (user != null)

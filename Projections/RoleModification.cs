@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace OSU_CS467_Software_Quiz.Projections
 {
   public class RoleModification : Role
   {
-    public string[] AddIds { get; set; }
-    public string[] DeleteIds { get; set; }
+    public List<string> AddIds { get; set; }
+    public List<string> DeleteIds { get; set; }
   }
 }

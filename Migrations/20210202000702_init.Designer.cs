@@ -10,7 +10,7 @@ using OSU_CS467_Software_Quiz.Data;
 namespace OSU_CS467_Software_Quiz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210131204828_init")]
+    [Migration("20210202000702_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

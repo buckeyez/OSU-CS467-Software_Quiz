@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OSU_CS467_Software_Quiz.Data;
+using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.IdentityPolicy;
 using OSU_CS467_Software_Quiz.Models;
 using System;
@@ -53,6 +54,8 @@ namespace OSU_CS467_Software_Quiz
         });
 
       services.AddControllersWithViews();
+
+      services.AddRepositories();
 
       // In production, the React files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
