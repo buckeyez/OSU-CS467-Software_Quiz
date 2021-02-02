@@ -89,7 +89,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
 
       if (toReturn != null)
       {
-        return RedirectToAction(nameof(GetQuestionAndAnswersAsync), toReturn.Id);
+        return Ok(Question.Build(toReturn));
       }
       else
       {
