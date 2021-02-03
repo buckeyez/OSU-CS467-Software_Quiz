@@ -1,9 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OSU_CS467_Software_Quiz.Data;
+using OSU_CS467_Software_Quiz.Extensions;
+using OSU_CS467_Software_Quiz.IdentityPolicy;
+using OSU_CS467_Software_Quiz.Models;
+using System;
 
 namespace OSU_CS467_Software_Quiz
 {
@@ -19,8 +26,36 @@ namespace OSU_CS467_Software_Quiz
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddTransient<IPasswordValidator<AppUser>, AppPasswordPolicy>();
+
+      string sqlConfig = Environment.GetEnvironmentVariable("NPGSQL");
+      services.AddDbContext<AppDbContext>(options =>
+      {
+        options.UseNpgsql(sqlConfig);
+      });
+
+      services.AddIdentity<AppUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
+
+      services.Configure<IdentityOptions>(options =>
+      {
+        options.User.RequireUniqueEmail = true;
+      });
+
+      string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+      string googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET");
+      services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+          options.ClientId = googleClientId;
+          options.ClientSecret = googleClientSecret;
+          options.SignInScheme = IdentityConstants.ExternalScheme;
+        });
 
       services.AddControllersWithViews();
+
+      services.AddRepositories();
 
       // In production, the React files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
@@ -48,6 +83,9 @@ namespace OSU_CS467_Software_Quiz
       app.UseSpaStaticFiles();
 
       app.UseRouting();
+
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
       {
