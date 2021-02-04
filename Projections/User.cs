@@ -21,7 +21,7 @@ namespace OSU_CS467_Software_Quiz.Projections
     [EmailAddress]
     public string Email { get; set; }
 
-    public static User BuildUser(AppUser user)
+    public static User Build(AppUser user)
     {
       return new User
       {
