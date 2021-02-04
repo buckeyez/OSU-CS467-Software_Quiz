@@ -8,6 +8,7 @@ namespace OSU_CS467_Software_Quiz.Extensions
     public static void AddRepositories(this IServiceCollection services)
     {
       services.AddTransient<IQuestionsRepo, QuestionsRepo>();
+      services.AddTransient<IQuestionTypesRepo, QuestionTypesRepo>();
     }
   }
 }
