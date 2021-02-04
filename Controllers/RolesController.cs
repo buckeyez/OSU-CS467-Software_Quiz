@@ -133,8 +133,8 @@ namespace OSU_CS467_Software_Quiz.Controllers
       {
         Id = role.Id,
         Name = role.Name,
-        Members = usersInRole.Select(u => Projections.User.BuildUser(u)),
-        NonMembers = usersNotInRole.Select(u => Projections.User.BuildUser(u)),
+        Members = usersInRole.Select(u => Projections.User.Build(u)),
+        NonMembers = usersNotInRole.Select(u => Projections.User.Build(u)),
       };
     }
 

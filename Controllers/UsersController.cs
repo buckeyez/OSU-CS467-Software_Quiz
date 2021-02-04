@@ -20,15 +20,17 @@ namespace OSU_CS467_Software_Quiz.Controllers
     private readonly UserManager<AppUser> _userManager;
     private readonly IPasswordHasher<AppUser> _passwordHasher;
     private readonly IPasswordValidator<AppUser> _passwordValidator;
+    private readonly SignInManager<AppUser> _signInManager;
 
     public UsersController([FromServices] IOptions<ApiBehaviorOptions> apiBehaviorOptions,
       UserManager<AppUser> userManager, IPasswordHasher<AppUser> passwordHasher,
-      IPasswordValidator<AppUser> passwordValidator)
+      IPasswordValidator<AppUser> passwordValidator, SignInManager<AppUser> signInManager)
     {
       _apiBehaviorOptions = apiBehaviorOptions;
       _userManager = userManager;
       _passwordHasher = passwordHasher;
       _passwordValidator = passwordValidator;
+      _signInManager = signInManager;
     }
 
     [HttpPost("Add")]
@@ -85,6 +87,33 @@ namespace OSU_CS467_Software_Quiz.Controllers
       return NotFound(id);
     }
 
+    [HttpPost("SignIn")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SignInAsync(Login login)
+    {
+      if (ModelState.IsValid)
+      {
+        AppUser user = await _userManager.FindByEmailAsync(login.Email);
+        if (user != null)
+        {
+          await _signInManager.SignOutAsync();
+
+          Microsoft.AspNetCore.Identity.SignInResult result =
+            await _signInManager.PasswordSignInAsync(user, login.Password, false, false);
+
+          if (result.Succeeded)
+          {
+            return Ok(Projections.User.Build(user));
+          }
+        }
+
+        ModelState.AddModelError("SignIn Manager", "Login failed: Invalid email or password!");
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<User>> GetUserAsync(string id)
@@ -92,7 +121,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
       AppUser user = await _userManager.FindByIdAsync(id);
       if (user != null)
       {
-        return Projections.User.BuildUser(user);
+        return Projections.User.Build(user);
       }
 
       return NotFound(id);
@@ -101,7 +130,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     [HttpGet]
     public IEnumerable<User> GetUsers()
     {
-      return _userManager.Users.Select(u => Projections.User.BuildUser(u));
+      return _userManager.Users.Select(u => Projections.User.Build(u));
     }
 
     [HttpPost("Update")]
