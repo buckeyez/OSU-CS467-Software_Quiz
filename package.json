@@ -21,5 +21,10 @@
   "homepage": "https://github.com/buckeyez/OSU-CS467-Software_Quiz#readme",
   "devDependencies": {
     "babel-plugin-macros": "^3.0.1"
+  },
+  "dependencies": {
+    "react-switch": "^6.0.0",
+    "styled-components": "^5.2.1",
+    "styled-components.macro": "^1.0.0"
   }
 }
