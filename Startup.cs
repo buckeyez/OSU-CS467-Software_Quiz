@@ -43,15 +43,15 @@ namespace OSU_CS467_Software_Quiz
         options.User.RequireUniqueEmail = true;
       });
 
-      // string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
-      // string googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET");
-      // services.AddAuthentication()
-      //   .AddGoogle(options =>
-      //   {
-      //     options.ClientId = googleClientId;
-      //     options.ClientSecret = googleClientSecret;
-      //     options.SignInScheme = IdentityConstants.ExternalScheme;
-      //   });
+      string googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+      string googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_SECRET");
+      services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+          options.ClientId = googleClientId;
+          options.ClientSecret = googleClientSecret;
+          options.SignInScheme = IdentityConstants.ExternalScheme;
+        });
 
       services.AddControllersWithViews();
 
