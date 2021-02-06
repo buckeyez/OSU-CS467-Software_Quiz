@@ -34,10 +34,6 @@ namespace OSU_CS467_Software_Quiz
         options.UseNpgsql(sqlConfig);
       });
 
-      services.AddDbContext<AppDbContext>(options => {
-          options.UseNpgsql("Host=ec2-52-205-61-60.compute-1.amazonaws.com;Database=dbaeken4vohlpm;Username=jgkmoxhgmrhpqt;Password=e85e3226df24ea5a0f9a732a44fb4824aeb7288abfffc0ba0764a10b6f70a55d;Port=5432;sslmode=Prefer;Trust Server Certificate=true");
-      });
-
       services.AddIdentity<AppUser, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
