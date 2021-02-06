@@ -1,6 +1,7 @@
   
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 // import history from './history'
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -8,10 +9,10 @@ import { withRouter } from 'react-router-dom';
 // import "./QuestionTemplate.css"
 
 
-const OpenTextQuestion = () =>{
+const OpenTextQuestion = (props) =>{
   return (
     <div>
-      <input type="text" />
+      <input type="text" onChange={props.handleOpenTextAnswer}/>
     </div>
   )
 }
