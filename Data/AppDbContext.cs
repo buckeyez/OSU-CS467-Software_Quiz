@@ -25,6 +25,18 @@ namespace OSU_CS467_Software_Quiz.Data
     {
       base.OnModelCreating(builder);
 
+      builder.Entity<QuestionType>(entity =>
+      {
+        entity.HasIndex(e => e.Type)
+          .IsUnique();
+      });
+
+      builder.Entity<Quizzes>(entity =>
+      {
+        entity.HasIndex(e => e.Name)
+          .IsUnique();
+      });
+
       builder.Entity<QuestionAnswers>(entity =>
       {
         entity.HasKey(e => new { e.AnswerId, e.QuestionId });

@@ -10,7 +10,7 @@ using OSU_CS467_Software_Quiz.Data;
 namespace OSU_CS467_Software_Quiz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210202000702_init")]
+    [Migration("20210206013824_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,6 +268,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Type")
+                        .IsUnique();
+
                     b.ToTable("QuestionType");
                 });
 
@@ -370,6 +373,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Quizzes");
                 });

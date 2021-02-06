@@ -371,6 +371,12 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QuestionType_Type",
+                table: "QuestionType",
+                column: "Type",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QuizAssignments_QuizId",
                 table: "QuizAssignments",
                 column: "QuizId");
@@ -394,6 +400,12 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 name: "IX_QuizResults_QuizAssignmentId",
                 table: "QuizResults",
                 column: "QuizAssignmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_Name",
+                table: "Quizzes",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -266,6 +266,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Type")
+                        .IsUnique();
+
                     b.ToTable("QuestionType");
                 });
 
@@ -368,6 +371,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Quizzes");
                 });
