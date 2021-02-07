@@ -18,6 +18,7 @@ export default class QuestionTemplate extends Component {
   constructor(props) {
     super(props);
     this.state = { 
+      id: '',
       questionType: '',
       value: '',
       answers: []
@@ -48,28 +49,52 @@ export default class QuestionTemplate extends Component {
 
   }
 
+  handleChangeMultipleChoiceAnswer = (choiceList) => {
+    console.log("in multiplr choice: ", choiceList);
+    let theAnswer = choiceList;
+    this.setState({...this.state, answers: theAnswer})
+  }
+
   handleQuestionSubmit = (event) => {
     //making Axios call
-    console.log("making axios call for ", this.state.questionType);
-    event.preventDefault();
-   
-    const payload = {
-      "Question": {
-        "Value": this.state.value,
-        "Type": this.state.questionType
-      },
-      "Answers": [
-        {
-          "Value": this.state.answers[0],
-          "Correct": true
+    if(this.state.id == ''){
+      console.log("making axios call for ", this.state.questionType);
+      event.preventDefault();
+      let payload;
+     if(this.state.questionType === "Multiple Choice"){
+        payload = {
+          "Question": {
+            "Value": this.state.value,
+            "Type": this.state.questionType
+          },
+          "Answers": this.state.answers
         }
-      ]
+     }else{
+        payload = {
+          "Question": {
+            "Value": this.state.value,
+            "Type": this.state.questionType
+          },
+          "Answers": [
+            {
+              "Value": this.state.answers[0],
+              "Correct": true
+            }
+          ]
+        }
+     }
+      console.log("this state answers: ", this.state.answers)
+      console.log("payload: ", payload)
+      axios.post('https://localhost:5001/Questions/Add', payload) //TODO need to not hardcode the url
+      .then(res => {
+        console.log("res: ", res, res.data.question.id);
+        console.log("the id should be: ", res.data.question.id);
+        this.setState({...this.state, id: res.data.question.id});
+      })
+    }else{
+      console.log("item already exist");
     }
 
-    axios.post('https://localhost:5001/Questions/Add', payload)
-    .then(res => {
-      console.log("res: ", res, res.data);
-    })
 
   }
 
@@ -82,19 +107,19 @@ export default class QuestionTemplate extends Component {
           <Form.Question>
           <div>
             <input type="text" name="questionName" placeholder="Type Question Here..." onChange={this.handleQuestionValueChange}></input>
-            <select value={this.state.value} onChange={this.handleChange}>
+            <select value={this.state.questionType} onChange={this.handleChange}>
               <option value="selectChoice">Select Question Type</option>
-              <option value="multipleChoice">Multiple Choice</option>
-              <option value="trueOrFalse">True or False</option>
+              <option value="Multiple Choice">Multiple Choice</option>
+              <option value="True OR False">True or False</option>
               <option value="Free Response">Free Response</option>
             </select>
           </div>
           <div>
             {this.state.questionType == "Free Response" && <OpenTextQuestion handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
-            {this.state.questionType == "trueOrFalse" && <TrueOrFalseQuestion />}
-            {this.state.questionType == "multipleChoice" && <MultipleChoiceQuestion />}
+            {this.state.questionType == "True OR False" && <TrueOrFalseQuestion handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
+            {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
-          <button type="submit" onClick={this.handleQuestionSubmit}>Submit</button>
+          <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
           <button onClick={this.props.deleteHandle}>delete this question</button>
           </Form.Question>
         </Form>
