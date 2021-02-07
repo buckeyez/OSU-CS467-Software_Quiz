@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Error, Title, Text, TextSmall, Link, Input, Submit, Base } from './styles/form';
+import { Container, Error, Title, Text, TextSmall, Link, Input, Submit, Base, Question } from './styles/form';
 
 export default function Form({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -12,6 +12,10 @@ Form.Error = function FormError({ children, ...restProps }) {
 
 Form.Base = function FormBase({ children, ...restProps }) {
   return <Base {...restProps}>{children}</Base>;
+};
+
+Form.Question = function FormQuestion({ children, ...restProps }) {
+  return <Question {...restProps}>{children}</Question>;
 };
 
 Form.Title = function FormTitle({ children, ...restProps }) {
