@@ -19,7 +19,7 @@ export default function Signin() {
     event.preventDefault();
 
     //Call login function which handles call to /users/signin endpoint
-    //if emailAddress and password are correct, a user object is returned
+    // if emailAddress and password are correct, a user object is returned
     // and the app navigates to the home page
     const user = await login(emailAddress, password);
     if (user) {
@@ -28,18 +28,6 @@ export default function Signin() {
     } else {
       setError('Incorrect credentials. Please try again.');
     }
-
-    // login(emailAddress, password).then((data) => {
-    //   console.log('data is: ', data);
-    //   if (data) {
-    //     setUser(data);
-    //     history.push(ROUTES.HOME);
-    //   } else {
-    //     console.log('logion failed');
-    //   }
-    // });
-
-    // history.push(ROUTES.HOME);
   };
 
   return (

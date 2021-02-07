@@ -1,6 +1,13 @@
 import axios from 'axios';
 
+/**
+ * Gets user object from /users/signin endpoint
+ * @param  {string} emailAddress email address of user
+ * @param  {string} password password of user
+ * @return {object}      user object containing id,name, firstName, lastName, email
+ */
 export const login = async (emailAddress, password) => {
+  //Required data for reqeust body
   const data = {
     Email: emailAddress,
     Password: password,
@@ -9,25 +16,14 @@ export const login = async (emailAddress, password) => {
     'Access-Control-Allow-Origin': 'https://localhost:5001/',
   };
 
-  const res = await axios
+  const response = await axios
     .post('https://localhost:5001/users/signIn', data, headers)
     .catch((e) => console.log(e));
 
-  if (res) {
-    return res.data;
+  //If user exists, return user object, else undefined
+  if (response) {
+    return response.data;
   } else {
     return undefined;
   }
-
-  //   const res = axios
-  //     .post('https://localhost:5001/users/signIn', data, headers)
-  //     .then((ress) => {
-  //       console.log(ress);
-  //       return ress.data;
-  //     })
-  //     .catch((e) => {
-  //       console.log('Error:', e);
-  //     });
-
-  //   return res;
 };
