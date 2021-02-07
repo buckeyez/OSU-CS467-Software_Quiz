@@ -40,7 +40,7 @@ export default function Signin() {
           <Form.Input
             placeholder="Email address"
             value={emailAddress}
-            onChange={({ target }) => setEmailAddress(target.value)}
+            onChange={({ target }) => setEmailAddress(target.value.trim())}
           />
 
           <Form.Input
@@ -48,7 +48,7 @@ export default function Signin() {
             type="password"
             autoComplete="off"
             value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={({ target }) => setPassword(target.value.trim())}
           />
 
           <Form.Submit disabled={isInvalid} type="submit">
