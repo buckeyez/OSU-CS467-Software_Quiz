@@ -23,8 +23,6 @@
     "babel-plugin-macros": "^3.0.1"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "styled-components": "^5.2.1",
-    "validator": "^13.5.2"
+    
   }
 }
