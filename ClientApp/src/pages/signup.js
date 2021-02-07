@@ -2,7 +2,9 @@ import React, { useState, useContext } from 'react';
 import { Form } from '../components';
 
 export default function Signup() {
+  const [userName, setUserName] = useState('');
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,9 +21,21 @@ export default function Signup() {
         <Form.Title>Sign up</Form.Title>
         <Form.Base onSubmit={handleSignUp} method="POST">
           <Form.Input
+            placeholder="User name"
+            value={userName}
+            onChange={({ target }) => setUserName(target.value)}
+          />
+
+          <Form.Input
             placeholder="First name"
             value={firstName}
             onChange={({ target }) => setFirstName(target.value)}
+          />
+
+          <Form.Input
+            placeholder="Last name"
+            value={lastName}
+            onChange={({ target }) => setLastName(target.value)}
           />
 
           <Form.Input
