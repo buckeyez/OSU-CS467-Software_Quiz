@@ -28,13 +28,13 @@ export default function App() {
         <UserContext.Provider value={value}>
           <Route path={ROUTES.SIGN_IN}>
             <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_IN} exact>
-              {user && <Signin />}
+              {<Signin />}
             </IsUserRedirect>
           </Route>
 
           <Route path={ROUTES.SIGN_UP}>
             <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_UP} exact>
-              {user && <Signup />}
+              {<Signup />}
             </IsUserRedirect>
           </Route>
 

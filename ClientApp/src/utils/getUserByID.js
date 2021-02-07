@@ -2,33 +2,23 @@ import axios from 'axios';
 
 /**
  * Gets user object from /users/signin endpoint
- * @param  {string} username user name of user
- * @param  {string} emailAddress email of user
+ * @param  {string} emailAddress email address of user
  * @param  {string} password password of user
- * @param  {string} lastName last name of user
- * @param  {string} firstName first name of user
  * @return {object}      user object containing id,name, firstName, lastName, email
  */
-export const signup = async (username, emailAddress, password, lastName, firstName) => {
+export const getUserByID = async (userID) => {
   //Required data for reqeust body
-  const data = {
-    name: username,
-    email: emailAddress,
-    password: password,
-    lastName: lastName,
-    firstName: firstName,
-  };
+  const data = {};
   const headers = {
     'Access-Control-Allow-Origin': 'https://localhost:5001/',
   };
 
   const response = await axios
-    .post('https://localhost:5001/users/add', data, headers)
+    .post(`https://localhost:5001/users/${userID}`, data, headers)
     .catch((e) => console.log(e));
 
   //If user exists, return user object, else undefined
   if (response) {
-    console.log(response);
     return response.data;
   } else {
     return undefined;
