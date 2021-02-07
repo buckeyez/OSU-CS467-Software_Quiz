@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Form } from '../components';
+import { UserContext } from '../context/userContext';
 
 export default function Signup() {
   const [userName, setUserName] = useState('');
@@ -7,6 +8,8 @@ export default function Signup() {
   const [lastName, setLastName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
+
+  const { user, setUser } = useContext(UserContext);
 
   const handleSignUp = (event) => {
     event.preventDefault();
