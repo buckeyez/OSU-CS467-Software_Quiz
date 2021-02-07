@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 /**
- * Gets user object from /users/signin endpoint
- * @param  {string} emailAddress email address of user
- * @param  {string} password password of user
+ * Gets user object from /users/{id} endpoint
+ * @param  {string} userID ID of a user
  * @return {object}      user object containing id,name, firstName, lastName, email
  */
 export const getUserByID = async (userID) => {

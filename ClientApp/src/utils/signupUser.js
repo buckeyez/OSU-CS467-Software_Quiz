@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * Gets user object from /users/signin endpoint
+ * Creates a new user from /users/add endpoint
  * @param  {string} username user name of user
  * @param  {string} emailAddress email of user
  * @param  {string} password password of user
