@@ -12,9 +12,7 @@ export const getUserByID = async (userID) => {
     'Access-Control-Allow-Origin': 'https://localhost:5001/',
   };
 
-  const response = await axios
-    .post(`https://localhost:5001/users/${userID}`, data, headers)
-    .catch((e) => console.log(e));
+  const response = await axios.post(`/users/${userID}`, data, headers).catch((e) => console.log(e));
 
   //If user exists, return user object, else undefined
   if (response) {

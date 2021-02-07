@@ -22,9 +22,7 @@ export const signup = async (username, emailAddress, password, lastName, firstNa
     'Access-Control-Allow-Origin': 'https://localhost:5001/',
   };
 
-  const response = await axios
-    .post('https://localhost:5001/users/add', data, headers)
-    .catch((e) => console.log(e));
+  const response = await axios.post('/users/add', data, headers).catch((e) => console.log(e));
 
   //If user exists, return user object, else undefined
   if (response) {

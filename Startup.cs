@@ -34,8 +34,6 @@ namespace OSU_CS467_Software_Quiz
         options.UseNpgsql(sqlConfig);
       });
 
-      
-
       services.AddIdentity<AppUser, IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
