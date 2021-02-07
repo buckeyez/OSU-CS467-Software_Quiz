@@ -4,6 +4,7 @@ import { Form } from '../components';
 import * as ROUTES from '../constants/routes';
 import { UserContext } from '../context/userContext';
 import { login } from '../utils/loginUser';
+import { storeUserSessionToLocalStorage } from '../utils/storeSession';
 
 export default function Signin() {
   const history = useHistory();
@@ -24,6 +25,7 @@ export default function Signin() {
     const user = await login(emailAddress, password);
     if (user) {
       setUser(user);
+      storeUserSessionToLocalStorage(user);
       history.push(ROUTES.HOME);
     } else {
       setError('Incorrect credentials. Please try again.');

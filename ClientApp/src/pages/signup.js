@@ -5,6 +5,7 @@ import { signup } from '../utils/signupUser';
 import validator from 'validator';
 import * as ROUTES from '../constants/routes';
 import { useHistory } from 'react-router-dom';
+import { storeUserSessionToLocalStorage } from '../utils/storeSession';
 
 export default function Signup() {
   const history = useHistory();
@@ -38,6 +39,7 @@ export default function Signup() {
       const newUser = await signup(userName, emailAddress, password, lastName, firstName);
       if (newUser) {
         setUser(newUser);
+        storeUserSessionToLocalStorage(newUser);
         history.push(ROUTES.HOME);
       }
     } else {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/home';
 import Signin from './pages/signin';
@@ -15,19 +15,26 @@ export default function App() {
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
+
   return (
     <Router>
       <Switch>
         <UserContext.Provider value={value}>
           <Route path={ROUTES.SIGN_IN}>
             <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_IN} exact>
-              <Signin />
+              {user && <Signin />}
             </IsUserRedirect>
           </Route>
 
           <Route path={ROUTES.SIGN_UP}>
             <IsUserRedirect user={user} loggedInPath={ROUTES.HOME} path={ROUTES.SIGN_UP} exact>
-              <Signup />
+              {user && <Signup />}
             </IsUserRedirect>
           </Route>
 
