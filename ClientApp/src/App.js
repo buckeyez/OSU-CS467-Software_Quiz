@@ -16,6 +16,10 @@ export default function App() {
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   useEffect(() => {
+    //Check to see if there is a userData key in local storage
+    //If so, we can use it to set the user
+    //This is a very insecure way to tracking a user session. You can fake the userData key/val pair and get access
+    //Will have to fix this for real after
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
       setUser(userData);
