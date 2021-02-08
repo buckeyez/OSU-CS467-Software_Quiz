@@ -8,9 +8,7 @@ import axios from 'axios';
 export const getUserByID = async (userID) => {
   //Required data for reqeust body
   const data = {};
-  const headers = {
-    'Access-Control-Allow-Origin': 'https://localhost:5001/',
-  };
+  const headers = {};
 
   const response = await axios.post(`/users/${userID}`, data, headers).catch((e) => console.log(e));
 

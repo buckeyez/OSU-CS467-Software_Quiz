@@ -18,9 +18,7 @@ export const signup = async (username, emailAddress, password, lastName, firstNa
     lastName: lastName,
     firstName: firstName,
   };
-  const headers = {
-    'Access-Control-Allow-Origin': 'https://localhost:5001/',
-  };
+  const headers = {};
 
   const response = await axios.post('/users/add', data, headers).catch((e) => console.log(e));
 
