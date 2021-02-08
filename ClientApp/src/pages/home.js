@@ -11,13 +11,6 @@ export default function Home() {
     <>
       <h1>Home page</h1>
       <p>Hello {user.firstName}</p>
-      <button
-        onClick={() => {
-          history.push(ROUTES.SIGN_IN);
-        }}
-      >
-        Signin
-      </button>
     </>
   );
 }
