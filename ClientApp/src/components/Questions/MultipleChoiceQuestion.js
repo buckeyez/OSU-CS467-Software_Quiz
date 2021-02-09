@@ -1,14 +1,34 @@
 import React, { Component, useState } from 'react';
 
 
-const MultipleChoiceQuestion = () =>{
+const MultipleChoiceQuestion = (props) =>{
 
-  const [choiceList, setChoiceList] = useState([{choiceOption: ""}]);
+  const [choiceList, setChoiceList] = useState([{Value: "", Correct: false}]);
 
   function handleChange(index, event) {
     const options = [...choiceList];
-    options[index].choiceOption = event.target.value;
+    console.log("event.target.prevSib: ", event.target.previousSibling.checked);
+    options[index].Value = event.target.value;
+    options[index].Correct = false;
     setChoiceList(options);
+    console.log("choiceList: ", choiceList);
+    props.handleMultipleChoiceAnswer(choiceList);
+  }
+
+  function handleRadioButtonChange(index, e){
+    console.log("radio button changed: ", e.target.nextSibling.value, e.target.checked);
+    const options = [...choiceList];
+    let length = options.length;
+    for (let i = 0; i < length; i++){
+      if(i === index){
+        options[i].Correct = e.target.checked
+      }else{
+        options[i].Correct = false;
+      }
+    }
+    setChoiceList(options);
+    console.log("choiceList: ", choiceList);
+    props.handleMultipleChoiceAnswer(choiceList);
   }
 
 
@@ -24,8 +44,9 @@ const MultipleChoiceQuestion = () =>{
 
   function handleAdd(){
       const options = [...choiceList];
-      options.push({choiceOption: ""});
+      options.push({Value: ""});
       setChoiceList(options);
+
   }
 
 
@@ -35,11 +56,11 @@ const MultipleChoiceQuestion = () =>{
       {choiceList.map((choice, index) => {
         return(
           <div key={`${choice}-${index}`} >
-            <input type="radio" name="multipleChoice" value={choice.choiceOption} />
+            <input type="radio" name="multipleChoice" value={choice.Value} onChange={(e) => handleRadioButtonChange(index, e)}/>
             <input 
               type="text" 
               placeholder="Type text here"  
-              value={choice.choiceOption || ""} 
+              value={choice.Value || ""} 
               onChange={(e) => handleChange(index, e)}>
             </input>
             {choiceList.length !== 1 && <button onClick={(e) => handleRemove(index, e)}>Remove</button>}
