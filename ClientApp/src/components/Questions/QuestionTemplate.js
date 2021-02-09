@@ -25,6 +25,23 @@ export default class QuestionTemplate extends Component {
     };
   }
 
+  componentDidMount(){
+    console.log("questionTemplate just mounted");
+    if(this.props.id){
+      axios.get(`/Questions/${this.props.id}/Entire`)
+      .then(response => {
+        console.log("response data: ", response.data)
+        this.setState({
+          id: response.data.question.id,
+          questionType: response.data.question.type,
+          value: response.data.question.value,
+          answers: response.data.answers
+        })
+      })
+    }
+
+}
+
   handleChange = (event) => {
     console.log("question type selected on drop down: ", event.target.value);
     // let newState = {...this.state};
@@ -106,7 +123,12 @@ export default class QuestionTemplate extends Component {
         {/* <form onSubmit={this.handleQuestionSubmit}> */}
           <Form.Question>
           <div>
-            <input type="text" name="questionName" placeholder="Type Question Here..." onChange={this.handleQuestionValueChange}></input>
+            <input 
+            type="text" 
+            name="questionName" 
+            value={this.state.value}
+            placeholder="Type Question Here..." 
+            onChange={this.handleQuestionValueChange}></input>
             <select value={this.state.questionType} onChange={this.handleChange}>
               <option value="selectChoice">Select Question Type</option>
               <option value="Multiple Choice">Multiple Choice</option>
@@ -115,8 +137,8 @@ export default class QuestionTemplate extends Component {
             </select>
           </div>
           <div>
-            {this.state.questionType == "Free Response" && <OpenTextQuestion handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
-            {this.state.questionType == "True OR False" && <TrueOrFalseQuestion handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
+            {this.state.questionType == "Free Response" && <OpenTextQuestion answers={this.state.answers} handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
+            {this.state.questionType == "True OR False" && <TrueOrFalseQuestion answers={this.state.answers} handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
             {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
