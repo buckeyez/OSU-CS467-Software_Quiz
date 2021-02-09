@@ -85,7 +85,7 @@ export default class QuestionTemplate extends Component {
      }
       console.log("this state answers: ", this.state.answers)
       console.log("payload: ", payload)
-      axios.post('https://localhost:5001/Questions/Add', payload) //TODO need to not hardcode the url
+      axios.post('Questions/Add', payload) //TODO need to not hardcode the url
       .then(res => {
         console.log("res: ", res, res.data.question.id);
         console.log("the id should be: ", res.data.question.id);
