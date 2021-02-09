@@ -1,9 +1,12 @@
+import axios from 'axios';
 import React, { Component } from 'react';
+
 import Switch from "react-switch";
 
 // import "./SoftwareQuiz.css"
 // import "./NewQuiz.css"
 import QuestionTemplate from "../components/Questions/QuestionTemplate"
+import QuestionDisplay from "../components/Questions/QuestionDisplay"
 
 export default class AddQuestions extends Component {
   // static displayName = Counter.name;
@@ -14,9 +17,18 @@ export default class AddQuestions extends Component {
       QuizTitle: "Quiz Title",
       timerChecked: false,
       count: 0,
-      questionTemplate: [] };
+      questionTemplate: [],
+      questionPool: [] };
     this.incrementCounter = this.incrementCounter.bind(this);
     // this.onChange = this.onChange.bind(this);
+  }
+
+  componentDidMount(){
+      console.log("AddQuestions just mounted");
+      axios.get(`/Questions`)
+      .then(response => {
+        this.setState({...this.state, questionPool: response.data });
+      })
   }
 
   incrementCounter() {
@@ -98,6 +110,20 @@ export default class AddQuestions extends Component {
         </div>
         <div>
           <button className="addNew" onClick={this.addGeneralQuestionTemplate}>+</button>
+        </div>
+
+        <div>
+            <br></br>
+            <p>Question Pool</p>
+            {console.log("question pool: ", this.state.questionPool)}
+            {this.state.questionPool.map((question, index) => {
+                return(
+                    <div key={question.id}>
+                        <QuestionDisplay question={question} />
+                    </div>
+                )
+
+            })}
         </div>
         {/* <div id="createQuiz">
         <p>Create a Quiz</p>
