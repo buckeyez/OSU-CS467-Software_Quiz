@@ -10,6 +10,7 @@ namespace OSU_CS467_Software_Quiz.Extensions
       services.AddTransient<IAnswersRepo, AnswersRepo>();
       services.AddTransient<IQuestionsRepo, QuestionsRepo>();
       services.AddTransient<IQuestionTypesRepo, QuestionTypesRepo>();
+      services.AddTransient<IQuizzesRepo, QuizzesRepo>();
     }
   }
 }
