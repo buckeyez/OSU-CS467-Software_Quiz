@@ -66,6 +66,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<Question>> GetQuestions()
     {
       var questions = await _questionsRepo.GetQuestions();
