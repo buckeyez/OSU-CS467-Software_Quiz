@@ -22,4 +22,5 @@
   "devDependencies": {
     "babel-plugin-macros": "^3.0.1"
   }
+  
 }
