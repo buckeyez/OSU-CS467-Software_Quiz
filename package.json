@@ -18,9 +18,5 @@
   "bugs": {
     "url": "https://github.com/buckeyez/OSU-CS467-Software_Quiz/issues"
   },
-  "homepage": "https://github.com/buckeyez/OSU-CS467-Software_Quiz#readme",
-  "devDependencies": {
-    "babel-plugin-macros": "^3.0.1"
-  }
-  
+  "homepage": "https://github.com/buckeyez/OSU-CS467-Software_Quiz#readme"  
 }
