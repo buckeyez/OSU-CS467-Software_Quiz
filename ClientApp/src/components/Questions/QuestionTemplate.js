@@ -139,7 +139,7 @@ export default class QuestionTemplate extends Component {
           <div>
             {this.state.questionType == "Free Response" && <OpenTextQuestion answers={this.state.answers} handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
             {this.state.questionType == "True OR False" && <TrueOrFalseQuestion answers={this.state.answers} handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
-            {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
+            {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion answers={this.state.answers} handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
           <button onClick={this.props.deleteHandle}>delete this question</button>
