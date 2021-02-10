@@ -1,9 +1,16 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 
 
 const MultipleChoiceQuestion = (props) =>{
 
   const [choiceList, setChoiceList] = useState([{Value: "", Correct: false}]);
+
+  useEffect(() => {
+    console.log("Use Effect - choiceList: ", choiceList, "answers prop: ", props.answers);
+    if(props.answers){
+      setChoiceList(props.answers)
+    }
+  }, []) 
 
   function handleChange(index, event) {
     const options = [...choiceList];
@@ -53,14 +60,16 @@ const MultipleChoiceQuestion = (props) =>{
 
   return (
     <div>
+    {console.log("passed in answers: ", props.answers)}
+    {console.log("useEffect choiceList: ", choiceList)}
       {choiceList.map((choice, index) => {
         return(
           <div key={`${choice}-${index}`} >
-            <input type="radio" name="multipleChoice" value={choice.Value} onChange={(e) => handleRadioButtonChange(index, e)}/>
+            <input type="radio" name="multipleChoice" value={choice.value} checked={choice.correct === true} onChange={(e) => handleRadioButtonChange(index, e)}/>
             <input 
               type="text" 
               placeholder="Type text here"  
-              value={choice.Value || ""} 
+              value={choice.value || ""} 
               onChange={(e) => handleChange(index, e)}>
             </input>
             {choiceList.length !== 1 && <button onClick={(e) => handleRemove(index, e)}>Remove</button>}
