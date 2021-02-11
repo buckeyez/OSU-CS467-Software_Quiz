@@ -40,11 +40,11 @@ export default class AddQuestions extends Component {
     // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
     if(this.state.forDelete != prevState.forDelete || this.state.questionPool != prevState.questionPool){
         // if(this.state != prevState){
-            console.log("this and prev: ", this.state, prevState)
-        console.log("Add questions just updated, ", this.state.updateCount)
+            // console.log("this and prev: ", this.state, prevState)
+        // console.log("Add questions just updated, ", this.state.updateCount)
         return axios.get(`/Questions`)
         .then(response => {
-            console.log("res[pmnsee: ", response.data);
+            // console.log("res[pmnsee: ", response.data);
           this.setState(prevState => {
               return {...prevState, questionPool: response.data}
           });
@@ -111,8 +111,8 @@ export default class AddQuestions extends Component {
   render() {
     return (
       <div>
-        {console.log("hiiiiii")}
-        {console.log(this.props.history)}
+        {/* {console.log("hiiiiii")} */}
+        {/* {console.log(this.props.history)} */}
         <h1>Add More Questions to the Question Pool</h1>
    
 
@@ -153,7 +153,7 @@ export default class AddQuestions extends Component {
         <div>
             <br></br>
             <p>Question Pool</p>
-            {console.log("question pool: ", this.state.questionPool)}
+            {/* {console.log("question pool: ", this.state.questionPool)} */}
             {this.state.questionPool.map((question, index) => {
                 return(
                     <div key={question.id}>
