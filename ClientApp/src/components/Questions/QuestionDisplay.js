@@ -36,7 +36,7 @@ const QuestionDisplay = (props) =>{
       <p>Question: {props.question.value}</p>
       <p>Type: {props.question.type}</p>
       </div>
-      {showDetail &&  <QuestionTemplate id={props.question.id}/>}
+      {showDetail &&  <QuestionTemplate id={props.question.id} deleteHandle={(id, e) => props.deleteHandle(id, e)}/>}
     </Form.Question>
     
     
