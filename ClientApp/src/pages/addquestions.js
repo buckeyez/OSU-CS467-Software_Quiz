@@ -17,6 +17,8 @@ export default class AddQuestions extends Component {
       QuizTitle: "Quiz Title",
       timerChecked: false,
       count: 0,
+      display: true,
+      inputAtTop: true,
       questionTemplate: [],
       questionPool: [] };
     this.incrementCounter = this.incrementCounter.bind(this);
@@ -37,14 +39,14 @@ export default class AddQuestions extends Component {
     });
   }
 
-  addGeneralQuestionTemplate = ()=>{
+  addGeneralQuestionTemplate = (inputLocation = true)=>{
     console.log("clicked add button");
     const questions = [...this.state.questionTemplate]
     let newCount = this.state.count;
     newCount = newCount + 1;
     questions.push({id: newCount})
     this.setState(prevState => {
-      return {...prevState, count: newCount, questionTemplate: questions}
+      return {...prevState, count: newCount, questionTemplate: questions, inputAtTop: inputLocation}
     })
     console.log("questionTemplate: ", this.state.questionTemplate);
   }
@@ -106,7 +108,8 @@ export default class AddQuestions extends Component {
           <button class="addQuestionButton">+ Open Questions</button>
         </div> */}
         <div>
-          {Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(e) => this.deleteGeneralQuestion(this.state.questionTemplate[index].id, e)}/>)}
+          {this.state.inputAtTop && this.state.display && 
+          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(e) => this.deleteGeneralQuestion(this.state.questionTemplate[index].id, e)}/>)}
         </div>
         <div>
           <button className="addNew" onClick={this.addGeneralQuestionTemplate}>+</button>
@@ -124,6 +127,13 @@ export default class AddQuestions extends Component {
                 )
 
             })}
+        </div>
+        <div>
+          <button className="addNew" onClick={() => this.addGeneralQuestionTemplate(false)}>+</button>
+        </div>
+        <div>
+          {!this.state.inputAtTop && this.state.display && 
+          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(e) => this.deleteGeneralQuestion(this.state.questionTemplate[index].id, e)}/>)}
         </div>
         {/* <div id="createQuiz">
         <p>Create a Quiz</p>
