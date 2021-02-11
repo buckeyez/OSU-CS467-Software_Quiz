@@ -3,8 +3,6 @@ import React, { Component, useState, useEffect } from 'react';
 
 const MultipleChoiceQuestion = (props) =>{
 
-
-
   const [choiceList, setChoiceList] = useState([{Value: "", Correct: false}]);
 
   useEffect(() => {
@@ -69,8 +67,6 @@ const MultipleChoiceQuestion = (props) =>{
 
   return (
     <div>
-    {console.log("passed in answers: ", props.answers)}
-    {console.log("useEffect choiceList: ", choiceList)}
       {choiceList.map((choice, index) => {
         return(
           <div key={`${choice}-${index}`} >

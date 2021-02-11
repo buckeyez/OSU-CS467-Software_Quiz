@@ -22,7 +22,8 @@ export default class QuestionTemplate extends Component {
       questionType: '',
       value: '',
       answers: [],
-      display: true
+      display: true,
+      errorMessage: ''
     };
   }
 
@@ -41,6 +42,10 @@ export default class QuestionTemplate extends Component {
       })
     }
 
+}
+
+clearErrorMessage = () => {
+  this.setState({...this.state, errorMessage: ''});
 }
 
   handleChange = (event) => {
@@ -75,6 +80,11 @@ export default class QuestionTemplate extends Component {
 
   handleQuestionDelete = () => {
     console.log("innnnnn delete this question")
+    if(!this.state.id){
+      {console.log("Item not added yet!")}
+      this.setState({...this.state, errorMessage: "Question not added yet!"})
+      return;
+    }
     this.props.deleteHandle(this.state.id);
     this.setState({...this.state, deleteButtonValue: "Click again to confirm delete"})
     // let url = '/Questions/' + id + '/Delete';
@@ -166,7 +176,7 @@ export default class QuestionTemplate extends Component {
         {this.state.display && <Form>
         {/* <form onSubmit={this.handleQuestionSubmit}> */}
           <Form.Question>
-          <div>
+          <div onClick={this.clearErrorMessage}>
             <input 
             type="text" 
             name="questionName" 
@@ -185,6 +195,7 @@ export default class QuestionTemplate extends Component {
             {this.state.questionType == "True OR False" && <TrueOrFalseQuestion answers={this.state.answers} handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
             {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion answers={this.state.answers} handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
+          {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
           {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
           <button onClick={this.handleQuestionDelete}>Delete</button>
