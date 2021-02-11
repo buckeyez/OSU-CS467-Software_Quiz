@@ -6,7 +6,8 @@ import React, { Component, useState } from 'react';
 
 const TrueOrFalseQuestion = (props) =>{
 
-  const [answer, setAnswer] = useState(props.answers[0].value)
+  let starterAnswer = props.answers[0] ? props.answers[0].value : 0
+  const [answer, setAnswer] = useState(starterAnswer)
   const handleUpdate = (e) => {
     if(answer === "true"){
       setAnswer("false")
@@ -18,7 +19,7 @@ const TrueOrFalseQuestion = (props) =>{
   }
   return (
     <div onChange={(e) => handleUpdate(e)}>
-      {console.log("answer is ", props.answers[0].value, answer)}
+      {/* {console.log("answer is ", props.answers[0].value, answer)} */}
       <input type="radio" name="trueOrFalse" value="true" checked={answer==="true"}/> True
       <input type="radio" name="trueOrFalse" value="false"checked={answer==="false"}/>False
     </div>

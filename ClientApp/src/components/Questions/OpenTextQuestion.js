@@ -14,7 +14,7 @@ const OpenTextQuestion = (props) =>{
     <div>
       <input 
       type="text" 
-      value={props.answers[0].value}
+      value={props.answers[0] ? props.answers[0].value : ''}
       onChange={props.handleOpenTextAnswer}/>
     </div>
   )
