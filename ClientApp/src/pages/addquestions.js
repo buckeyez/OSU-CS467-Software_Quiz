@@ -20,17 +20,35 @@ export default class AddQuestions extends Component {
       display: true,
       inputAtTop: true,
       questionTemplate: [],
-      questionPool: [] };
+      questionPool: [],
+      canAdd: true,
+    forDelete: 0,
+updateCount: 0 };
     this.incrementCounter = this.incrementCounter.bind(this);
     // this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount(){
-      console.log("AddQuestions just mounted");
+      console.log("AddQuestions just mounted ");
       axios.get(`/Questions`)
       .then(response => {
         this.setState({...this.state, questionPool: response.data });
+
       })
+  }
+
+  componentDidUpdate(prevProps, prevState){ // this is really bad performance
+    console.log("for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
+    if(this.state.questionTemplate != prevState.questionTemplate || this.state.forDelete != prevState.forDelete){
+        console.log("Add questions just updated, ", this.state.updateCount)
+        axios.get(`/Questions`)
+        .then(response => {
+          this.setState(prevState => {
+              return {...this.state, questionPool: response.data, updateCount: prevState.updateCount + 1 }
+          });
+        })
+    }
+
   }
 
   incrementCounter() {
@@ -53,12 +71,21 @@ export default class AddQuestions extends Component {
 
   deleteGeneralQuestion = (id, e) => {
     console.log("in deleteGeneralQuestion: index: ", id, this.state);
-    e.preventDefault();
-    const oldQuestionList = [...this.state.questionTemplate];
-    // console.log("newQuestionList: ", newQuestionList);
-    const newQuestionList = oldQuestionList.filter( question => question.id != id);
-    this.setState({...this.state, questionTemplate: newQuestionList});
-    console.log("after resetting state: ", this.state);
+    // e.preventDefault();
+    // const oldQuestionList = [...this.state.questionTemplate];
+    // // console.log("newQuestionList: ", newQuestionList);
+    // const newQuestionList = oldQuestionList.filter( question => question.id != id);
+    // this.setState({...this.state, questionTemplate: newQuestionList});
+    // console.log("after resetting state: ", this.state);
+    let url = '/Questions/' + id + '/Delete';
+    console.log("url: ", url)
+    axios.post(url).then(
+        console.log("deleted"),
+        this.setState(prevState => {
+            return {...prevState, forDelete: prevState.forDelete + 1}
+        })
+    )
+
   }
 
   onChange = (event) =>{
@@ -109,7 +136,7 @@ export default class AddQuestions extends Component {
         </div> */}
         <div>
           {this.state.inputAtTop && this.state.display && 
-          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(e) => this.deleteGeneralQuestion(this.state.questionTemplate[index].id, e)}/>)}
+          Array.from(Array(this.state.questionTemplate.length)).map((x, index) =>  <QuestionTemplate key={index} deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)}/>)}
         </div>
         <div>
           <button className="addNew" onClick={this.addGeneralQuestionTemplate}>+</button>
@@ -122,7 +149,7 @@ export default class AddQuestions extends Component {
             {this.state.questionPool.map((question, index) => {
                 return(
                     <div key={question.id}>
-                        <QuestionDisplay question={question} />
+                        <QuestionDisplay deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)} question={question} />
                     </div>
                 )
 
@@ -133,7 +160,7 @@ export default class AddQuestions extends Component {
         </div>
         <div>
           {!this.state.inputAtTop && this.state.display && 
-          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(e) => this.deleteGeneralQuestion(this.state.questionTemplate[index].id, e)}/>)}
+          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)}/>)}
         </div>
         {/* <div id="createQuiz">
         <p>Create a Quiz</p>

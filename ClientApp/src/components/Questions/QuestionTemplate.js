@@ -21,7 +21,9 @@ export default class QuestionTemplate extends Component {
       id: '',
       questionType: '',
       value: '',
-      answers: []
+      answers: [],
+      display: true,
+      deleteButtonValue: "Delete"
     };
   }
 
@@ -72,6 +74,17 @@ export default class QuestionTemplate extends Component {
     this.setState({...this.state, answers: theAnswer})
   }
 
+  handleQuestionDelete = () => {
+    console.log("innnnnn delete this question")
+    this.props.deleteHandle(this.state.id);
+    this.setState({...this.state, deleteButtonValue: "Click again to confirm delete"})
+    // let url = '/Questions/' + id + '/Delete';
+    // console.log("url: ", url)
+    // axios.post(url).then(
+    //   this.setState({...this.state, display: false})
+    // )
+  }
+
   handleQuestionSubmit = (event) => {
     //making Axios call
     if(this.state.id == ''){
@@ -106,42 +119,42 @@ export default class QuestionTemplate extends Component {
       .then(res => {
         console.log("res: ", res, res.data.question.id);
         console.log("the id should be: ", res.data.question.id);
-        this.setState({...this.state, id: res.data.question.id});
+        this.setState({...this.state, id: res.data.question.id, display: false});
       })
     }else{
       console.log("item already exist, updating it");
-      event.preventDefault();
-      let payload;
-      if(this.state.questionType === "Multiple Choice"){
-          payload = {
-            "Question": {
-              "Value": this.state.value,
-              "Type": this.state.questionType
-            },
-            "Answers": this.state.answers
-          }
-      }else{
-          payload = {
-            "Question": {
-              "Value": this.state.value,
-              "Type": this.state.questionType
-            },
-            "Answers": [
-              {
-                "Value": this.state.answers[0],
-                "Correct": true
-              }
-            ]
-          }
-      }
-        console.log("this state answers: ", this.state.answers)
-        console.log("payload: ", payload)
-        axios.post('Questions/Add', payload) //TODO need to not hardcode the url
-        .then(res => {
-          console.log("res: ", res, res.data.question.id);
-          console.log("the id should be: ", res.data.question.id);
-          this.setState({...this.state, id: res.data.question.id});
-        })
+      // event.preventDefault();
+      // let payload;
+      // if(this.state.questionType === "Multiple Choice"){
+      //     payload = {
+      //       "Question": {
+      //         "Value": this.state.value,
+      //         "Type": this.state.questionType
+      //       },
+      //       "Answers": this.state.answers
+      //     }
+      // }else{
+      //     payload = {
+      //       "Question": {
+      //         "Value": this.state.value,
+      //         "Type": this.state.questionType
+      //       },
+      //       "Answers": [
+      //         {
+      //           "Value": this.state.answers[0],
+      //           "Correct": true
+      //         }
+      //       ]
+      //     }
+      // }
+      //   console.log("this state answers: ", this.state.answers)
+      //   console.log("payload: ", payload)
+      //   axios.post('Questions/Add', payload) //TODO need to not hardcode the url
+      //   .then(res => {
+      //     console.log("res: ", res, res.data.question.id);
+      //     console.log("the id should be: ", res.data.question.id);
+      //     this.setState({...this.state, id: res.data.question.id});
+      //   })
       }
 
 
@@ -151,7 +164,7 @@ export default class QuestionTemplate extends Component {
     return (
       <div>
         {/* <form className="question-template"> */}
-        <Form>
+        {this.state.display && <Form>
         {/* <form onSubmit={this.handleQuestionSubmit}> */}
           <Form.Question>
           <div>
@@ -174,9 +187,10 @@ export default class QuestionTemplate extends Component {
             {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion answers={this.state.answers} handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
-          <button onClick={this.props.deleteHandle}>delete this question</button>
+          {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
+          <button onClick={this.handleQuestionDelete}>{this.state.deleteButtonValue}</button>
           </Form.Question>
-        </Form>
+        </Form>}
         {/* </form> */}
       </div>
     );
