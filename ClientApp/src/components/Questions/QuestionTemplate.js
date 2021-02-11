@@ -22,8 +22,7 @@ export default class QuestionTemplate extends Component {
       questionType: '',
       value: '',
       answers: [],
-      display: true,
-      deleteButtonValue: "Delete"
+      display: true
     };
   }
 
@@ -188,7 +187,7 @@ export default class QuestionTemplate extends Component {
           </div>
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
           {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
-          <button onClick={this.handleQuestionDelete}>{this.state.deleteButtonValue}</button>
+          <button onClick={this.handleQuestionDelete}>Delete</button>
           </Form.Question>
         </Form>}
         {/* </form> */}

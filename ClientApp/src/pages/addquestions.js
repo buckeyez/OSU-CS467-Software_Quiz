@@ -21,9 +21,8 @@ export default class AddQuestions extends Component {
       inputAtTop: true,
       questionTemplate: [],
       questionPool: [],
-      canAdd: true,
-    forDelete: 0,
-updateCount: 0 };
+      canAdd: true
+    };
     this.incrementCounter = this.incrementCounter.bind(this);
     // this.onChange = this.onChange.bind(this);
   }
@@ -38,15 +37,22 @@ updateCount: 0 };
   }
 
   componentDidUpdate(prevProps, prevState){ // this is really bad performance
-    console.log("for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
-    if(this.state.questionTemplate != prevState.questionTemplate || this.state.forDelete != prevState.forDelete){
+    // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
+    if(this.state.forDelete != prevState.forDelete || this.state.questionPool != prevState.questionPool){
+        // if(this.state != prevState){
+            console.log("this and prev: ", this.state, prevState)
         console.log("Add questions just updated, ", this.state.updateCount)
-        axios.get(`/Questions`)
+        return axios.get(`/Questions`)
         .then(response => {
+            console.log("res[pmnsee: ", response.data);
           this.setState(prevState => {
-              return {...this.state, questionPool: response.data, updateCount: prevState.updateCount + 1 }
+              return {...prevState, questionPool: response.data}
           });
         })
+    //     .then(response => {
+    //         this.setState({...this.state, questionPool: response.data });
+    
+    //       })
     }
 
   }
@@ -82,9 +88,10 @@ updateCount: 0 };
     axios.post(url).then(
         console.log("deleted"),
         this.setState(prevState => {
-            return {...prevState, forDelete: prevState.forDelete + 1}
+            return {...prevState}
         })
     )
+    
 
   }
 
@@ -107,6 +114,7 @@ updateCount: 0 };
         {console.log("hiiiiii")}
         {console.log(this.props.history)}
         <h1>Add More Questions to the Question Pool</h1>
+   
 
         <div >
           <form id="quizTitleBlock">
@@ -160,7 +168,9 @@ updateCount: 0 };
         </div>
         <div>
           {!this.state.inputAtTop && this.state.display && 
-          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => <QuestionTemplate key={index} deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)}/>)}
+          Array.from(Array(this.state.questionTemplate.length)).map((x, index) => 
+          <QuestionTemplate key={index} 
+          deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)}/>)}
         </div>
         {/* <div id="createQuiz">
         <p>Create a Quiz</p>
