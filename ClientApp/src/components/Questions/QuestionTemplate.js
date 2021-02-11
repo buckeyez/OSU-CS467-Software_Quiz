@@ -109,8 +109,40 @@ export default class QuestionTemplate extends Component {
         this.setState({...this.state, id: res.data.question.id});
       })
     }else{
-      console.log("item already exist");
-    }
+      console.log("item already exist, updating it");
+      event.preventDefault();
+      let payload;
+      if(this.state.questionType === "Multiple Choice"){
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": this.state.answers
+          }
+      }else{
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": [
+              {
+                "Value": this.state.answers[0],
+                "Correct": true
+              }
+            ]
+          }
+      }
+        console.log("this state answers: ", this.state.answers)
+        console.log("payload: ", payload)
+        axios.post('Questions/Add', payload) //TODO need to not hardcode the url
+        .then(res => {
+          console.log("res: ", res, res.data.question.id);
+          console.log("the id should be: ", res.data.question.id);
+          this.setState({...this.state, id: res.data.question.id});
+        })
+      }
 
 
   }
