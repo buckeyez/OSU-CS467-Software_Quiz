@@ -12,6 +12,6 @@ namespace OSU_CS467_Software_Quiz.Repositories
     Task<List<Answers>> GetQuestionAnswersAsync(int id);
     Task<Questions> GetQuestion(int id);
     Task<List<Questions>> GetQuestions();
-    Task<Questions> UpdateQuestionAsync(int id, Question updatedQuestion);
+    Task<Questions> UpdateQuestionAsync(int id, QuestionAndAnswers updatedQuestion);
   }
 }

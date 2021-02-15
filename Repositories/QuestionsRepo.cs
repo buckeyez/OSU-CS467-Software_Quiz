@@ -112,22 +112,24 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .ToListAsync();
     }
 
-    public async Task<Questions> UpdateQuestionAsync(int id, Question updatedQuestion)
+    public async Task<Questions> UpdateQuestionAsync(int id, QuestionAndAnswers updatedQuestion)
     {
-      var question = await _db.Questions
+      var quizQuestions = _db.QuizQuestions
         .AsQueryable()
-        .Where(q => q.Id == id)
-        .Include(q => q.Type)
-        .FirstAsync();
+        .Where(qq => qq.QuestionId == id)
+        .ToList();
 
-      question.Question = updatedQuestion.Value;
+      await DeleteQuestionAsync(id);
+      var question = await AddQuestionAsync(updatedQuestion);
 
-      question.Type = await _db.QuestionType
-          .AsQueryable()
-          .Where(qt => qt.Type == updatedQuestion.Type)
-          .FirstAsync();
-
-      _db.Update(question);
+      foreach (QuizQuestions qq in quizQuestions)
+      {
+        _db.QuizQuestions.Add(new()
+        {
+          QuestionId = question.Id,
+          QuizId = qq.QuizId,
+        });
+      }
 
       try
       {
