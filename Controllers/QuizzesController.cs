@@ -170,7 +170,29 @@ namespace OSU_CS467_Software_Quiz.Controllers
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
     }
 
-    [HttpPost("{id}/Update")]
+    [HttpPost("Assignments/Update")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateQuizAssignmentAsync([FromQuery][Required] int id,
+      [FromBody] QuizAssignmentNew quizAssignment)
+    {
+      if(ModelState.IsValid)
+      {
+        quizAssignment.Id = id;
+        var qa = await _quizRepo.UpdateQuizAssignmentAsync(quizAssignment);
+
+        if (qa != null)
+        {
+          return Ok(QuizAssignmentNew.Build(qa));
+        }
+
+        ModelState.AddModelError("Quizzes", $"Quiz Assignment ({id}) could not be found or updated.");
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
+
+    [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateQuizQuestionsAsync([FromQuery][Required] int id,
@@ -191,7 +213,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
     }
 
-    [HttpPost("{id}/Update/{name}")]
+    [HttpPost("Update/Name")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateQuizNameAsync([FromQuery][Required] int id, [FromQuery][Required] string name)

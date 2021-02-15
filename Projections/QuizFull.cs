@@ -15,7 +15,7 @@ namespace OSU_CS467_Software_Quiz.Projections
       if (partial)
       {
         toReturn = quiz.QuizQuestions
-          .Select(qq => QuestionAndAnswers.Build(qq.Question))
+          .Select(qq => QuestionAndAnswers.Build(qq.Question, new()))
           .ToList();
       }
       else

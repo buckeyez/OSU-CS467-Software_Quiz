@@ -121,12 +121,16 @@ namespace OSU_CS467_Software_Quiz.Repositories
           .Where(q => q.Id == id)
           .Include(qq => qq.QuizQuestions)
           .ThenInclude(qq => qq.Question)
+          .ThenInclude(q => q.Type)
           .FirstOrDefaultAsync();
       }
 
       return _db.Quizzes
         .AsQueryable()
         .Where(q => q.Id == id)
+        .Include(qq => qq.QuizQuestions)
+        .ThenInclude(qq => qq.Question)
+        .ThenInclude(q => q.Type)
         .Include(qq => qq.QuizQuestions)
         .ThenInclude(qq => qq.Question)
         .ThenInclude(q => q.QuestionAnswers)
@@ -248,6 +252,37 @@ namespace OSU_CS467_Software_Quiz.Repositories
       return quizAssignmentEntity;
     }
 
+    public async Task<QuizAssignments> UpdateQuizAssignmentAsync(QuizAssignmentNew quizAssignment)
+    {
+      var entity = _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Id == quizAssignment.Id)
+        .FirstOrDefault();
+
+      if (entity == null)
+      {
+        Console.WriteLine($"QuizAssignment: Assignment ({quizAssignment.Id}) does not exist.");
+        return null;
+      }
+
+      entity.QuizId = quizAssignment.QuizId;
+      entity.UserId = quizAssignment.UserId;
+      entity.TimeAllotment = quizAssignment.TimeAllotment;
+      _db.QuizAssignments.Update(entity);
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateException e)
+      {
+        Console.WriteLine($"{e.Source}: {e.Message}");
+        return null;
+      }
+
+      return entity;
+    }
+
     public async Task<Quizzes> UpdateQuizNameAsync(int id, string name)
     {
       var entity = _db.Quizzes
@@ -284,6 +319,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .Where(q => q.Id == id)
         .Include(q => q.QuizQuestions)
         .ThenInclude(qq => qq.Question)
+        .ThenInclude(qq => qq.Type)
         .FirstOrDefault();
 
       if (entity == null)
@@ -292,11 +328,12 @@ namespace OSU_CS467_Software_Quiz.Repositories
         return null;
       }
 
-      foreach (int questionId in entityUpdates.EntityIdsToAdd)
+      foreach (int questionId in entityUpdates.EntityIdsToAdd ?? new())
       {
         var questionEntity = _db.Questions
           .AsQueryable()
           .Where(q => q.Id == questionId)
+          .Include(q => q.Type)
           .FirstOrDefault();
 
         if (questionEntity == null)
@@ -312,7 +349,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
         });
       }
 
-      foreach (int questionId in entityUpdates.EntityIdsToRemove)
+      foreach (int questionId in entityUpdates.EntityIdsToRemove ?? new())
       {
         var qqEntity = _db.QuizQuestions
           .AsQueryable()
