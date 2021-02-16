@@ -17,6 +17,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
     Task<List<AppUser>> GetUsersAssignedToQuiz(int id);
     Task RemoveQuizAssignmentAsync(int id);
     Task<QuizAssignments> SubmitQuizAsync(QuizSubmission quizSubmission);
+    Task<QuizAssignments> UpdateQuizAssignmentAsync(QuizAssignmentNew quizAssignment);
     Task<Quizzes> UpdateQuizQuestionsAsync(int id, QuizUpdates entityUpdates);
     Task<Quizzes> UpdateQuizNameAsync(int id, string name);
   }

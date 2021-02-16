@@ -73,13 +73,13 @@ namespace OSU_CS467_Software_Quiz.Controllers
       return questions.Select(q => Question.Build(q)).ToList();
     }
 
-    [HttpPost("{id}/Delete")]
-    public async Task DeleteAsync(int id) => await _questionsRepo.DeleteQuestionAsync(id);
+    [HttpPost("Delete")]
+    public async Task DeleteAsync([FromQuery][Required] int id) => await _questionsRepo.DeleteQuestionAsync(id);
 
     [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status302Found)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateQuestion([FromQuery][Required] int id, [FromBody] Question model)
+    public async Task<IActionResult> UpdateQuestion([FromQuery][Required] int id, [FromBody] QuestionAndAnswers model)
     {
       Questions toReturn = null;
 
