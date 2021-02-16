@@ -10,6 +10,8 @@ using OSU_CS467_Software_Quiz.Data;
 using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.IdentityPolicy;
 using OSU_CS467_Software_Quiz.Models;
+using OSU_CS467_Software_Quiz.Services;
+using OSU_CS467_Software_Quiz.Settings;
 using System;
 
 namespace OSU_CS467_Software_Quiz
@@ -26,6 +28,9 @@ namespace OSU_CS467_Software_Quiz
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+      services.AddTransient<IMailService, MailService>();
+
       services.AddTransient<IPasswordValidator<AppUser>, AppPasswordPolicy>();
 
       string sqlConfig = Environment.GetEnvironmentVariable("NPGSQL");
