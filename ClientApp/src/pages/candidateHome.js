@@ -1,10 +1,22 @@
 import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../context/userContext';
-import { useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
+import { QuizDetails } from '../pages/quizdetails';
 
 export default function CandidateHome() {
+  const fakeQuizAssignments = [
+    {
+      id: 5,
+      Name: 'Finance Quiz',
+    },
+    {
+      id: 6,
+      Name: 'English Quiz',
+    },
+  ];
+
   //   const { user } = useContext(UserContext);
   const history = useHistory();
 
@@ -24,8 +36,24 @@ export default function CandidateHome() {
         <Welcome.Title>Welcome [NAME HERE] </Welcome.Title>
         <Welcome.TextSmall>You have been assigned the following quiz(s). </Welcome.TextSmall>
         <QuizCard>
-          <QuizCard.Title>Your awesome quiz</QuizCard.Title>
-          <QuizCard.ButtonLink to={ROUTES.QUIZ_DETAILS}>Start Quiz</QuizCard.ButtonLink>
+          {fakeQuizAssignments.map((quiz) => {
+            return (
+              <>
+                <QuizCard.Title>{quiz.Name}</QuizCard.Title>
+                <QuizCard.ButtonLink
+                  to={{
+                    pathname: ROUTES.QUIZ_DETAILS,
+                    state: {
+                      name:
+                        'PASS CANDIDATE ID AND QUIZ ID HERE TO GET QUIIZ QUESTIONS ON QUIZ DETAILS PAGE',
+                    },
+                  }}
+                >
+                  Start Quiz
+                </QuizCard.ButtonLink>
+              </>
+            );
+          })}
         </QuizCard>
       </Welcome>
     </>
