@@ -87,11 +87,6 @@ clearErrorMessage = () => {
     }
     this.props.deleteHandle(this.state.id);
     this.setState({...this.state, deleteButtonValue: "Click again to confirm delete"})
-    // let url = '/Questions/' + id + '/Delete';
-    // console.log("url: ", url)
-    // axios.post(url).then(
-    //   this.setState({...this.state, display: false})
-    // )
   }
 
   handleQuestionSubmit = (event) => {
@@ -132,38 +127,40 @@ clearErrorMessage = () => {
       })
     }else{
       console.log("item already exist, updating it");
-      // event.preventDefault();
-      // let payload;
-      // if(this.state.questionType === "Multiple Choice"){
-      //     payload = {
-      //       "Question": {
-      //         "Value": this.state.value,
-      //         "Type": this.state.questionType
-      //       },
-      //       "Answers": this.state.answers
-      //     }
-      // }else{
-      //     payload = {
-      //       "Question": {
-      //         "Value": this.state.value,
-      //         "Type": this.state.questionType
-      //       },
-      //       "Answers": [
-      //         {
-      //           "Value": this.state.answers[0],
-      //           "Correct": true
-      //         }
-      //       ]
-      //     }
-      // }
-      //   console.log("this state answers: ", this.state.answers)
-      //   console.log("payload: ", payload)
-      //   axios.post('Questions/Add', payload) //TODO need to not hardcode the url
-      //   .then(res => {
-      //     console.log("res: ", res, res.data.question.id);
-      //     console.log("the id should be: ", res.data.question.id);
-      //     this.setState({...this.state, id: res.data.question.id});
-      //   })
+      event.preventDefault();
+      let payload;
+      if(this.state.questionType === "Multiple Choice"){
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": this.state.answers
+          }
+      }else{
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": [
+              {
+                "Value": this.state.answers[0],
+                "Correct": true
+              }
+            ]
+          }
+      }
+        console.log("this state answers: ", this.state.answers)
+        console.log("payload: ", payload)
+        let url = 'Questions/Update?id=' + this.state.id;
+        axios.post(url, payload) //TODO need to not hardcode the url
+        .then(res => {
+          console.log("updated")
+          // console.log("res: ", res, res.data.question.id);
+          // console.log("the id should be: ", res.data.question.id);
+          // this.setState({...this.state, id: res.data.question.id});
+        })
       }
 
 
