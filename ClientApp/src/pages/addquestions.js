@@ -83,7 +83,7 @@ export default class AddQuestions extends Component {
     // const newQuestionList = oldQuestionList.filter( question => question.id != id);
     // this.setState({...this.state, questionTemplate: newQuestionList});
     // console.log("after resetting state: ", this.state);
-    let url = '/Questions/' + id + '/Delete';
+    let url = '/Questions/Delete?id=' + id;
     console.log("url: ", url)
     axios.post(url).then(
         console.log("deleted"),
