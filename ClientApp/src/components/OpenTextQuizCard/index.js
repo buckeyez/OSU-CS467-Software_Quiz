@@ -3,7 +3,6 @@ import React from 'react';
 import { QuizQuestionCard, Form } from '../../components';
 
 export default function MultipleChoiceQuizCard({ ...props }) {
-  console.log('abnswers---->', props.questionAnswers);
   const questionCardTitle = () => {
     return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
   };
@@ -12,8 +11,7 @@ export default function MultipleChoiceQuizCard({ ...props }) {
     return props.questionAnswers.map((answer, index) => {
       return (
         <div key={answer.id}>
-          <QuizQuestionCard.Input value={answer.value} type="radio"></QuizQuestionCard.Input>
-          {answer.value}
+          <QuizQuestionCard.TextArea></QuizQuestionCard.TextArea>
         </div>
       );
     });

@@ -38,7 +38,7 @@ export default function CandidateHome() {
         <QuizCard>
           {fakeQuizAssignments.map((quiz) => {
             return (
-              <>
+              <div key={quiz.id}>
                 <QuizCard.Title>{quiz.Name}</QuizCard.Title>
                 <QuizCard.ButtonLink
                   to={{
@@ -51,7 +51,7 @@ export default function CandidateHome() {
                 >
                   Start Quiz
                 </QuizCard.ButtonLink>
-              </>
+              </div>
             );
           })}
         </QuizCard>
