@@ -14,8 +14,8 @@ export default class AddQuestions extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      QuizTitle: "Quiz Title",
-      timerChecked: false,
+      
+      
       count: 0,
       display: true,
       inputAtTop: true,
@@ -95,18 +95,7 @@ export default class AddQuestions extends Component {
 
   }
 
-  onChange = (event) =>{
-    this.setState({...this.state, QuizTitle: event.target.value})
-    console.log("on change ", event.target.value);
-    console.log("state: ", this.state.QuizTitle)
-  }
 
-  timerSwitchHandle = () => {
-    this.setState(prevState => {
-      return {...prevState, timerChecked: !prevState.timerChecked}
-    })
-    // console.log("switch check: ", this.state.timerChecked)
-  }
 
   render() {
     return (
@@ -114,28 +103,6 @@ export default class AddQuestions extends Component {
         {/* {console.log("hiiiiii")} */}
         {/* {console.log(this.props.history)} */}
         <h1>Add More Questions to the Question Pool</h1>
-   
-
-        <div >
-          <form id="quizTitleBlock">
-            {/* <input id="quizTitle" value={this.state.QuizTitle} */}
-            {/* onChange={this.onChange}></input> */}
-            {/* <label id="timer">Timer: 
-              <select>
-                <option value="10">10 min</option>
-                <option value="10">30 min</option>
-                <option value="10">60 min</option>
-                <option value="10">90 min</option>
-                <option value="10">120 min</option>
-              </select>
-            </label>
-            <label id="timerSwitch">Timed Quiz
-              <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
-            </label> */}
-
-          </form>
-          {/* <h3>{this.state.QuizTitle}</h3> */}
-        </div>
 
         {/* <div>
           <button class="addQuestionButton">+ Multiple Choice</button>
