@@ -15,6 +15,7 @@ export default function QuizDetails() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,14 +41,34 @@ export default function QuizDetails() {
   let questionAnswers = quizData.questions[questionIndex].answers;
   let numberOfQuestions = quizData.questions.length;
 
+  const updateQuestionAndAnswersMap = (answerID) => {
+    setQuestionAndAnswerMap(questionAndAnswerMap.set(questionIndex, answerID));
+    console.log('map of Q:A ', questionAndAnswerMap);
+  };
+
+  const updateQuestionAndAnswersMapFreeResponse = (e) => {
+    setQuestionAndAnswerMap(questionAndAnswerMap.set(questionIndex, e.target.value));
+    console.log('map of Q:A ', questionAndAnswerMap);
+  };
+
   const renderSwitch = (questionType) => {
     switch (questionType) {
       case 'Multiple Choice':
         return (
-          <MultipleChoiceQuizCard questionTitle={questionTitle} questionAnswers={questionAnswers} />
+          <MultipleChoiceQuizCard
+            questionTitle={questionTitle}
+            questionAnswers={questionAnswers}
+            updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
+          />
         );
       case 'Free Response':
-        return <OpenTextQuizCard questionTitle={questionTitle} questionAnswers={questionAnswers} />;
+        return (
+          <OpenTextQuizCard
+            questionTitle={questionTitle}
+            questionAnswers={questionAnswers}
+            updateQuestionAndAnswersMapFreeResponse={updateQuestionAndAnswersMapFreeResponse}
+          />
+        );
     }
   };
   console.log(numberOfQuestions);
@@ -61,7 +82,7 @@ export default function QuizDetails() {
 
   return (
     <>
-      <h1>Quiz Details page</h1>
+      <h1>You are taking the {quizData.name} Quiz</h1>
       {renderSwitch(questionType)}
       <button onClick={getPrevQuestion}>Prev</button>
       <button onClick={getNextQuestion}>Next</button>

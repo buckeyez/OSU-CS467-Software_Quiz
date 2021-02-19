@@ -11,7 +11,11 @@ export default function MultipleChoiceQuizCard({ ...props }) {
     return props.questionAnswers.map((answer, index) => {
       return (
         <div key={answer.id}>
-          <QuizQuestionCard.TextArea></QuizQuestionCard.TextArea>
+          <QuizQuestionCard.TextArea
+            onChange={() => {
+              props.updateQuestionAndAnswersMapFreeResponse(event);
+            }}
+          ></QuizQuestionCard.TextArea>
         </div>
       );
     });
