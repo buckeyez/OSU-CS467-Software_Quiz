@@ -39,7 +39,7 @@ const QuizDisplay = (props) =>{
   // }
 
   return (
-    <div >
+    <div onClick={props.clicked}>
     <Form >
         <div >
           {console.log("props.quizzes: ", props.quiz)}
