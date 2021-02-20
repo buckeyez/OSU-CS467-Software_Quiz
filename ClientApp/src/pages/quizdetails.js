@@ -8,6 +8,7 @@ import {
   QuizQuestionCardBuilder,
   MultipleChoiceQuizCard,
   OpenTextQuizCard,
+  TrueFalseQuizCard,
 } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
 
@@ -51,6 +52,11 @@ export default function QuizDetails() {
     console.log('map of Q:A ', questionAndAnswerMap);
   };
 
+  const updateQuestionAndAnswersMapTF = (answerTF) => {
+    setQuestionAndAnswerMap(questionAndAnswerMap.set(questionIndex, answerTF));
+    console.log('map of Q:A ', questionAndAnswerMap);
+  };
+
   const renderSwitch = (questionType) => {
     switch (questionType) {
       case 'Multiple Choice':
@@ -59,6 +65,8 @@ export default function QuizDetails() {
             questionTitle={questionTitle}
             questionAnswers={questionAnswers}
             updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
+            questionAndAnswerMap={questionAndAnswerMap}
+            questionIndex={questionIndex}
           />
         );
       case 'Free Response':
@@ -67,6 +75,18 @@ export default function QuizDetails() {
             questionTitle={questionTitle}
             questionAnswers={questionAnswers}
             updateQuestionAndAnswersMapFreeResponse={updateQuestionAndAnswersMapFreeResponse}
+            questionAndAnswerMap={questionAndAnswerMap}
+            questionIndex={questionIndex}
+          />
+        );
+      case 'True OR False':
+        return (
+          <TrueFalseQuizCard
+            questionTitle={questionTitle}
+            questionAnswers={questionAnswers}
+            updateQuestionAndAnswersMapTF={updateQuestionAndAnswersMapTF}
+            questionAndAnswerMap={questionAndAnswerMap}
+            questionIndex={questionIndex}
           />
         );
     }

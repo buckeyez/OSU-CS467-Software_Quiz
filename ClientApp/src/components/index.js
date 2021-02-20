@@ -5,3 +5,4 @@ export { default as QuizQuestionCard } from './QuizQuestionCard';
 export { default as QuizQuestionCardBuilder } from './QuizQuestionCardBuilder';
 export { default as MultipleChoiceQuizCard } from './MultipleChoiceQuizCard';
 export { default as OpenTextQuizCard } from './OpenTextQuizCard';
+export { default as TrueFalseQuizCard } from './TrueFalseQuizCard';
