@@ -24,6 +24,10 @@ export default class Quiz extends Component {
       quizContents: [],
       quizContentsID: [],
       questionPool: [],
+      entityIDsToAdd:[],
+      entityIDsToDelete:[],
+      add: 0,
+      delete: 0,
     };
   }
 
@@ -110,7 +114,7 @@ export default class Quiz extends Component {
     this.setState({...this.state, currentQuizID: id});
   }
 
-  isQuestionChecked = (id) => {
+  isQuestionChecked = (e, id) => {
     // for (let i = 0; i < this.state.quizContents; i++){
     //   console.log("in isQuestionChecked: ", this.state.quizContents[i], id)
     //   if(this.state.quizContents[i].question.id === id){
@@ -127,7 +131,64 @@ export default class Quiz extends Component {
     //   }
     // }
     this.refs[ref].checked = !this.refs[ref].checked
+    // let result = this.refs[ref].checked
+    console.log("is checked? ", e.target.previousSibling.checked, this.refs[ref].checked);
+    let toAdd = [...this.state.entityIDsToAdd]
+    let toDelete = [];
+    if(e.target.previousSibling.checked){
+      toAdd.push(id)
+      // this.setState((prevState) => ({...prevState, add: id}))
+    }else{
+      toDelete.push(id);
+      // this.setState((prevState) => ({...prevState, entityIDsToDelete: [...prevState.entityIDsToDelete, id]}))
+    }
+    // this.setState({...this.state, entityIDsToAdd: toAdd})
+    // this.setState((prevState) => ({...prevState, entityIDsToAdd: toAdd, entityIDsToDelete: toDelete}))
     // console.log("in isQuestionChecked: ", this.state.quizContents, id)
+    console.log("To Add: ", toAdd)
+    console.log("To Delete: ", toDelete);
+    console.log("entitieIDsToAdd: ", this.state.entityIDsToAdd)
+  }
+
+  handleQuizContentUpdate = (e) => {
+    
+    e.preventDefault();
+    // console.log("To Add: ", this.state.entityIDsToAdd)
+    // console.log("To Delete: ", this.state.entityIDsToDelete);
+    // console.log("previous sib: ", e.target.previousSibling.children[0].checked)
+    // let element = e.target.previousSibling
+    // console.log("previous prev: ", element.previousSibling)
+    let toAdd = []
+    let toDelete = []
+    // for(let i = 0; i< 3; i++){
+    //   if (element.children[0].type === "checkbox"){
+    //     if(element.children[0].checked){
+    //       toAdd.push(element.children[0].value)
+    //       element = element.previousSibling
+    //     }
+    //   }
+    // }
+    let list = document.getElementById("checkboxes").getElementsByTagName('div');
+    console.log("the list: ", list)
+    for(let i = 0; i < list.length; i++){
+      if(list[i].children[0].checked){
+        console.log("checked id: ", list[i].children[0].value)
+        let id = Number(list[i].children[0].value)
+        toAdd.push(id)
+      }else{
+        let id = Number(list[i].children[0].value)
+        toDelete.push(id)
+      }
+    }
+    console.log("taaaaaaaaaaaaa")
+
+    console.log("toAdd/toDelete in update: ", toAdd, toDelete)
+  
+  }
+
+  checkboxChange = (e) => {
+    console.log("checkbox changed ", e.target.checked)
+    e.target.checked = !e.target.checked
   }
 
 
@@ -182,18 +243,19 @@ export default class Quiz extends Component {
           <p>yes current Quiz </p> : <p>no currecnt quiz</p>
           }
           {this.state.questionPool.length}
+          <div id="checkboxes">
           {this.state.questionPool.map((question, index) => {
               return (
                 <div key={index}>
                 <input type="checkbox" 
                 value={question.id} 
                 checked={this.state.quizContentsID.includes(question.id)}
-            
+                onChange={this.checkboxChange}
                 ref={'ref' + question.id}
                 // onClick={() => this.isQuestionChecked(question.id)}
 
                 ></input>
-                <button onClick={() => this.isQuestionChecked(question.id)}>Toggle</button>
+                <button onClick={(e) => this.isQuestionChecked(e, question.id)}>Toggle</button>
                 
                 {question.value}
                 -{question.id}
@@ -202,10 +264,13 @@ export default class Quiz extends Component {
                 </div>)
             }
           )}
+          </div>
+          <button type="submit" onClick={this.handleQuizContentUpdate}>Update</button>
         </div>
 
         {this.state.quizContents.length}
         {this.state.quizContentsID.length}
+        
     
     </div>
     );
