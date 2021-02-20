@@ -54,16 +54,6 @@ export default function TrueFalseQuizCard({ ...props }) {
     );
   };
 
-  //   const renderAnswerChoices2 = () => {
-  //     return (
-  //       <Form>
-  //         <Form.Input type="radio"></Form.Input> asd
-  //         <Form.Input type="radio"></Form.Input>asd
-  //         <Form.Input type="radio"></Form.Input>222
-  //       </Form>
-  //     );
-  //   };
-
   return (
     <>
       <QuizQuestionCard>

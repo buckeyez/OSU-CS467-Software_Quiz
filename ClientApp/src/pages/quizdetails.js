@@ -2,14 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/userContext';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import {
-  Welcome,
-  QuizCard,
-  QuizQuestionCardBuilder,
-  MultipleChoiceQuizCard,
-  OpenTextQuizCard,
-  TrueFalseQuizCard,
-} from '../components';
+import { MultipleChoiceQuizCard, OpenTextQuizCard, TrueFalseQuizCard, Timer } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
 
 export default function QuizDetails() {
@@ -17,7 +10,9 @@ export default function QuizDetails() {
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
+  const [quizTimeUp, setQuizTimeUp] = useState(false);
 
+  //Handles loading quiz questions from the API
   useEffect(() => {
     const fetchData = async () => {
       const r = await getQuizQuestions(4);
@@ -35,6 +30,11 @@ export default function QuizDetails() {
   if (loading) {
     return <span>Loading...</span>;
   }
+
+  const handleQuizTimeUp = () => {
+    setQuizTimeUp(true);
+    console.log('TIMES UPP!!!!');
+  };
 
   console.log(quizData);
   let questionType = quizData.questions[questionIndex].question.type;
@@ -103,6 +103,7 @@ export default function QuizDetails() {
   return (
     <>
       <h1>You are taking the {quizData.name} Quiz</h1>
+      <h4>Time Remaining: {<Timer handleQuizTimeUp={handleQuizTimeUp}></Timer>}</h4>
       {renderSwitch(questionType)}
       <button onClick={getPrevQuestion}>Prev</button>
       <button onClick={getNextQuestion}>Next</button>

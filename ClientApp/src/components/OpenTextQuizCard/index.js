@@ -28,15 +28,6 @@ export default function MultipleChoiceQuizCard({ ...props }) {
     });
   };
 
-  //   const questionCardQuestion = () => {
-  //     return (
-  //       <>
-  //         <QuizQuestionCard.Input type="radio"></QuizQuestionCard.Input> asd
-  //         <QuizQuestionCard.Input type="radio"></QuizQuestionCard.Input> asdasd
-  //       </>
-  //     );
-  //   };
-
   return (
     <>
       <QuizQuestionCard>
