@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 //Credit: https://stackoverflow.com/questions/40885923/countdown-timer-in-react
 export default function Timer(props) {
-  const [minutes, setMinutes] = useState(5);
+  const [minutes, setMinutes] = useState(props.quizStartTime);
   const [seconds, setSeconds] = useState(59);
 
   //Handles the quiz timer

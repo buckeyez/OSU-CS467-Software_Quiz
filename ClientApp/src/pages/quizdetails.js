@@ -103,7 +103,9 @@ export default function QuizDetails() {
   return (
     <>
       <h1>You are taking the {quizData.name} Quiz</h1>
-      <h4>Time Remaining: {<Timer handleQuizTimeUp={handleQuizTimeUp}></Timer>}</h4>
+      <h4>
+        Time Remaining: {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={10}></Timer>}
+      </h4>
       {renderSwitch(questionType)}
       <button onClick={getPrevQuestion}>Prev</button>
       <button onClick={getNextQuestion}>Next</button>
