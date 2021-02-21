@@ -39,3 +39,10 @@ export const QuizOuter = styled.div`
         display: flex;
         justify-content: space-between;
     `;
+
+
+export const eachQuiz = styled.span`
+        // border: solid 1px black;
+        display: flex;
+        // justify-content: space-between;
+    `;

@@ -41,11 +41,11 @@ const QuizDisplay = (props) =>{
   return (
     <div onClick={props.clicked}>
     <Form >
-        <div >
-          {console.log("props.quizzes: ", props.quiz)}
-      <p>Quiz: {props.quiz}</p>
-      {/* <p>Quiz</p> */}
-      </div>
+      <form>
+            <label>{props.current && "*  "}{props.quiz}</label>
+            
+            <button type="submit" onClick={props.handleQuizDelete}>Delete</button>
+          </form>
       {/* {showDetail &&  <QuestionTemplate id={props.question.id} deleteHandle={(id, e) => props.deleteHandle(id, e)}/>} */}
     </Form>
     
