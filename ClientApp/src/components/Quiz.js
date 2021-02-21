@@ -5,6 +5,7 @@ import * as ROUTES from '../constants/routes';
 import Switch from "react-switch";
 import axios from 'axios';
 import QuizDisplay from './QuizDisplay';
+import { Form } from "./"
 
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -315,21 +316,27 @@ export default class Quiz extends Component {
           </form>
           {/* <h3>{this.state.QuizTitle}</h3> */}
         </div>
+        <Form.QuizOuter>
         <div>
           <h2>Quizzes {this.state.quizCount}</h2>
+         
+          <Form.Quizzes>
           {this.state.theQuizzes.map((quiz, index) => {
             return (
+              
               <div key={index}>
                 {/* <QuizDisplay quiz={quiz}/> */}
+                <span>{this.state.bufferID === quiz.id && "*"}</span>
                 <QuizDisplay quiz={quiz.name} quizID={quiz.id} clicked={() => this.handleClickedQuiz(quiz.id)}/>{this.state.currentQuizID}
+                
               </div>);
           })}
+          </Form.Quizzes>
           {console.log("theQuizzes: ",this.state.theQuizzes)}
         </div>
+        <Form.QuestionsNextToQuizzes>
         <div>
-          {this.currentQuizID ? 
-          <p>yes current Quiz </p> : <p>no currecnt quiz</p>
-          }
+  
           {this.state.questionPool.length}
           <div id="checkboxes">
           {this.state.questionPool.map((question, index) => {
@@ -358,9 +365,10 @@ export default class Quiz extends Component {
 
         {this.state.quizContents.length}
         {this.state.quizContentsID.length}
-        
-    
+        </Form.QuestionsNextToQuizzes>
+        </Form.QuizOuter>
     </div>
+    
     );
   }
 }
