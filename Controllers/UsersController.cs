@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -40,25 +41,40 @@ namespace OSU_CS467_Software_Quiz.Controllers
     {
       if (ModelState.IsValid)
       {
-        AppUser appUser = new()
-        {
-          UserName = user.Name,
-          Email = user.Email,
-          FirstName = user.FirstName,
-          LastName = user.LastName,
-        };
+        var appUser = AppUser.Build(user);
 
-        IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
+        IdentityResult result = await _userManager.CreateAsync(appUser, user?.Password ?? string.Empty);
         if (result.Succeeded)
         {
-          var userToReturn = user.DeepCopy();
-          userToReturn.Password = null;
-          return CreatedAtAction(nameof(GetUserAsync), appUser.Id, userToReturn);
+          var newUser = await _userManager.FindByEmailAsync(user.Email);
+          return CreatedAtAction(nameof(AddAsync), user, Projections.User.Build(newUser));
         }
         else
         {
           ModelState.AppendErrors("User Manager", result);
         }
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
+
+    [HttpPost("AddPasswordless")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddPasswordlessAsync([FromBody] NewUser user)
+    {
+      if (ModelState.IsValid)
+      {
+        var appUser = AppUser.Build(user);
+
+        IdentityResult result = await _userManager.CreateAsync(appUser);
+        if (result.Succeeded)
+        {
+          var newUser = await _userManager.FindByEmailAsync(user.Email);
+          return CreatedAtAction(nameof(AddPasswordlessAsync), user, Projections.User.Build(newUser));
+        }
+
+        ModelState.AppendErrors("User Manager", result);
       }
 
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);

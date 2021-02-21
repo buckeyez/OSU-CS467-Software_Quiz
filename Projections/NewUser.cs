@@ -1,4 +1,3 @@
-using OSU_CS467_Software_Quiz.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace OSU_CS467_Software_Quiz.Projections
@@ -18,7 +17,6 @@ namespace OSU_CS467_Software_Quiz.Projections
     [EmailAddress]
     public string Email { get; set; }
 
-    [Required]
     public string Password { get; set; }
   }
 }
