@@ -30,7 +30,9 @@ export default class Quiz extends Component {
       add: 0,
       delete: 0,
       bufferID: "",
-      refreshAfterUpdate: false
+      befferName: "",
+      refreshAfterUpdate: false,
+      bufferNameList: []
     };
   }
 
@@ -68,7 +70,7 @@ export default class Quiz extends Component {
   }
   else if(this.state.currentQuizID != prevState.currentQuizID){
       console.log("prev id, cur id: " +  prevState.currentQuizID, "," + this.state.currentQuizID)
-      console.log("bufferID: ", this.state.bufferID)
+      console.log("bufferID and bufferName", this.state.bufferID, this.state.bufferName, this.state.newNameList)
       // return axios.get(`/Quizzes`)
       // .then(response => {
       //     // console.log("res[pmnsee: ", response.data);
@@ -81,10 +83,12 @@ export default class Quiz extends Component {
         console.log("in get quiz content: ", this.populateQuizID(response.data.questions))
         let IDs = this.populateQuizID(response.data.questions);
         let curID = prevState.currentQuizID ===  "" ? this.state.currentQuizID : prevState.currentQuizID
+        let curName = prevState.bufferName ===  this.state.bufferName ? prevState.bufferName : this.state.bufferName 
         this.setState({...prevState, 
           quizContents: response.data.questions, 
           quizContentsID: IDs, 
-          bufferID: curID})
+          bufferID: curID,
+          bufferName: curName})
       })
     }
     console.log("bufferID: ", this.state.bufferID)
@@ -173,8 +177,11 @@ export default class Quiz extends Component {
     })
   }
 
-  handleClickedQuiz = (id) => {
-    this.setState({...this.state, currentQuizID: id});
+  handleClickedQuiz = (id, name) => {
+    let newNameList = [...this.state.bufferNameList, name];
+   
+    console.log("in handle clicked Quiz: ", newNameList)
+    this.setState({...this.state, currentQuizID: id, bufferName: name});
   }
 
   isQuestionChecked = (e, id) => {
@@ -318,16 +325,15 @@ export default class Quiz extends Component {
         </div>
         <Form.QuizOuter>
         <div>
-          <h2>Quizzes {this.state.quizCount}</h2>
-         
           <Form.Quizzes>
+            <h4>Quiz Pool</h4>
           {this.state.theQuizzes.map((quiz, index) => {
             return (
               
               <div key={index}>
                 {/* <QuizDisplay quiz={quiz}/> */}
                 <span>{this.state.bufferID === quiz.id && "*"}</span>
-                <QuizDisplay quiz={quiz.name} quizID={quiz.id} clicked={() => this.handleClickedQuiz(quiz.id)}/>{this.state.currentQuizID}
+                <QuizDisplay quiz={quiz.name} quizID={quiz.id} clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}/>{this.state.currentQuizID}
                 
               </div>);
           })}
@@ -337,7 +343,7 @@ export default class Quiz extends Component {
         <Form.QuestionsNextToQuizzes>
         <div>
   
-          {this.state.questionPool.length}
+          <h4>{this.state.bufferName} Question Pool</h4>
           <div id="checkboxes">
           {this.state.questionPool.map((question, index) => {
               return (

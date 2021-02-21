@@ -22,17 +22,20 @@ export const Quizzes = styled.div`
         padding: 20px;
         margin: 10px;
         display: inline-block;
+        width: 100%;
     `;
 
 export const QuestionsNextToQuizzes = styled.div`
         border: solid 1px black;
-        width: 100%;
+        width: 75%;
         border-radius: 10px;
         padding: 20px;
-        margin: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     `;
 
 export const QuizOuter = styled.div`
         // border: solid 1px black;
         display: flex;
+        justify-content: space-between;
     `;
