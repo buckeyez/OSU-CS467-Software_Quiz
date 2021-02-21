@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
