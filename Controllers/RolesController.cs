@@ -141,7 +141,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateRoleAsync(RoleModification model)
+    public async Task<IActionResult> UpdateRoleAsync([FromBody] RoleModification model)
     {
       if (ModelState.IsValid)
       {
