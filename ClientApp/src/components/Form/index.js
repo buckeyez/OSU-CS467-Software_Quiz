@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Container, Error, Title, Text, TextSmall, Link, Input, Submit, Base, Question, Quizzes, QuestionsNextToQuizzes, QuizOuter } from './styles/form';
+import { Container, Error, Title, Text, TextSmall, Link, Input, Submit, Base, Question, Quizzes, QuestionsNextToQuizzes, 
+  QuizOuter, eachQuiz } from './styles/form';
 
 export default function Form({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -52,6 +53,10 @@ Form.QuestionsNextToQuizzes = function FormQuestion({ children, ...restProps }) 
 
 Form.QuizOuter = function FormQuestion({ children, ...restProps }) {
   return <QuizOuter {...restProps}>{children}</QuizOuter>;
+};
+
+Form.eachQuiz = function FormQuestion({ children, ...restProps }) {
+  return <eachQuiz {...restProps}>{children}</eachQuiz>;
 };
 
 

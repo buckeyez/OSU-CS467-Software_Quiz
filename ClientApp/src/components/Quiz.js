@@ -286,6 +286,24 @@ export default class Quiz extends Component {
     e.target.checked = !e.target.checked
   }
 
+  handleQuizDelete = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("delete quiz: ", id)
+    let url = 'Quizzes/Delete?id=' + id;
+    console.log("quiz delete url: ", url)
+    axios.post(url) //TODO need to not hardcode the url
+    .then(res => {
+      console.log("Quiz deleted")
+      // console.log("res: ", res, res.data.question.id);
+      // console.log("the id should be: ", res.data.question.id);
+      this.setState((prevState) => {
+        return ({...this.state, quizCount: prevState.quizCount - 1})
+      })
+      // this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
+    })
+
+  }
 
   test = () => {
     console.log("test")
@@ -332,9 +350,14 @@ export default class Quiz extends Component {
               
               <div key={index}>
                 {/* <QuizDisplay quiz={quiz}/> */}
-                <span>{this.state.bufferID === quiz.id && "*"}</span>
-                <QuizDisplay quiz={quiz.name} quizID={quiz.id} clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}/>{this.state.currentQuizID}
-                
+                {/* <Form.eachQuiz> */}
+                <QuizDisplay 
+                quiz={quiz.name} 
+                quizID={quiz.id}
+                current={this.state.bufferID === quiz.id} 
+                handleQuizDelete = {(e) => this.handleQuizDelete(e, quiz.id)}
+                clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}/>{this.state.currentQuizID}
+                {/* </Form.eachQuiz> */}
               </div>);
           })}
           </Form.Quizzes>
