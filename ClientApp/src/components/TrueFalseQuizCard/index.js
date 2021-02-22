@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { QuizQuestionCard, Form } from '../../components';
 
 export default function TrueFalseQuizCard({ ...props }) {
-  const [checkedTrue, setCheckedTrue] = useState(null);
-  const [checkedFalse, setCheckedFalse] = useState(null);
   const [checked, setChecked] = useState(null);
 
   const changeRadio = (e) => {
@@ -12,12 +10,7 @@ export default function TrueFalseQuizCard({ ...props }) {
   };
 
   useEffect(() => {
-    const answerExists = props.questionAndAnswerMap.get(props.questionIndex);
-    if (answerExists == true) {
-      setChecked('true');
-    } else if (answerExists == false) {
-      setChecked('false');
-    }
+    setChecked(props.questionAndAnswerMap.get(props.questionIndex));
   });
 
   const questionCardTitle = () => {
@@ -25,33 +18,22 @@ export default function TrueFalseQuizCard({ ...props }) {
   };
 
   const renderAnswerChoices = () => {
-    return (
-      <div>
-        <QuizQuestionCard.Input
-          type="radio"
-          value={'true'}
-          onChange={(e) => {
-            // setCheckedFalse(false);
-            changeRadio(e);
-            props.updateQuestionAndAnswersMapTF(true);
-          }}
-          checked={checked == 'true'}
-        ></QuizQuestionCard.Input>{' '}
-        True
-        <div></div>
-        <QuizQuestionCard.Input
-          type="radio"
-          value={'false'}
-          onChange={(e) => {
-            changeRadio(e);
-            // setCheckedTrue(false);
-            props.updateQuestionAndAnswersMapTF(false);
-          }}
-          checked={checked == 'false'}
-        ></QuizQuestionCard.Input>{' '}
-        False
-      </div>
-    );
+    return props.questionAnswers.map((answer, index) => {
+      return (
+        <div key={answer.id}>
+          <QuizQuestionCard.Input
+            value={answer.id}
+            type="radio"
+            onChange={(e) => {
+              changeRadio(e);
+              props.updateQuestionAndAnswersMap(answer.id);
+            }}
+            checked={checked == answer.id}
+          ></QuizQuestionCard.Input>
+          {answer.value}
+        </div>
+      );
+    });
   };
 
   return (

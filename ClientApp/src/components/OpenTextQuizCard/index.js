@@ -18,8 +18,8 @@ export default function MultipleChoiceQuizCard({ ...props }) {
       return (
         <div key={answer.id}>
           <QuizQuestionCard.TextArea
-            onChange={() => {
-              props.updateQuestionAndAnswersMapFreeResponse(event);
+            onChange={(e) => {
+              props.updateQuestionAndAnswersMapFreeResponse(e);
             }}
             value={freeResponseAnswer}
           ></QuizQuestionCard.TextArea>

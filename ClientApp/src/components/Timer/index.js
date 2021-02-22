@@ -30,9 +30,9 @@ export default function Timer(props) {
   return (
     <>
       {minutes === 0 && seconds === 0 ? null : (
-        <p>
+        <div>
           {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-        </p>
+        </div>
       )}
     </>
   );

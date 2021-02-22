@@ -14,7 +14,6 @@ export default function MultipleChoiceQuizCard({ ...props }) {
     setChecked(e.target.value);
   };
 
-  console.log('abnswers---->', props.questionAnswers);
   const questionCardTitle = () => {
     return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
   };
