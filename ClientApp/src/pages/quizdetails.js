@@ -10,6 +10,8 @@ import {
   Quiz,
 } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
+import { submitQuiz } from '../utils/submitQuiz';
+import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
 
 export default function QuizDetails() {
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -26,7 +28,7 @@ export default function QuizDetails() {
     const fetchData = async () => {
       const r = await getQuizQuestions(5);
       setQuizData(r);
-
+      r.questions.length === 1 ? setShowSubmitButton(true) : setShowSubmitButton(false);
       setLoading(false);
     };
     fetchData();
@@ -104,12 +106,6 @@ export default function QuizDetails() {
     if (questionIndex === numberOfQuestions - 2) {
       setShowSubmitButton(true);
     }
-
-    //Handle check to see if all questions have been asnwered
-    //size of questionAndAnswerMap === numberOfQuestions
-
-    //Handle check to see if this is last question, if so, show Submut button
-    //Submit button should route to quiz submission page
   };
 
   const getPrevQuestion = () => {
@@ -127,6 +123,8 @@ export default function QuizDetails() {
       setError(true);
     } else {
       setError(false);
+      //   history.push(ROUTES.HOME);
+      console.log('ANSWES ARRY', generateAnswersArrayForSubmission(questionAndAnswerMap, quizData));
     }
   };
 
@@ -138,7 +136,9 @@ export default function QuizDetails() {
       </Quiz.TimeArea>
 
       <Quiz.Card>{renderSwitch(questionType)}</Quiz.Card>
-      <Quiz.Button onClick={getPrevQuestion}>Prev</Quiz.Button>
+      <Quiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
+        Prev
+      </Quiz.Button>
 
       {showSubmitButton === false ? (
         <Quiz.Button onClick={getNextQuestion}>Next</Quiz.Button>
