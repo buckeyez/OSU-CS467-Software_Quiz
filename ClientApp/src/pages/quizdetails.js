@@ -47,6 +47,8 @@ export default function QuizDetails() {
     setQuizTimeUp(true);
     // setTimeToCompleteQuiz(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
     console.log('TIMES UPP!!!!');
+    let t = new Date(minutes, seconds);
+    console.log('time is:', t);
   };
 
   console.log(quizData);
@@ -118,13 +120,26 @@ export default function QuizDetails() {
     }
   };
 
-  const submitQuiz = () => {
+  const submitQuiz = async () => {
     if (questionAndAnswerMap.size !== numberOfQuestions) {
       setError(true);
     } else {
       setError(false);
-      //   history.push(ROUTES.HOME);
+
+      //Need to generate user selections array
       console.log('ANSWES ARRY', generateAnswersArrayForSubmission(questionAndAnswerMap, quizData));
+
+      //Need to pass quiz assignment id
+
+      //Need to pass time taken (as int??)
+
+      //Need to make call to /submit api to save results
+
+      //Need to make call to E-mail API to send email to employer
+
+      //Can either route to home, or show quiz completion page.
+      //If route to home, we can show banner or drop confetti
+      history.push(ROUTES.CANDIDATE_HOME);
     }
   };
 

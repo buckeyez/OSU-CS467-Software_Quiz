@@ -10,10 +10,10 @@ export const generateAnswersArrayForSubmission = (questionAndAnswerMap, quizData
     //Generates a UserSelection array of objetcts
     //if quetion is an int, that corresponds to an AnswerId, else a FreeResponse property
     //in the UserSelections object
-    if (typeof questionID === 'number') {
+    if (typeof answerId === 'number') {
       console.log('found an int');
       userSelectionsArray.push({ QuestionId: questionID, AnswerId: answerId });
-    } else if (typeof questionID === 'string') {
+    } else if (typeof answerId === 'string') {
       console.log('found an string');
       userSelectionsArray.push({ QuestionId: questionID, FreeResponse: answerId });
     }
