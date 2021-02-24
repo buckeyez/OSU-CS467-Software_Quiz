@@ -90,7 +90,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
     [HttpPost("SignIn")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SignInAsync(Login login)
+    public async Task<IActionResult> SignInAsync([FromBody] Login login)
     {
       if (ModelState.IsValid)
       {

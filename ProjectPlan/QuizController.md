@@ -138,7 +138,7 @@ Expects **_QuizSubmission_** object in body
 }
 ```
 
-Note: the inner object is **_AnswerSubmission_** and either AnswerId or FreeResponse should be submitted, but not both - however there is nothing in place to war if either is missing or both are filled. TLDR only _AnswerId_ should be filled or _FreeResponse_.
+Note: the inner object is **_AnswerSubmission_** and either AnswerId or FreeResponse should be submitted, but not both - however there is nothing in place to warn if either is missing or both are filled. TLDR only _AnswerId_ should be filled or _FreeResponse_.
 
 ### Update Quiz Assignment
 
