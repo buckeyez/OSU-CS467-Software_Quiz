@@ -6,4 +6,4 @@ export { default as MultipleChoiceQuizCard } from './MultipleChoiceQuizCard';
 export { default as OpenTextQuizCard } from './OpenTextQuizCard';
 export { default as TrueFalseQuizCard } from './TrueFalseQuizCard';
 export { default as Timer } from './Timer';
-export { default as Quiz } from './Quiz';
+export { default as MainQuiz } from './MainQuiz';

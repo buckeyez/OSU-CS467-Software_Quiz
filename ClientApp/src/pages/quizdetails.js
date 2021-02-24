@@ -7,7 +7,7 @@ import {
   OpenTextQuizCard,
   TrueFalseQuizCard,
   Timer,
-  Quiz,
+  MainQuiz,
 } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
 import { submitQuiz } from '../utils/submitQuiz';
@@ -26,6 +26,7 @@ export default function QuizDetails() {
   //Handles loading quiz questions from the API
   useEffect(() => {
     const fetchData = async () => {
+      //Takes a temporary param right now as quizID
       const r = await getQuizQuestions(5);
       setQuizData(r);
       r.questions.length === 1 ? setShowSubmitButton(true) : setShowSubmitButton(false);
@@ -144,26 +145,26 @@ export default function QuizDetails() {
   };
 
   return (
-    <Quiz>
-      <Quiz.Title>You are taking {quizData.name} Quiz</Quiz.Title>
-      <Quiz.TimeArea>
+    <MainQuiz>
+      <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
+      <MainQuiz.TimeArea>
         {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={10}></Timer>}
-      </Quiz.TimeArea>
+      </MainQuiz.TimeArea>
 
-      <Quiz.Card>{renderSwitch(questionType)}</Quiz.Card>
-      <Quiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
+      <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
+      <MainQuiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
         Prev
-      </Quiz.Button>
+      </MainQuiz.Button>
 
       {showSubmitButton === false ? (
-        <Quiz.Button onClick={getNextQuestion}>Next</Quiz.Button>
+        <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
       ) : (
-        <Quiz.Button onClick={submitQuiz}>Submit</Quiz.Button>
+        <MainQuiz.Button onClick={submitQuiz}>Submit</MainQuiz.Button>
       )}
-      <Quiz.Error>
+      <MainQuiz.Error>
         {error === false ? null : <p>Not all quiz questions have been answered</p>}
-      </Quiz.Error>
-    </Quiz>
+      </MainQuiz.Error>
+    </MainQuiz>
 
     // <>
     //   <h1>You are taking the {quizData.name} Quiz</h1>
