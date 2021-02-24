@@ -32,7 +32,6 @@ export default class Quiz extends Component {
       bufferID: "",
       befferName: "",
       refreshAfterUpdate: false,
-      bufferNameList: []
     };
   }
 
@@ -178,9 +177,9 @@ export default class Quiz extends Component {
   }
 
   handleClickedQuiz = (id, name) => {
-    let newNameList = [...this.state.bufferNameList, name];
+    // let newNameList = [...this.state.bufferNameList, name];
    
-    console.log("in handle clicked Quiz: ", newNameList)
+    // console.log("in handle clicked Quiz: ", newNameList)
     this.setState({...this.state, currentQuizID: id, bufferName: name});
   }
 
@@ -267,7 +266,7 @@ export default class Quiz extends Component {
     console.log("payload: ", payload, url)
     axios.post(url, payload) //TODO need to not hardcode the url
     .then(res => {
-      console.log("Quiz updated!")
+      console.log("Quiz updated!!!!!!!!!!!!!!!!!")
       this.setState({...this.state, message: "Question List for quiz updated!", quizContentsID: toAdd})
       if(toAdd.length > 0 || toDelete.length > 0){
         console.log("need to refresh after update")
@@ -305,6 +304,11 @@ export default class Quiz extends Component {
 
   }
 
+  handleSendEmail = (e) => {
+    e.preventDefault();
+    console.log("should send email")
+  }
+
   test = () => {
     console.log("test")
   }
@@ -312,7 +316,6 @@ export default class Quiz extends Component {
   render() {
     return (
       <div>
-        {this.state.bufferID, this.state.theQuizzes.length}
         <h1>Quiz Page</h1>
         
        
@@ -392,10 +395,16 @@ export default class Quiz extends Component {
           <button type="submit" onClick={this.handleQuizContentUpdate}>Update</button>
         </div>
 
-        {this.state.quizContents.length}
-        {this.state.quizContentsID.length}
         </Form.QuestionsNextToQuizzes>
         </Form.QuizOuter>
+        <div>
+          <h3>Selected Quiz: {this.state.bufferID}, {this.state.bufferName}, {this.state.currentQuizID}</h3>
+          <form>
+            <label>Name:</label>
+            <input type="email" placeholder="Enter email here..."></input>
+            <button type="submit" onClick={(e) => this.handleSendEmail(e)}>Send quiz!</button>
+          </form>
+        </div>
     </div>
     
     );
