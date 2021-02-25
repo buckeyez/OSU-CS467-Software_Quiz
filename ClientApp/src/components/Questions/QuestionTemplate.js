@@ -8,6 +8,7 @@ import { Form } from '../';
 import OpenTextQuestion from './OpenTextQuestion';
 import TrueOrFalseQuestion from './TrueOrFalseQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
+import CheckboxQuestion from './CheckboxQuestion';
 // import "./QuestionTemplate.css"
 
 export default class QuestionTemplate extends Component {
@@ -224,6 +225,7 @@ export default class QuestionTemplate extends Component {
                   <option value="Multiple Choice">Multiple Choice</option>
                   <option value="True OR False">True or False</option>
                   <option value="Free Response">Free Response</option>
+                  <option value="Select All That Apply">Select All That Apply</option>
                 </select>
               </div>
               <div>
@@ -243,6 +245,12 @@ export default class QuestionTemplate extends Component {
                   <MultipleChoiceQuestion
                     answers={this.state.answers}
                     handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}
+                  />
+                )}
+                {this.state.questionType == 'Select All That Apply' && (
+                  <CheckboxQuestion
+                    // answers={this.state.answers}
+                    // handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}
                   />
                 )}
               </div>
