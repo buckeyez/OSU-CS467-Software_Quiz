@@ -1,10 +1,7 @@
 import React, { Component, useState } from 'react';
 // import Form from 'reactstrap/lib/Form';
-import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
+
 import { Form } from '../';
-import OpenTextQuestion from './OpenTextQuestion';
-import TrueOrFalseQuestion from './TrueOrFalseQuestion';
-import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 import QuestionTemplate from './QuestionTemplate';
 
 const QuestionDisplay = (props) => {
