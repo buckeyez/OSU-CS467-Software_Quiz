@@ -103,7 +103,7 @@ clearErrorMessage = () => {
           },
           "Answers": this.state.answers
         }
-     }else{
+     }else if(this.state.questionType == "Free Response"){
         payload = {
           "Question": {
             "Value": this.state.value,
@@ -116,6 +116,26 @@ clearErrorMessage = () => {
             }
           ]
         }
+     }else if(this.state.questionType == "True OR False"){
+      let answer = this.state.answers[0] === "true" ? "true" : "false"
+      let notAnswer = answer === "true" ? "false" : "true"
+      console.log("answer, notAnswer: ", answer, notAnswer)
+      payload = {
+        "Question": {
+          "Value": this.state.value,
+          "Type": this.state.questionType
+        },
+        "Answers": [
+          {
+            "Value": answer,
+            "Correct": true
+          },
+          {
+            "Value": notAnswer,
+            "Correct": false
+          }
+        ]
+      }
      }
       console.log("this state answers: ", this.state.answers)
       console.log("payload: ", payload)
@@ -137,7 +157,7 @@ clearErrorMessage = () => {
             },
             "Answers": this.state.answers
           }
-      }else{
+      }else if(this.state.questionType == "Free Response"){
           payload = {
             "Question": {
               "Value": this.state.value,
@@ -150,6 +170,26 @@ clearErrorMessage = () => {
               }
             ]
           }
+      }else if(this.state.questionType == "True OR False"){
+        let answer = this.state.answers[0] === "true" ? "true" : "false"
+        let notAnswer = answer === "true" ? "false" : "true"
+        console.log("answer, notAnswer: ", answer, notAnswer)
+        payload = {
+          "Question": {
+            "Value": this.state.value,
+            "Type": this.state.questionType
+          },
+          "Answers": [
+            {
+              "Value": answer,
+              "Correct": true
+            },
+            {
+              "Value": notAnswer,
+              "Correct": false
+            }
+          ]
+        }
       }
         console.log("this state answers: ", this.state.answers)
         console.log("payload: ", payload)
