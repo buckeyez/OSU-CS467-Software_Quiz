@@ -5,16 +5,19 @@ import Signin from './pages/signin';
 import Signup from './pages/signup';
 import SoftwareQuiz from './pages/SoftwareQuiz';
 import AddQuestions from './pages/addquestions';
+import CandidateHome from './pages/candidateHome';
+import Quiz from './pages/quizdetails';
 import Layout from './components/Layout';
 import Quiz from './components/Quiz';
 import * as ROUTES from './constants/routes';
-import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
+import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
 
 import './custom.css';
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [quizTaker, setQuizTaker] = useState(true);
   // const user = null;
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
@@ -30,6 +33,8 @@ export default function App() {
     }
   }, []);
 
+  //Need to fix nav bar so it does not show up on Canadidate view
+  //Can use something like this to fix it {quizTaker && <Layout> </Layout>}
   return (
     <Router>
       <Layout>
@@ -55,6 +60,18 @@ export default function App() {
               <SoftwareQuiz />
             </ProtectedRoute>
 
+
+            {/*Need a better way to verify if user is candidate quiz taker
+             *Can likely use the user object to check if quizes are avaliable
+             *Will need a custom implementation of CandidateProductedRoute
+             */}
+            <CandidateProtectedRoute user={quizTaker} path={ROUTES.CANDIDATE_HOME} exact>
+              <CandidateHome />
+            </CandidateProtectedRoute>
+
+            <Route path="/new-quiz" component={AddQuestions} />
+            <Route path={ROUTES.QUIZ_DETAILS} component={Quiz} />
+
             <ProtectedRoute user={user} path={ROUTES.QUESTIONS} exact>
               <AddQuestions />
             </ProtectedRoute>
@@ -65,6 +82,7 @@ export default function App() {
 
             {/* <Route path="/new-quiz" component={AddQuestions} /> */}
             {/* <Route path="/quiz" component={Quiz} /> */}
+
           </UserContext.Provider>
         </Switch>
       </Layout>
