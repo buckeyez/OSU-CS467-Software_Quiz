@@ -15,3 +15,34 @@ export const TextSmall = styled.p``;
 export const Link = styled.link``;// styled(ReactRouterLink)``;
 export const Input = styled.input``;
 export const Submit = styled.button``;
+
+export const Quizzes = styled.div`
+        border: solid 1px black;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        display: inline-block;
+        width: 100%;
+    `;
+
+export const QuestionsNextToQuizzes = styled.div`
+        border: solid 1px black;
+        width: 75%;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    `;
+
+export const QuizOuter = styled.div`
+        // border: solid 1px black;
+        display: flex;
+        justify-content: space-between;
+    `;
+
+
+export const eachQuiz = styled.span`
+        // border: solid 1px black;
+        display: flex;
+        // justify-content: space-between;
+    `;

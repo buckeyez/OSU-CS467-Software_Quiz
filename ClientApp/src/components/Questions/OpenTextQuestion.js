@@ -12,7 +12,10 @@ import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 const OpenTextQuestion = (props) =>{
   return (
     <div>
-      <input type="text" onChange={props.handleOpenTextAnswer}/>
+      <input 
+      type="text" 
+      value={props.answers[0] ? props.answers[0].value : ''}
+      onChange={props.handleOpenTextAnswer}/>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import Signup from './pages/signup';
 import SoftwareQuiz from './pages/SoftwareQuiz';
 import AddQuestions from './pages/addquestions';
 import Layout from './components/Layout';
+import Quiz from './components/Quiz';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
@@ -55,6 +56,7 @@ export default function App() {
             </ProtectedRoute>
 
             <Route path="/new-quiz" component={AddQuestions} />
+            <Route path="/quiz" component={Quiz} />
           </UserContext.Provider>
         </Switch>
       </Layout>

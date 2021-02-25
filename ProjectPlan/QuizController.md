@@ -11,7 +11,6 @@ Suffix: `/Add`
 Expects **_name_** as query `/Add?name=<quiz-name>`
 
 Returns a **_Quiz_** object
-
 ```json
 { "Id": int, "Name": string }
 ```
@@ -41,7 +40,6 @@ Expects **_id_** as query `/Delete?id=<quiz-id>`
 Suffix: _none_
 
 Returns an array of **_Quiz_** objects
-
 ```json
 [
   { "Id": int, "Name": string }
@@ -55,7 +53,6 @@ Suffix: `/<quiz-id>/<partial>`
 Expects the id of the quiz in the route and whether you want it to be the partial quiz or full quiz. Difference between the 2 is partial returns just questions, full returns questions and answers (idea is that you would use partial on the quiz builder page).
 
 Returns an array of **_QuestionsAndAnswers_** objects
-
 ```json
 [
   {
@@ -70,7 +67,6 @@ Returns an array of **_QuestionsAndAnswers_** objects
 Suffix: `/Assignments`
 
 Returns an array of **_QuizAssignment_** objects
-
 ```json
 [
   {
@@ -89,7 +85,6 @@ Suffix: `/User/<user-id>`
 Expects **_user-id_** as part of the route
 
 Returns an array of **_Quiz_** objects
-
 ```json
 [
   {
@@ -106,7 +101,6 @@ Suffix: `/<quiz-id>/Users`
 Expects the **_quiz-id_** as part of the route
 
 Returns an array of **_User_** objects
-
 ```json
 [
   {
@@ -130,7 +124,6 @@ Expects **_quizAssignmentId_** as a query `.../Delete?quizAssignmentId=<id>`
 Suffix: `/Submit`
 
 Expects **_QuizSubmission_** object in body
-
 ```json
 {
   "QuizAssignmentId": int,
@@ -154,7 +147,6 @@ Suffix: `/Assignments/Update`
 Expects **_id_** from query `/Assignments/Update?id=<id>`
 
 and **_QuizAssignmentNew_** object in body
-
 ```json
 {
   "QuizId": int,
@@ -170,7 +162,6 @@ Suffix: `/Update`
 Expects **_quiz-id_** as query `/Update?id=<quiz-id>`
 
 and **_QuizUpdates_** object in body
-
 ```json
 {
   "EntityIdsToAdd": int[],

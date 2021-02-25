@@ -21,9 +21,32 @@ export default class QuestionTemplate extends Component {
       id: '',
       questionType: '',
       value: '',
-      answers: []
+      answers: [],
+      display: true,
+      errorMessage: ''
     };
   }
+
+  componentDidMount(){
+    console.log("questionTemplate just mounted");
+    if(this.props.id){
+      axios.get(`/Questions/${this.props.id}/Entire`)
+      .then(response => {
+        console.log("response data: ", response.data)
+        this.setState({
+          id: response.data.question.id,
+          questionType: response.data.question.type,
+          value: response.data.question.value,
+          answers: response.data.answers
+        })
+      })
+    }
+
+}
+
+clearErrorMessage = () => {
+  this.setState({...this.state, errorMessage: ''});
+}
 
   handleChange = (event) => {
     console.log("question type selected on drop down: ", event.target.value);
@@ -53,6 +76,17 @@ export default class QuestionTemplate extends Component {
     console.log("in multiplr choice: ", choiceList);
     let theAnswer = choiceList;
     this.setState({...this.state, answers: theAnswer})
+  }
+
+  handleQuestionDelete = () => {
+    console.log("innnnnn delete this question")
+    if(!this.state.id){
+      {console.log("Item not added yet!")}
+      this.setState({...this.state, errorMessage: "Question not added yet!"})
+      return;
+    }
+    this.props.deleteHandle(this.state.id);
+    this.setState({...this.state, deleteButtonValue: "Click again to confirm delete"})
   }
 
   handleQuestionSubmit = (event) => {
@@ -89,11 +123,45 @@ export default class QuestionTemplate extends Component {
       .then(res => {
         console.log("res: ", res, res.data.question.id);
         console.log("the id should be: ", res.data.question.id);
-        this.setState({...this.state, id: res.data.question.id});
+        this.setState({...this.state, id: res.data.question.id, display: false});
       })
     }else{
-      console.log("item already exist");
-    }
+      console.log("item already exist, updating it");
+      event.preventDefault();
+      let payload;
+      if(this.state.questionType === "Multiple Choice"){
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": this.state.answers
+          }
+      }else{
+          payload = {
+            "Question": {
+              "Value": this.state.value,
+              "Type": this.state.questionType
+            },
+            "Answers": [
+              {
+                "Value": this.state.answers[0],
+                "Correct": true
+              }
+            ]
+          }
+      }
+        console.log("this state answers: ", this.state.answers)
+        console.log("payload: ", payload)
+        let url = 'Questions/Update?id=' + this.state.id;
+        axios.post(url, payload) //TODO need to not hardcode the url
+        .then(res => {
+          console.log("updated")
+          // console.log("res: ", res, res.data.question.id);
+          // console.log("the id should be: ", res.data.question.id);
+          // this.setState({...this.state, id: res.data.question.id});
+        })
+      }
 
 
   }
@@ -102,11 +170,16 @@ export default class QuestionTemplate extends Component {
     return (
       <div>
         {/* <form className="question-template"> */}
-        <Form>
+        {this.state.display && <Form>
         {/* <form onSubmit={this.handleQuestionSubmit}> */}
           <Form.Question>
-          <div>
-            <input type="text" name="questionName" placeholder="Type Question Here..." onChange={this.handleQuestionValueChange}></input>
+          <div onClick={this.clearErrorMessage}>
+            <input 
+            type="text" 
+            name="questionName" 
+            value={this.state.value}
+            placeholder="Type Question Here..." 
+            onChange={this.handleQuestionValueChange}></input>
             <select value={this.state.questionType} onChange={this.handleChange}>
               <option value="selectChoice">Select Question Type</option>
               <option value="Multiple Choice">Multiple Choice</option>
@@ -115,14 +188,16 @@ export default class QuestionTemplate extends Component {
             </select>
           </div>
           <div>
-            {this.state.questionType == "Free Response" && <OpenTextQuestion handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
-            {this.state.questionType == "True OR False" && <TrueOrFalseQuestion handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
-            {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
+            {this.state.questionType == "Free Response" && <OpenTextQuestion answers={this.state.answers} handleOpenTextAnswer={this.handleChangeOpenTextAnswer}/>}
+            {this.state.questionType == "True OR False" && <TrueOrFalseQuestion answers={this.state.answers} handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}/>}
+            {this.state.questionType == "Multiple Choice" && <MultipleChoiceQuestion answers={this.state.answers} handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}/>}
           </div>
+          {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
           <button type="submit" onClick={this.handleQuestionSubmit}>{this.state.id == '' ? "Submit" : "Update"}</button>
-          <button onClick={this.props.deleteHandle}>delete this question</button>
+          {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
+          <button onClick={this.handleQuestionDelete}>Delete</button>
           </Form.Question>
-        </Form>
+        </Form>}
         {/* </form> */}
       </div>
     );
