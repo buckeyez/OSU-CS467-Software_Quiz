@@ -8,6 +8,7 @@ import AddQuestions from './pages/addquestions';
 import CandidateHome from './pages/candidateHome';
 import Quiz from './pages/quizdetails';
 import Layout from './components/Layout';
+import Quiz from './components/Quiz';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
@@ -59,6 +60,7 @@ export default function App() {
               <SoftwareQuiz />
             </ProtectedRoute>
 
+
             {/*Need a better way to verify if user is candidate quiz taker
              *Can likely use the user object to check if quizes are avaliable
              *Will need a custom implementation of CandidateProductedRoute
@@ -69,6 +71,18 @@ export default function App() {
 
             <Route path="/new-quiz" component={AddQuestions} />
             <Route path={ROUTES.QUIZ_DETAILS} component={Quiz} />
+
+            <ProtectedRoute user={user} path={ROUTES.QUESTIONS} exact>
+              <AddQuestions />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={user} path={ROUTES.QUIZZES} exact>
+              <Quiz />
+            </ProtectedRoute>
+
+            {/* <Route path="/new-quiz" component={AddQuestions} /> */}
+            {/* <Route path="/quiz" component={Quiz} /> */}
+
           </UserContext.Provider>
         </Switch>
       </Layout>

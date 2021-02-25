@@ -5,3 +5,5 @@ export const SOFTWARE_QUIZ = '/software-quiz';
 export const NEW_QUIZ = '/new-quiz';
 export const CANDIDATE_HOME = '/quizes';
 export const QUIZ_DETAILS = '/quiz-details';
+export const QUESTIONS = '/questions-page';
+export const QUIZZES = '/quizzes-page';

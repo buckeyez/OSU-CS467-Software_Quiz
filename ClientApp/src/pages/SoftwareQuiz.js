@@ -28,7 +28,13 @@ export default class SoftwareQuiz extends Component {
         <div id="createQuiz">
           <p>Add Questions to Question Pool</p>
           <form>
-            <button id="addQuiz" onClick={() => history.push(ROUTES.NEW_QUIZ)}>
+            <button id="addQuiz" onClick={() => history.push(ROUTES.QUESTIONS)}>
+              +
+            </button>
+          </form>
+          <p>Create Quiz</p>
+          <form>
+            <button id="createQuiz" onClick={() => history.push(ROUTES.QUIZZES)}>
               +
             </button>
           </form>
