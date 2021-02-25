@@ -55,8 +55,16 @@ export default function App() {
               <SoftwareQuiz />
             </ProtectedRoute>
 
-            <Route path="/new-quiz" component={AddQuestions} />
-            <Route path="/quiz" component={Quiz} />
+            <ProtectedRoute user={user} path={ROUTES.QUESTIONS} exact>
+              <AddQuestions />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={user} path={ROUTES.QUIZZES} exact>
+              <Quiz />
+            </ProtectedRoute>
+
+            {/* <Route path="/new-quiz" component={AddQuestions} /> */}
+            {/* <Route path="/quiz" component={Quiz} /> */}
           </UserContext.Provider>
         </Switch>
       </Layout>

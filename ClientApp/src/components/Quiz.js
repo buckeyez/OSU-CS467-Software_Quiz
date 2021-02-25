@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import history from '../helpers/history';
 import * as ROUTES from '../constants/routes';
-import Switch from "react-switch";
+import Switch from 'react-switch';
 import axios from 'axios';
 import QuizDisplay from './QuizDisplay';
-import { Form } from "./"
+import { Form } from './';
 
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -15,61 +15,85 @@ export default class Quiz extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
-      QuizTitle: "",
+    this.state = {
+      QuizTitle: '',
       timerChecked: false,
-      message: "",
+      message: '',
       theQuizzes: [],
-      currentQuizID: "",
+      currentQuizID: '',
       quizCount: 0,
       quizContents: [],
       quizContentsID: [],
       questionPool: [],
-      entityIDsToAdd:[],
-      entityIDsToDelete:[],
+      entityIDsToAdd: [],
+      entityIDsToDelete: [],
       add: 0,
       delete: 0,
-      bufferID: "",
-      befferName: "",
+      bufferID: '',
+      befferName: '',
       refreshAfterUpdate: false,
     };
   }
 
   componentDidMount = () => {
-    console.log("Quiz just mounted ");
-    axios.get(`/Quizzes`)
-    .then(response => {
-      console.log("response: ", response.data)
-      this.setState({...this.state, theQuizzes: response.data });
+    console.log('Quiz just mounted ');
+    axios
+      .get(`/Quizzes`)
+      .then((response) => {
+        console.log('response: ', response.data);
+        this.setState({ ...this.state, theQuizzes: response.data });
+      })
+      .then(
+        axios.get('/Questions').then((response) => {
+          this.setState({ ...this.state, questionPool: response.data });
+        })
+      );
+  };
 
-    }).then(axios.get('/Questions').then(response => {
-      this.setState({...this.state, questionPool: response.data})
-    }))
-  }
-
-  componentDidUpdate(prevProps, prevState){ // this is really bad performance
+  componentDidUpdate(prevProps, prevState) {
+    // this is really bad performance
     // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
-    if(this.state.quizCount != prevState.quizCount || this.state.refreshAfterUpdate != prevState.refreshAfterUpdate){
+    if (
+      this.state.quizCount != prevState.quizCount ||
+      this.state.refreshAfterUpdate != prevState.refreshAfterUpdate
+    ) {
       // if(this.state != prevState){
-          // console.log("this and prev: ", this.state, prevState)
+      // console.log("this and prev: ", this.state, prevState)
       // console.log("Add questions just updated, ", this.state.updateCount)
-      return axios.get(`/Quizzes`)
-      .then(response => {
+      return axios
+        .get(`/Quizzes`)
+        .then((response) => {
           // console.log("res[pmnsee: ", response.data);
-        this.setState(prevState => {
-            return {...prevState, theQuizzes: response.data, currentQuizID: prevState.currentQuizID, bufferID: prevState.bufferID}
-        });
-      }).then(axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then(response => {
-        console.log("in get quiz content: ", this.populateQuizID(response.data.questions))
-        let IDs = this.populateQuizID(response.data.questions);
-        console.log("IDs: ", IDs)
-        this.setState({...prevState, quizContents: response.data.questions, quizContentsID: IDs, bufferID: prevState.bufferID})
-      }))
-
-  }
-  else if(this.state.currentQuizID != prevState.currentQuizID){
-      console.log("prev id, cur id: " +  prevState.currentQuizID, "," + this.state.currentQuizID)
-      console.log("bufferID and bufferName", this.state.bufferID, this.state.bufferName, this.state.newNameList)
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              theQuizzes: response.data,
+              currentQuizID: prevState.currentQuizID,
+              bufferID: prevState.bufferID,
+            };
+          });
+        })
+        .then(
+          axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
+            console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
+            let IDs = this.populateQuizID(response.data.questions);
+            console.log('IDs: ', IDs);
+            this.setState({
+              ...prevState,
+              quizContents: response.data.questions,
+              quizContentsID: IDs,
+              bufferID: prevState.bufferID,
+            });
+          })
+        );
+    } else if (this.state.currentQuizID != prevState.currentQuizID) {
+      console.log('prev id, cur id: ' + prevState.currentQuizID, ',' + this.state.currentQuizID);
+      console.log(
+        'bufferID and bufferName',
+        this.state.bufferID,
+        this.state.bufferName,
+        this.state.newNameList
+      );
       // return axios.get(`/Quizzes`)
       // .then(response => {
       //     // console.log("res[pmnsee: ", response.data);
@@ -78,110 +102,85 @@ export default class Quiz extends Component {
       //   });
       // })
       // .then(
-        return axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then(response => {
-        console.log("in get quiz content: ", this.populateQuizID(response.data.questions))
+      return axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
+        console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
         let IDs = this.populateQuizID(response.data.questions);
-        let curID = prevState.currentQuizID ===  "" ? this.state.currentQuizID : prevState.currentQuizID
-        let curName = prevState.bufferName ===  this.state.bufferName ? prevState.bufferName : this.state.bufferName 
-        this.setState({...prevState, 
-          quizContents: response.data.questions, 
-          quizContentsID: IDs, 
+        let curID =
+          prevState.currentQuizID === '' ? this.state.currentQuizID : prevState.currentQuizID;
+        let curName =
+          prevState.bufferName === this.state.bufferName
+            ? prevState.bufferName
+            : this.state.bufferName;
+        this.setState({
+          ...prevState,
+          quizContents: response.data.questions,
+          quizContentsID: IDs,
           bufferID: curID,
-          bufferName: curName})
-      })
+          bufferName: curName,
+        });
+      });
     }
-    console.log("bufferID: ", this.state.bufferID)
-
+    console.log('bufferID: ', this.state.bufferID);
   }
 
-
-//   if(this.state.quizCount != prevState.quizCount){
-//     // if(this.state != prevState){
-//         // console.log("this and prev: ", this.state, prevState)
-//     // console.log("Add questions just updated, ", this.state.updateCount)
-//     return axios.get(`/Quizzes`)
-//     .then(response => {
-//         // console.log("res[pmnsee: ", response.data);
-//       this.setState(prevState => {
-//           return {...prevState, theQuizzes: response.data, currentQuizID: prevState.currentQuizID, bufferID: prevState.bufferID}
-//       });
-//     }).then(axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then(response => {
-//       console.log("in get quiz content: ", this.populateQuizID(response.data.questions))
-//       let IDs = this.populateQuizID(response.data.questions);
-//       this.setState({...prevState, quizContents: response.data.questions, quizContentsID: IDs})
-//     }))
-
-// }else if(this.state.currentQuizID != prevState.currentQuizID){
-//   console.log("prev id, cur id: " +  prevState.currentQuizID, "," + this.state.currentQuizID)
-//   // return axios.get(`/Quizzes`)
-//   // .then(response => {
-//   //     // console.log("res[pmnsee: ", response.data);
-//   //   this.setState(prevState => {
-//   //       return {...prevState, theQuizzes: response.data}
-//   //   });
-//   // })
-//   // .then(
-//     return axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then(response => {
-//     console.log("in get quiz content: ", this.populateQuizID(response.data.questions))
-//     let IDs = this.populateQuizID(response.data.questions);
-//     let curID = prevState.currentQuizID ===  "" ? this.state.currentQuizID : prevState.currentQuizID
-//     this.setState({...prevState, 
-//       quizContents: response.data.questions, 
-//       quizContentsID: IDs, 
-//       bufferID: prevState.currentQuizID})
-//   })
-// }
   populateQuizID = (questions) => {
-      let IDs = [];
-      for (let i = 0; i < questions.length; i++){
-        console.log("in populate: ", questions[i].question.id)
-        IDs.push(questions[i].question.id);
-      }
-      return IDs;
-  }
+    let IDs = [];
+    for (let i = 0; i < questions.length; i++) {
+      console.log('in populate: ', questions[i].question.id);
+      IDs.push(questions[i].question.id);
+    }
+    return IDs;
+  };
 
-  onChange = (event) =>{
-    this.setState({...this.state, QuizTitle: event.target.value, message: ""});
-    console.log("on change ", event.target.value);
-    console.log("state: ", this.state.QuizTitle)
-  }
+  onChange = (event) => {
+    this.setState({ ...this.state, QuizTitle: event.target.value, message: '' });
+    console.log('on change ', event.target.value);
+    console.log('state: ', this.state.QuizTitle);
+  };
 
   timerSwitchHandle = () => {
-    this.setState(prevState => {
-      return {...prevState, timerChecked: !prevState.timerChecked}
-    })
+    this.setState((prevState) => {
+      return { ...prevState, timerChecked: !prevState.timerChecked };
+    });
     // console.log("switch check: ", this.state.timerChecked)
-  }
+  };
 
   handleAddQuiz = (e) => {
     e.preventDefault();
-    if(!this.state.QuizTitle){
-      this.setState({...this.state, message: "Quiz Title cannot be blank!"});
+    if (!this.state.QuizTitle) {
+      this.setState({ ...this.state, message: 'Quiz Title cannot be blank!' });
       return;
     }
-    
+
     let url = 'Quizzes/Add?name=' + this.state.QuizTitle;
-    axios.post(url) //TODO need to not hardcode the url
-    .then(res => {
-      console.log("Quiz Added")
-      // console.log("res: ", res, res.data.question.id);
-      // console.log("the id should be: ", res.data.question.id);
-      this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
-    })
-  }
+    axios
+      .post(url) //TODO need to not hardcode the url
+      .then((res) => {
+        console.log('Quiz Added');
+        // console.log("res: ", res, res.data.question.id);
+        // console.log("the id should be: ", res.data.question.id);
+        this.setState((prevState) => ({
+          ...this.state,
+          QuizTitle: '',
+          timerChecked: false,
+          message: 'Quiz Added!',
+          quizCount: prevState.quizCount + 1,
+        }));
+      });
+  };
 
   handleAddQuizCount = () => {
     this.setState((prevState) => {
-      return ({...this.state, quizCount: prevState.quizCount + 1})
-    })
-  }
+      return { ...this.state, quizCount: prevState.quizCount + 1 };
+    });
+  };
 
   handleClickedQuiz = (id, name) => {
     // let newNameList = [...this.state.bufferNameList, name];
-   
+
     // console.log("in handle clicked Quiz: ", newNameList)
-    this.setState({...this.state, currentQuizID: id, bufferName: name});
-  }
+    this.setState({ ...this.state, currentQuizID: id, bufferName: name });
+  };
 
   isQuestionChecked = (e, id) => {
     // for (let i = 0; i < this.state.quizContents; i++){
@@ -199,36 +198,35 @@ export default class Quiz extends Component {
     //     return;
     //   }
     // }
-    this.refs[ref].checked = !this.refs[ref].checked
+    this.refs[ref].checked = !this.refs[ref].checked;
     // let result = this.refs[ref].checked
-    console.log("is checked? ", e.target.previousSibling.checked, this.refs[ref].checked);
-    let toAdd = [...this.state.entityIDsToAdd]
+    console.log('is checked? ', e.target.previousSibling.checked, this.refs[ref].checked);
+    let toAdd = [...this.state.entityIDsToAdd];
     let toDelete = [];
-    if(e.target.previousSibling.checked){
-      toAdd.push(id)
+    if (e.target.previousSibling.checked) {
+      toAdd.push(id);
       // this.setState((prevState) => ({...prevState, add: id}))
-    }else{
+    } else {
       toDelete.push(id);
       // this.setState((prevState) => ({...prevState, entityIDsToDelete: [...prevState.entityIDsToDelete, id]}))
     }
     // this.setState({...this.state, entityIDsToAdd: toAdd})
     // this.setState((prevState) => ({...prevState, entityIDsToAdd: toAdd, entityIDsToDelete: toDelete}))
     // console.log("in isQuestionChecked: ", this.state.quizContents, id)
-    console.log("To Add: ", toAdd)
-    console.log("To Delete: ", toDelete);
-    console.log("entitieIDsToAdd: ", this.state.entityIDsToAdd)
-  }
+    console.log('To Add: ', toAdd);
+    console.log('To Delete: ', toDelete);
+    console.log('entitieIDsToAdd: ', this.state.entityIDsToAdd);
+  };
 
   handleQuizContentUpdate = (e) => {
-    
     e.preventDefault();
     // console.log("To Add: ", this.state.entityIDsToAdd)
     // console.log("To Delete: ", this.state.entityIDsToDelete);
     // console.log("previous sib: ", e.target.previousSibling.children[0].checked)
     // let element = e.target.previousSibling
     // console.log("previous prev: ", element.previousSibling)
-    let toAdd = []
-    let toDelete = []
+    let toAdd = [];
+    let toDelete = [];
     // for(let i = 0; i< 3; i++){
     //   if (element.children[0].type === "checkbox"){
     //     if(element.children[0].checked){
@@ -237,97 +235,98 @@ export default class Quiz extends Component {
     //     }
     //   }
     // }
-    let list = document.getElementById("checkboxes").getElementsByTagName('div');
-    console.log("the list: ", list)
-    for(let i = 0; i < list.length; i++){
-      if(list[i].children[0].checked){
-        console.log("checked id: ", list[i].children[0].value)
-        let id = Number(list[i].children[0].value)
-        console.log("exisitng IDs: ", this.state.quizContentsID)
-        if(!this.state.quizContentsID.includes(id)){
-          console.log("pushing this: ", id)
-          toAdd.push(id)
+    let list = document.getElementById('checkboxes').getElementsByTagName('div');
+    console.log('the list: ', list);
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].children[0].checked) {
+        console.log('checked id: ', list[i].children[0].value);
+        let id = Number(list[i].children[0].value);
+        console.log('exisitng IDs: ', this.state.quizContentsID);
+        if (!this.state.quizContentsID.includes(id)) {
+          console.log('pushing this: ', id);
+          toAdd.push(id);
         }
-        
-      }else{
-        let id = Number(list[i].children[0].value)
-        toDelete.push(id)
+      } else {
+        let id = Number(list[i].children[0].value);
+        toDelete.push(id);
       }
     }
-    console.log("taaaaaaaaaaaaa")
+    console.log('taaaaaaaaaaaaa');
 
-    console.log("toAdd/toDelete in update: ", toAdd, toDelete)
+    console.log('toAdd/toDelete in update: ', toAdd, toDelete);
 
     let url = 'Quizzes/Update?id=' + this.state.bufferID;
     let payload = {
-      "EntityIdsToAdd": toAdd,
-      "EntityIdsToRemove": toDelete
-    }
-    console.log("payload: ", payload, url)
-    axios.post(url, payload) //TODO need to not hardcode the url
-    .then(res => {
-      console.log("Quiz updated!!!!!!!!!!!!!!!!!")
-      this.setState({...this.state, message: "Question List for quiz updated!", quizContentsID: toAdd})
-      if(toAdd.length > 0 || toDelete.length > 0){
-        console.log("need to refresh after update")
-        this.setState({...this.state, refreshAfterUpdate: true})
-
-      }
-      // console.log("res: ", res, res.data.question.id);
-      // console.log("the id should be: ", res.data.question.id);
-      // this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
-    })
-  
-  }
+      EntityIdsToAdd: toAdd,
+      EntityIdsToRemove: toDelete,
+    };
+    console.log('payload: ', payload, url);
+    axios
+      .post(url, payload) //TODO need to not hardcode the url
+      .then((res) => {
+        console.log('Quiz updated!!!!!!!!!!!!!!!!!');
+        this.setState({
+          ...this.state,
+          message: 'Question List for quiz updated!',
+          quizContentsID: toAdd,
+        });
+        if (toAdd.length > 0 || toDelete.length > 0) {
+          console.log('need to refresh after update');
+          this.setState({ ...this.state, refreshAfterUpdate: true });
+        }
+        // console.log("res: ", res, res.data.question.id);
+        // console.log("the id should be: ", res.data.question.id);
+        // this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
+      });
+  };
 
   checkboxChange = (e) => {
-    console.log("checkbox changed ", e.target.checked)
-    e.target.checked = !e.target.checked
-  }
+    console.log('checkbox changed ', e.target.checked);
+    e.target.checked = !e.target.checked;
+  };
 
   handleQuizDelete = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("delete quiz: ", id)
+    console.log('delete quiz: ', id);
     let url = 'Quizzes/Delete?id=' + id;
-    console.log("quiz delete url: ", url)
-    axios.post(url) //TODO need to not hardcode the url
-    .then(res => {
-      console.log("Quiz deleted")
-      // console.log("res: ", res, res.data.question.id);
-      // console.log("the id should be: ", res.data.question.id);
-      this.setState((prevState) => {
-        return ({...this.state, quizCount: prevState.quizCount - 1})
-      })
-      // this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
-    })
-
-  }
+    console.log('quiz delete url: ', url);
+    axios
+      .post(url) //TODO need to not hardcode the url
+      .then((res) => {
+        console.log('Quiz deleted');
+        // console.log("res: ", res, res.data.question.id);
+        // console.log("the id should be: ", res.data.question.id);
+        this.setState((prevState) => {
+          return { ...this.state, quizCount: prevState.quizCount - 1 };
+        });
+        // this.setState((prevState) => ({...this.state, QuizTitle: "", timerChecked: false, message: "Quiz Added!", quizCount: prevState.quizCount + 1}));
+      });
+  };
 
   handleSendEmail = (e) => {
     e.preventDefault();
-    console.log("should send email")
-  }
+    console.log('should send email');
+  };
 
   test = () => {
-    console.log("test")
-  }
+    console.log('test');
+  };
 
   render() {
     return (
       <div>
         <h1>Quiz Page</h1>
-        
-       
-          <div>
-            <h2>Create New Quiz</h2>
-          </div>
-          <div >
+
+        <div>
+          <h2>Create New Quiz</h2>
+        </div>
+        <div>
           <form id="quizTitleBlock">
             <label>Quiz Title</label>
-            <input id="quizTitle" value={this.state.QuizTitle}
-             onChange={this.onChange}></input> 
-            <label id="timer">Timer: 
+            <input id="quizTitle" value={this.state.QuizTitle} onChange={this.onChange}></input>
+            <label id="timer">
+              Timer:
               <select>
                 <option value="10">10 min</option>
                 <option value="10">30 min</option>
@@ -336,77 +335,86 @@ export default class Quiz extends Component {
                 <option value="10">120 min</option>
               </select>
             </label>
-            <label id="timerSwitch">Timed Quiz
+            <label id="timerSwitch">
+              Timed Quiz
               <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
-            </label> 
-            <button type="submit" onClick={this.handleAddQuiz}>Add Quiz</button>
+            </label>
+            <button type="submit" onClick={this.handleAddQuiz}>
+              Add Quiz
+            </button>
             {this.state.message && <p>{this.state.message}</p>}
           </form>
           {/* <h3>{this.state.QuizTitle}</h3> */}
         </div>
         <Form.QuizOuter>
-        <div>
-          <Form.Quizzes>
-            <h4>Quiz Pool</h4>
-          {this.state.theQuizzes.map((quiz, index) => {
-            return (
-              
-              <div key={index}>
-                {/* <QuizDisplay quiz={quiz}/> */}
-                {/* <Form.eachQuiz> */}
-                <QuizDisplay 
-                quiz={quiz.name} 
-                quizID={quiz.id}
-                current={this.state.bufferID === quiz.id} 
-                handleQuizDelete = {(e) => this.handleQuizDelete(e, quiz.id)}
-                clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}/>{this.state.currentQuizID}
-                {/* </Form.eachQuiz> */}
-              </div>);
-          })}
-          </Form.Quizzes>
-          {console.log("theQuizzes: ",this.state.theQuizzes)}
-        </div>
-        <Form.QuestionsNextToQuizzes>
-        <div>
-  
-          <h4>{this.state.bufferName} Question Pool</h4>
-          <div id="checkboxes">
-          {this.state.questionPool.map((question, index) => {
-              return (
-                <div key={index}>
-                <input type="checkbox" 
-                value={question.id} 
-                checked={this.state.quizContentsID.includes(question.id)}
-                onChange={this.checkboxChange}
-                ref={'ref' + question.id}
-                // onClick={() => this.isQuestionChecked(question.id)}
-
-                ></input>
-                <button onClick={(e) => this.isQuestionChecked(e, question.id)}>Toggle</button>
-                
-                {question.value}
-                -{question.id}
-                {/* <p>includes?</p> */}
-                {/* <p>{console.log("includes? ", this.state.quizContents.length > 0 && this.state.quizContents.questions.includes(question.id))}</p> */}
-                </div>)
-            }
-          )}
+          <div>
+            <Form.Quizzes>
+              <h4>Quiz Pool</h4>
+              {this.state.theQuizzes.map((quiz, index) => {
+                return (
+                  <div key={index}>
+                    {/* <QuizDisplay quiz={quiz}/> */}
+                    {/* <Form.eachQuiz> */}
+                    <QuizDisplay
+                      quiz={quiz.name}
+                      quizID={quiz.id}
+                      current={this.state.bufferID === quiz.id}
+                      handleQuizDelete={(e) => this.handleQuizDelete(e, quiz.id)}
+                      clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}
+                    />
+                    {this.state.currentQuizID}
+                    {/* </Form.eachQuiz> */}
+                  </div>
+                );
+              })}
+            </Form.Quizzes>
+            {console.log('theQuizzes: ', this.state.theQuizzes)}
           </div>
-          <button type="submit" onClick={this.handleQuizContentUpdate}>Update</button>
-        </div>
-
-        </Form.QuestionsNextToQuizzes>
+          <Form.QuestionsNextToQuizzes>
+            <div>
+              <h4>{this.state.bufferName} Question Pool</h4>
+              <div id="checkboxes">
+                {this.state.questionPool.map((question, index) => {
+                  return (
+                    <div key={index}>
+                      <input
+                        type="checkbox"
+                        value={question.id}
+                        checked={this.state.quizContentsID.includes(question.id)}
+                        onChange={this.checkboxChange}
+                        ref={'ref' + question.id}
+                        // onClick={() => this.isQuestionChecked(question.id)}
+                      ></input>
+                      <button onClick={(e) => this.isQuestionChecked(e, question.id)}>
+                        Toggle
+                      </button>
+                      {question.value}-{question.id}
+                      {/* <p>includes?</p> */}
+                      {/* <p>{console.log("includes? ", this.state.quizContents.length > 0 && this.state.quizContents.questions.includes(question.id))}</p> */}
+                    </div>
+                  );
+                })}
+              </div>
+              <button type="submit" onClick={this.handleQuizContentUpdate}>
+                Update
+              </button>
+            </div>
+          </Form.QuestionsNextToQuizzes>
         </Form.QuizOuter>
         <div>
-          <h3>Selected Quiz: {this.state.bufferID}, {this.state.bufferName}, {this.state.currentQuizID}</h3>
+          <h3>
+            Selected Quiz: {this.state.bufferID}, {this.state.bufferName},{' '}
+            {this.state.currentQuizID}
+          </h3>
           <form>
             <label>Name:</label>
             <input type="email" placeholder="Enter email here..."></input>
-            <button type="submit" onClick={(e) => this.handleSendEmail(e)}>Send quiz!</button>
+            <button type="submit" onClick={(e) => this.handleSendEmail(e)}>
+              Send quiz!
+            </button>
           </form>
         </div>
-    </div>
-    
+      </div>
     );
   }
 }
