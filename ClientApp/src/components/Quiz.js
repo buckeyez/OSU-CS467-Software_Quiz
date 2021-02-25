@@ -280,9 +280,22 @@ export default class Quiz extends Component {
       });
   };
 
-  checkboxChange = (e) => {
+  checkboxChange = (e, id) => {
     console.log('checkbox changed ', e.target.checked);
-    e.target.checked = !e.target.checked;
+    e.preventDefault();
+    console.log('checkbox changed: ', e.target.nextSibling.value, e.target.checked);
+    const options = [...this.state.quizContentsID];
+    let length = options.length;
+    // for (let i = 0; i < length; i++) {
+      if (!options.includes(id)) {
+        options.push(id);
+      }
+    // }
+    // setChoiceList(options);
+    // console.log('choiceList: ', choiceList);
+    // props.handleCheckboxChoiceAnswer(choiceList);
+
+    // e.target.checked = !e.target.checked;
   };
 
   handleQuizDelete = (e, id) => {
@@ -380,8 +393,8 @@ export default class Quiz extends Component {
                       <input
                         type="checkbox"
                         value={question.id}
-                        checked={this.state.quizContentsID.includes(question.id)}
-                        onChange={this.checkboxChange}
+                        checked={this.state.quizContentsID ? this.state.quizContentsID.includes(question.id) : false}
+                        onChange={(e) => this.checkboxChange(e, index)}
                         ref={'ref' + question.id}
                         // onClick={() => this.isQuestionChecked(question.id)}
                       ></input>

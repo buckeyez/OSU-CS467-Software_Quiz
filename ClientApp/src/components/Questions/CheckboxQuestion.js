@@ -56,6 +56,7 @@ const CheckboxQuestion = (props) => {
     options.splice(index, 1);
     setChoiceList(options);
     console.log('after remove: ', options);
+    props.handleCheckboxChoiceAnswer(options);
   }
 
   function handleAdd() {
