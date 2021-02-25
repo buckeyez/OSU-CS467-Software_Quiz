@@ -8,6 +8,7 @@ import { Form } from '../';
 import OpenTextQuestion from './OpenTextQuestion';
 import TrueOrFalseQuestion from './TrueOrFalseQuestion';
 import MultipleChoiceQuestion from './MultipleChoiceQuestion';
+import CheckboxQuestion from './CheckboxQuestion';
 // import "./QuestionTemplate.css"
 
 export default class QuestionTemplate extends Component {
@@ -73,6 +74,12 @@ export default class QuestionTemplate extends Component {
     this.setState({ ...this.state, answers: theAnswer });
   };
 
+  handleCheckboxChoiceAnswer = (choiceList) => {
+    console.log('in checkbox choice: ', choiceList);
+    let theAnswer = choiceList;
+    this.setState({ ...this.state, answers: theAnswer });
+  }
+
   handleQuestionDelete = () => {
     console.log('innnnnn delete this question');
     if (!this.state.id) {
@@ -92,7 +99,7 @@ export default class QuestionTemplate extends Component {
       console.log('making axios call for ', this.state.questionType);
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice') {
+      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
         payload = {
           Question: {
             Value: this.state.value,
@@ -147,7 +154,7 @@ export default class QuestionTemplate extends Component {
       console.log('item already exist, updating it');
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice') {
+      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
         payload = {
           Question: {
             Value: this.state.value,
@@ -224,6 +231,7 @@ export default class QuestionTemplate extends Component {
                   <option value="Multiple Choice">Multiple Choice</option>
                   <option value="True OR False">True or False</option>
                   <option value="Free Response">Free Response</option>
+                  <option value="Select All That Apply">Select All That Apply</option>
                 </select>
               </div>
               <div>
@@ -243,6 +251,12 @@ export default class QuestionTemplate extends Component {
                   <MultipleChoiceQuestion
                     answers={this.state.answers}
                     handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}
+                  />
+                )}
+                {this.state.questionType == 'Select All That Apply' && (
+                  <CheckboxQuestion
+                    answers={this.state.answers}
+                    handleCheckboxChoiceAnswer={this.handleCheckboxChoiceAnswer}
                   />
                 )}
               </div>

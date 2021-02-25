@@ -54,6 +54,7 @@ const MultipleChoiceQuestion = (props) =>{
     options.splice(index, 1);
     setChoiceList(options);
     console.log("after remove: ", options)
+    props.handleMultipleChoiceAnswer(options);
   }
 
   function handleAdd(){
