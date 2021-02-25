@@ -74,6 +74,12 @@ export default class QuestionTemplate extends Component {
     this.setState({ ...this.state, answers: theAnswer });
   };
 
+  handleCheckboxChoiceAnswer = (choiceList) => {
+    console.log('in checkbox choice: ', choiceList);
+    let theAnswer = choiceList;
+    this.setState({ ...this.state, answers: theAnswer });
+  }
+
   handleQuestionDelete = () => {
     console.log('innnnnn delete this question');
     if (!this.state.id) {
@@ -93,7 +99,7 @@ export default class QuestionTemplate extends Component {
       console.log('making axios call for ', this.state.questionType);
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice') {
+      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
         payload = {
           Question: {
             Value: this.state.value,
@@ -148,7 +154,7 @@ export default class QuestionTemplate extends Component {
       console.log('item already exist, updating it');
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice') {
+      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
         payload = {
           Question: {
             Value: this.state.value,
@@ -249,8 +255,8 @@ export default class QuestionTemplate extends Component {
                 )}
                 {this.state.questionType == 'Select All That Apply' && (
                   <CheckboxQuestion
-                    // answers={this.state.answers}
-                    // handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}
+                    answers={this.state.answers}
+                    handleCheckboxChoiceAnswer={this.handleCheckboxChoiceAnswer}
                   />
                 )}
               </div>
