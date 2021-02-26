@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OSU_CS467_Software_Quiz.Data;
 using OSU_CS467_Software_Quiz.Extensions;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
@@ -45,13 +46,16 @@ namespace OSU_CS467_Software_Quiz.Controllers
         IdentityResult result = await _userManager.CreateAsync(appUser, user?.Password ?? string.Empty);
         if (result.Succeeded)
         {
-          var newUser = await _userManager.FindByEmailAsync(user.Email);
-          return CreatedAtAction(nameof(AddAsync), user, Projections.User.Build(newUser));
+          result = await _userManager.AddToRoleAsync(appUser, SeedData.Admin);
+
+          if (result.Succeeded)
+          {
+            var newUser = await _userManager.FindByEmailAsync(user.Email);
+            return CreatedAtAction(nameof(AddAsync), user, Projections.User.Build(newUser));
+          }
         }
-        else
-        {
-          ModelState.AppendErrors("User Manager", result);
-        }
+
+        ModelState.AppendErrors("User Manager", result);
       }
 
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
@@ -69,8 +73,13 @@ namespace OSU_CS467_Software_Quiz.Controllers
         IdentityResult result = await _userManager.CreateAsync(appUser);
         if (result.Succeeded)
         {
-          var newUser = await _userManager.FindByEmailAsync(user.Email);
-          return CreatedAtAction(nameof(AddPasswordlessAsync), user, Projections.User.Build(newUser));
+          result = await _userManager.AddToRoleAsync(appUser, SeedData.Candidate);
+
+          if (result.Succeeded)
+          {
+            var newUser = await _userManager.FindByEmailAsync(user.Email);
+            return CreatedAtAction(nameof(AddPasswordlessAsync), user, Projections.User.Build(newUser));
+          }
         }
 
         ModelState.AppendErrors("User Manager", result);
