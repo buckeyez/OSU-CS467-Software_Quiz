@@ -200,6 +200,8 @@ namespace OSU_CS467_Software_Quiz.Repositories
       var quizAssignmentEntity = _db.QuizAssignments
         .AsQueryable()
         .Where(qa => qa.Id == quizSubmission.QuizAssignmentId)
+        .Include(qa => qa.Quiz)
+        .Include(qa => qa.User)
         .FirstOrDefault();
 
       if (quizAssignmentEntity == null)
