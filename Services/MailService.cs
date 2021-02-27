@@ -18,6 +18,7 @@ namespace OSU_CS467_Software_Quiz.Services
     public MailService(IOptions<MailSettings> mailSettings)
     {
       _mailSettings = mailSettings.Value;
+      _mailPassword = Environment.GetEnvironmentVariable("MAIL_PWD");
     }
 
     public Task SendQuizAssignmentAsync(QuizAssignments quizAssignment)
@@ -54,7 +55,7 @@ namespace OSU_CS467_Software_Quiz.Services
         Body = builder.ToMessageBody(),
       };
       email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
-      
+
       using var smtp = new SmtpClient();
       smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
       smtp.Authenticate(_mailSettings.Mail, _mailPassword);
