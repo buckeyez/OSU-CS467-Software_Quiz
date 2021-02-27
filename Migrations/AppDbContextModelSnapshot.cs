@@ -300,6 +300,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("QuizId")
                         .HasColumnType("integer");
 
@@ -338,8 +341,16 @@ namespace OSU_CS467_Software_Quiz.Migrations
 
             modelBuilder.Entity("OSU_CS467_Software_Quiz.Models.QuizResults", b =>
                 {
-                    b.Property<int>("AnswerId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int?>("AnswerId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("FreeResponse")
+                        .HasColumnType("text");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
@@ -347,10 +358,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                     b.Property<int>("QuizAssignmentId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("FreeResponse")
-                        .HasColumnType("text");
+                    b.HasKey("Id");
 
-                    b.HasKey("AnswerId", "QuestionId", "QuizAssignmentId");
+                    b.HasIndex("AnswerId");
 
                     b.HasIndex("QuestionId");
 
@@ -497,9 +507,7 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 {
                     b.HasOne("OSU_CS467_Software_Quiz.Models.Answers", "Answer")
                         .WithMany("QuizResults")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AnswerId");
 
                     b.HasOne("OSU_CS467_Software_Quiz.Models.Questions", "Question")
                         .WithMany("QuizResults")

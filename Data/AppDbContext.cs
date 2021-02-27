@@ -76,8 +76,6 @@ namespace OSU_CS467_Software_Quiz.Data
 
       builder.Entity<QuizResults>(entity =>
       {
-        entity.HasKey(e => new { e.AnswerId, e.QuestionId, e.QuizAssignmentId });
-
         entity.HasOne(e => e.Answer)
           .WithMany(qr => qr.QuizResults)
           .HasForeignKey(e => e.AnswerId);

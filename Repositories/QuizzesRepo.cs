@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using OSU_CS467_Software_Quiz.Data;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
+using OSU_CS467_Software_Quiz.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace OSU_CS467_Software_Quiz.Repositories
   public class QuizzesRepo : IQuizzesRepo
   {
     private readonly AppDbContext _db;
+    private readonly IMailService _mailService;
 
-    public QuizzesRepo(AppDbContext db)
+    public QuizzesRepo(AppDbContext db, IMailService mailService)
     {
       _db = db;
+      _mailService = mailService;
     }
 
     public async Task<Quizzes> AddQuizAsync(string name)
@@ -65,11 +68,13 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
       if (assignmentExists != null)
       {
+        Console.WriteLine("Quiz Assignment Exists!");
         return null;
       }
 
       var quizAssignmentEntry = _db.QuizAssignments.Add(new()
       {
+        Key = Guid.NewGuid(),
         Quiz = quizEntity,
         TimeAllotment = quizAssignment.TimeAllotment,
         User = userEntity,
@@ -82,6 +87,17 @@ namespace OSU_CS467_Software_Quiz.Repositories
       catch (DbUpdateException e)
       {
         Console.WriteLine($"{e.Source}: {e.Message}");
+        return null;
+      }
+
+      try
+      {
+        await _mailService.SendQuizAssignmentAsync(quizAssignmentEntry.Entity);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine($"{e.Source}: {e.Message}");
+        await RemoveQuizAssignmentAsync(quizAssignmentEntry.Entity.Id);
         return null;
       }
 
@@ -143,6 +159,16 @@ namespace OSU_CS467_Software_Quiz.Repositories
       return _db.Quizzes.ToListAsync();
     }
 
+    public Task<QuizAssignments> GetQuizAssignment(string key)
+    {
+      return _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Key.ToString() == key)
+        .Include(qa => qa.Quiz)
+        .Include(qa => qa.User)
+        .FirstOrDefaultAsync();
+    }
+
     public Task<List<QuizAssignments>> GetQuizAssignments()
     {
       return _db.QuizAssignments
@@ -200,6 +226,8 @@ namespace OSU_CS467_Software_Quiz.Repositories
       var quizAssignmentEntity = _db.QuizAssignments
         .AsQueryable()
         .Where(qa => qa.Id == quizSubmission.QuizAssignmentId)
+        .Include(qa => qa.Quiz)
+        .Include(qa => qa.User)
         .FirstOrDefault();
 
       if (quizAssignmentEntity == null)

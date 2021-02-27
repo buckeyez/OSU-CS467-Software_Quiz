@@ -87,6 +87,8 @@ Suffix: `/Update`
 Expects **_RoleModification_** in body
 
 ```json
+  "Id": string,
+  "Name": string,
   "AddIds": string[],
   "DeleteIds": string[]
 ```

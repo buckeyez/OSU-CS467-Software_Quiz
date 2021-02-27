@@ -3,6 +3,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using OSU_CS467_Software_Quiz.Domain;
+using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Settings;
 using System;
 using System.Threading.Tasks;
@@ -17,10 +18,29 @@ namespace OSU_CS467_Software_Quiz.Services
     public MailService(IOptions<MailSettings> mailSettings)
     {
       _mailSettings = mailSettings.Value;
-      _mailPassword = Environment.GetEnvironmentVariable("MAIL_PWD");
     }
 
-    public async Task SendEmailAsync(MailRequest mailRequest)
+    public Task SendQuizAssignmentAsync(QuizAssignments quizAssignment)
+    {
+      var user = quizAssignment.User;
+      string url = $"{Constants.GetQuizAssignmentUrl()}/?key={quizAssignment.Key}";
+
+      MailRequest mail = new()
+      {
+        Body = $@"<p>Hello {
+          user.FirstName
+          } {
+          user.LastName
+          }, you have been invited to take a software quiz for OSU CS467!</p>
+          <p>Please click here to take the quiz: <a href=""{url}"">{url}</a></p>",
+        Subject = "Software Quiz Invite",
+        ToEmail = user.Email,
+      };
+
+      return SendEmailAsync(mail);
+    }
+
+    private async Task SendEmailAsync(MailRequest mailRequest)
     {
       var builder = new BodyBuilder
       {
