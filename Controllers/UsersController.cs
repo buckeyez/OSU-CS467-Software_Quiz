@@ -45,7 +45,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
         {
           var appUser = AppUser.Build(user);
 
-          IdentityResult result = await _userManager.CreateAsync(appUser, user?.Password ?? string.Empty);
+          IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
           if (result.Succeeded)
           {
             result = await _userManager.AddToRoleAsync(appUser, SeedData.Admin);
