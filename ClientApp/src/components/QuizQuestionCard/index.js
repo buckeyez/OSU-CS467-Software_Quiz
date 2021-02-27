@@ -1,12 +1,10 @@
 import React from 'react';
 import {
   Container,
-  Error,
   Title,
   Text,
   TextSmall,
   Button,
-  RadioButton,
   TextArea,
   Input,
 } from './styles/QuizQuestionCard';
@@ -14,10 +12,6 @@ import {
 export default function QuizQuestionCard({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
 }
-
-QuizQuestionCard.Error = function QuizQuestionCardError({ children, ...restProps }) {
-  return <Error {...restProps}>{children}</Error>;
-};
 
 QuizQuestionCard.Title = function QuizQuestionCardTitle({ children, ...restProps }) {
   return <Title {...restProps}>{children}</Title>;
@@ -33,10 +27,6 @@ QuizQuestionCard.TextSmall = function QuizQuestionCardTextSmall({ children, ...r
 
 QuizQuestionCard.Button = function QuizQuestionCardButton({ children, ...restProps }) {
   return <Button {...restProps}>{children}</Button>;
-};
-
-QuizQuestionCard.RadioButton = function QuizQuestionCardRadioButton({ children, ...restProps }) {
-  return <RadioButton {...restProps}>{children}</RadioButton>;
 };
 
 QuizQuestionCard.TextArea = function QuizQuestionCardTextArea({ children, ...restProps }) {

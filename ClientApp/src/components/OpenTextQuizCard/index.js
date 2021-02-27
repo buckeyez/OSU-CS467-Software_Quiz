@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import QuizQuestionCard from '../QuizQuestionCard';
-import { QuizQuestionCard, Form } from '../../components';
+import { QuizQuestionCard } from '../../components';
 
 export default function MultipleChoiceQuizCard({ ...props }) {
   const [freeResponseAnswer, setFreeResponseAnswer] = useState('');
 
   useEffect(() => {
     setFreeResponseAnswer(props.questionAndAnswerMap.get(props.questionIndex));
-  });
+  }, []);
 
   const questionCardTitle = () => {
     return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
