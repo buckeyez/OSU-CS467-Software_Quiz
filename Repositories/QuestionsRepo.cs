@@ -114,6 +114,16 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
     public async Task<Questions> UpdateQuestionAsync(int id, QuestionAndAnswers updatedQuestion)
     {
+      var questionExists = _db.Questions
+        .AsQueryable()
+        .Where(q => q.Id == id)
+        .FirstOrDefault();
+
+      if (questionExists == null)
+      {
+        return null;
+      }
+
       var quizQuestions = _db.QuizQuestions
         .AsQueryable()
         .Where(qq => qq.QuestionId == id)
