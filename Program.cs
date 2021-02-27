@@ -11,7 +11,7 @@ namespace OSU_CS467_Software_Quiz
   {
     public static void Main(string[] args)
     {
-      IHost host = CreateHostBuilder(args).Build();
+      //IHost host = CreateHostBuilder(args).Build();
 
       using (var scope = host.Services.CreateScope())
       {
