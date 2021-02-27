@@ -138,6 +138,30 @@ namespace OSU_CS467_Software_Quiz.Controllers
       };
     }
 
+    [HttpGet("{role}/Users")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUsersInRoleAsync(string role)
+    {
+      IdentityRole identityRole = await _roleManager.FindByNameAsync(role);
+      List<User> usersInRole = new();
+
+      if (identityRole != null)
+      {
+        foreach (AppUser user in _userManager.Users.ToList())
+        {
+          if (_userManager.IsInRoleAsync(user, identityRole.Name).Result)
+          {
+            usersInRole.Add(Projections.User.Build(user));
+          }
+        }
+
+        return Ok(usersInRole);
+      }
+
+      return NotFound(role);
+    }
+
     [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
