@@ -41,21 +41,26 @@ namespace OSU_CS467_Software_Quiz.Controllers
     {
       if (ModelState.IsValid)
       {
-        var appUser = AppUser.Build(user);
-
-        IdentityResult result = await _userManager.CreateAsync(appUser, user?.Password ?? string.Empty);
-        if (result.Succeeded)
+        if (user.Password != null)
         {
-          result = await _userManager.AddToRoleAsync(appUser, SeedData.Admin);
+          var appUser = AppUser.Build(user);
 
+          IdentityResult result = await _userManager.CreateAsync(appUser, user?.Password ?? string.Empty);
           if (result.Succeeded)
           {
-            var newUser = await _userManager.FindByEmailAsync(user.Email);
-            return CreatedAtAction(nameof(AddAsync), user, Projections.User.Build(newUser));
+            result = await _userManager.AddToRoleAsync(appUser, SeedData.Admin);
+
+            if (result.Succeeded)
+            {
+              var newUser = await _userManager.FindByEmailAsync(user.Email);
+              return CreatedAtAction(nameof(AddAsync), user, Projections.User.Build(newUser));
+            }
           }
+
+          ModelState.AppendErrors("User Manager", result);
         }
 
-        ModelState.AppendErrors("User Manager", result);
+        ModelState.AddModelError("Password", "Password is required for admin route creation.");
       }
 
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
