@@ -40,3 +40,23 @@ export function ProtectedRoute({ user, children, ...rest }) {
     />
   );
 }
+
+//Use this to wrap a route you want to prevent access to if user is not logged in
+export function CandidateProtectedRoute({ user, children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) => {
+        if (user) {
+          return children;
+        }
+
+        if (!user) {
+          return <Redirect to={{ pathname: '404', state: { from: location } }} />;
+        }
+
+        return null;
+      }}
+    />
+  );
+}
