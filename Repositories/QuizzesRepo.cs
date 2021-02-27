@@ -70,6 +70,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
       var quizAssignmentEntry = _db.QuizAssignments.Add(new()
       {
+        Key = Guid.NewGuid(),
         Quiz = quizEntity,
         TimeAllotment = quizAssignment.TimeAllotment,
         User = userEntity,
