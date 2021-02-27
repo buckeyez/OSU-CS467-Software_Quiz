@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using OSU_CS467_Software_Quiz.Data;
 using OSU_CS467_Software_Quiz.Models;
 using OSU_CS467_Software_Quiz.Projections;
+using OSU_CS467_Software_Quiz.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace OSU_CS467_Software_Quiz.Repositories
   public class QuizzesRepo : IQuizzesRepo
   {
     private readonly AppDbContext _db;
+    private readonly IMailService _mailService;
 
-    public QuizzesRepo(AppDbContext db)
+    public QuizzesRepo(AppDbContext db, IMailService mailService)
     {
       _db = db;
+      _mailService = mailService;
     }
 
     public async Task<Quizzes> AddQuizAsync(string name)
@@ -84,6 +87,17 @@ namespace OSU_CS467_Software_Quiz.Repositories
       catch (DbUpdateException e)
       {
         Console.WriteLine($"{e.Source}: {e.Message}");
+        return null;
+      }
+
+      try
+      {
+        await _mailService.SendQuizAssignmentAsync(quizAssignmentEntry.Entity);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine($"{e.Source}: {e.Message}");
+        await RemoveQuizAssignmentAsync(quizAssignmentEntry.Entity.Id);
         return null;
       }
 
