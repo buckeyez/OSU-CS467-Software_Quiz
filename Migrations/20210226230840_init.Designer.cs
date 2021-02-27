@@ -10,7 +10,7 @@ using OSU_CS467_Software_Quiz.Data;
 namespace OSU_CS467_Software_Quiz.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210226014623_init")]
+    [Migration("20210226230840_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,6 +301,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
+
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("QuizId")
                         .HasColumnType("integer");
