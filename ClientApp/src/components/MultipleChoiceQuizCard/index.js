@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import QuizQuestionCard from '../QuizQuestionCard';
-import { QuizQuestionCard, Form } from '../../components';
+import { QuizQuestionCard } from '../../components';
 
 export default function MultipleChoiceQuizCard({ ...props }) {
   const [checked, setChecked] = useState(null);
 
   useEffect(() => {
     setChecked(props.questionAndAnswerMap.get(props.questionIndex));
-  });
+  }, []);
 
   const changeRadio = (e) => {
     console.log('e is: ', e.target.value);
@@ -29,7 +29,7 @@ export default function MultipleChoiceQuizCard({ ...props }) {
               changeRadio(e);
               props.updateQuestionAndAnswersMap(answer.id);
             }}
-            checked={checked == answer.id}
+            checked={checked === answer.id}
           ></QuizQuestionCard.Input>
           {answer.value}
         </div>

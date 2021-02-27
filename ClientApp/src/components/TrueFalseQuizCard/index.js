@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import QuizQuestionCard from '../QuizQuestionCard';
-import { QuizQuestionCard, Form } from '../../components';
+import { QuizQuestionCard } from '../../components';
 
 export default function TrueFalseQuizCard({ ...props }) {
   const [checked, setChecked] = useState(null);
@@ -28,7 +28,7 @@ export default function TrueFalseQuizCard({ ...props }) {
               changeRadio(e);
               props.updateQuestionAndAnswersMap(answer.id);
             }}
-            checked={checked == answer.id}
+            checked={checked === answer.id}
           ></QuizQuestionCard.Input>
           {answer.value}
         </div>

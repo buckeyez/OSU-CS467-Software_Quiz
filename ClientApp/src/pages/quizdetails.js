@@ -27,9 +27,14 @@ export default function QuizDetails() {
   useEffect(() => {
     const fetchData = async () => {
       //Takes a temporary param right now as quizID
-      const r = await getQuizQuestions(5);
+      const r = await getQuizQuestions(1);
       setQuizData(r);
-      r.questions.length === 1 ? setShowSubmitButton(true) : setShowSubmitButton(false);
+      if (r.questions.length === 1) {
+        setShowSubmitButton(true);
+      } else {
+        setShowSubmitButton(false);
+      }
+
       setLoading(false);
     };
     fetchData();
@@ -104,7 +109,9 @@ export default function QuizDetails() {
   };
   console.log(numberOfQuestions);
   const getNextQuestion = () => {
-    questionIndex < numberOfQuestions - 1 ? setQuestionIndex(questionIndex + 1) : null;
+    if (questionIndex < numberOfQuestions - 1) {
+      setQuestionIndex(questionIndex + 1);
+    }
 
     if (questionIndex === numberOfQuestions - 2) {
       setShowSubmitButton(true);
@@ -112,7 +119,12 @@ export default function QuizDetails() {
   };
 
   const getPrevQuestion = () => {
-    questionIndex === 0 ? setQuestionIndex(0) : setQuestionIndex(questionIndex - 1);
+    if (questionIndex === 0) {
+      setQuestionIndex(0);
+    } else {
+      setQuestionIndex(questionIndex - 1);
+    }
+
     if (showSubmitButton) {
       setShowSubmitButton(false);
     }
