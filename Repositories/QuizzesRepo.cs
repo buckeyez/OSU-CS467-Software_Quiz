@@ -65,6 +65,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
       if (assignmentExists != null)
       {
+        Console.WriteLine("Quiz Assignment Exists!");
         return null;
       }
 
