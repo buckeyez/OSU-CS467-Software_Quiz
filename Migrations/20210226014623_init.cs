@@ -295,20 +295,22 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 name: "QuizResults",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FreeResponse = table.Column<string>(type: "text", nullable: true),
                     QuizAssignmentId = table.Column<int>(type: "integer", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    AnswerId = table.Column<int>(type: "integer", nullable: false),
-                    FreeResponse = table.Column<string>(type: "text", nullable: true)
+                    AnswerId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizResults", x => new { x.AnswerId, x.QuestionId, x.QuizAssignmentId });
+                    table.PrimaryKey("PK_QuizResults", x => x.Id);
                     table.ForeignKey(
                         name: "FK_QuizResults_Answers_AnswerId",
                         column: x => x.AnswerId,
                         principalTable: "Answers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_QuizResults_Questions_QuestionId",
                         column: x => x.QuestionId,
@@ -390,6 +392,11 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 name: "IX_QuizQuestions_QuizId",
                 table: "QuizQuestions",
                 column: "QuizId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizResults_AnswerId",
+                table: "QuizResults",
+                column: "AnswerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuizResults_QuestionId",

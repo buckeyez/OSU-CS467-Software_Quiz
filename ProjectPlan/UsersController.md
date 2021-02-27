@@ -20,7 +20,48 @@ Expects **_NewUser_** in body
 }
 ```
 
-Returns **_NewUser_** minus password
+Returns **_User_**
+
+```json
+{
+  "Id": string,
+  "Name": string,
+  "FirstName": string,
+  "LastName": string,
+  "Email": string
+}
+```
+
+### Add Passwordless User
+
+Suffix: `/AddPasswordless`
+
+Note: Should be used for creating candidates and not normal sign-up.
+
+Expects **_NewUser_** in body
+
+```json
+{
+  "Name": string,
+  "FirstName": string,
+  "LastName": string,
+  "Email": string
+}
+```
+
+Note: **_Password_** field can/should be _null_ in this case.
+
+Returns **_User_**
+
+```json
+{
+  "Id": string,
+  "Name": string,
+  "FirstName": string,
+  "LastName": string,
+  "Email": string
+}
+```
 
 ### Delete
 
