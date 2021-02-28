@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace OSU_CS467_Software_Quiz.Models
@@ -5,6 +6,7 @@ namespace OSU_CS467_Software_Quiz.Models
   public class QuizAssignments
   {
     public int Id { get; set; }
+    public Guid Key { get; set; }
     public int TimeAllotment { get; set; }
     public int TimeTaken { get; set; }
 

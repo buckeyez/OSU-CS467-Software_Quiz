@@ -300,6 +300,9 @@ namespace OSU_CS467_Software_Quiz.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("QuizId")
                         .HasColumnType("integer");
 

@@ -221,6 +221,7 @@ namespace OSU_CS467_Software_Quiz.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Key = table.Column<Guid>(type: "uuid", nullable: false),
                     TimeAllotment = table.Column<int>(type: "integer", nullable: false),
                     TimeTaken = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),

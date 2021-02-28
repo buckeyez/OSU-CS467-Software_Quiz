@@ -55,6 +55,26 @@ Returns an array of **_Role_**
 ]
 ```
 
+### Get Users in Role (by role name convince for Miao)
+
+Suffix: `/<role-name>/Users`
+
+Expects **_role-name_** as part of route
+
+Returns an array of **_User_**
+
+```json
+[
+  {
+    "Id": string,
+    "Name": string,
+    "FirstName": string,
+    "LastName": string,
+    "Email": string
+  }
+]
+```
+
 ### Get Users in Role
 
 Suffix: `/<role-id>/Edit`
@@ -87,6 +107,8 @@ Suffix: `/Update`
 Expects **_RoleModification_** in body
 
 ```json
+  "Id": string,
+  "Name": string,
   "AddIds": string[],
   "DeleteIds": string[]
 ```
