@@ -1,54 +1,35 @@
-import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../context/userContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
-import { QuizDetails } from '../pages/quizdetails';
+import { getCandidateInformation } from '../utils/getCandidateInformation';
 
 export default function CandidateHome() {
-  const fakeQuizAssignment = {
-    id: 99,
-    quiz: {
-      id: 1,
-      name: 'Quiz 1',
-    },
-    user: {
-      id: '81e13701-d3d7-4e0c-a82d-fb5b558f94cf',
-      name: 'panmi',
-      firstName: 'miao',
-      lastName: 'pan',
-      email: 'michellepana@gmail.com',
-    },
-    timeAllotment: 5,
-  };
-
-  //   const fakeQuizAssignments = [
-  //     {
-  //       id: 5,
-  //       Name: 'Finance Quiz',
-  //     },
-  //     {
-  //       id: 6,
-  //       Name: 'English Quiz',
-  //     },
-  //   ];
+  const [loading, setLoading] = useState(true);
+  const [candidateAndQuizInformation, setCandidateAndQuizInformation] = useState(null);
 
   //   const { user } = useContext(UserContext);
   const history = useHistory();
 
   useEffect(() => {
-    //Have API call to pull quizes for candidate after they land on this page from their email
-  });
+    const fetchData = async () => {
+      const r = await getCandidateInformation('4c64482d-8752-407c-8a43-525f7d5f0c33');
 
-  /*TODO: Refactor this code so that we are dynamically obtaining the number of
-   * of quizes assigned to the user. Right now its hard coded. You'd ideally
-   * want to map over the number of quizes on the user object, and then render
-   * each QuizCard component.
-   */
+      setCandidateAndQuizInformation(r);
 
-  const quiz = fakeQuizAssignment.quiz;
-  const candidate = fakeQuizAssignment.user;
-  const allotment = fakeQuizAssignment.timeAllotment;
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <span>Loading...</span>;
+  }
+
+  console.log('canidate info>>>>', candidateAndQuizInformation);
+  const quiz = candidateAndQuizInformation.quiz;
+  const candidate = candidateAndQuizInformation.user;
+  const allotment = candidateAndQuizInformation.timeAllotment;
 
   return (
     <>
