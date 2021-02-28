@@ -26,6 +26,10 @@ export default function QuizDetails() {
   //Can use useLocation to get state passed in via react router Link
   const data = useLocation();
 
+  if (!data.state) {
+    return <span>No quiz data</span>;
+  }
+
   const quizToGrab = data.state.quiz;
   const candidateInformation = data.state.candidate;
   const timeAllotment = data.state.allotment;
@@ -48,6 +52,10 @@ export default function QuizDetails() {
   }, []);
 
   const history = useHistory();
+
+  if (!data.state) {
+    return <span>No quiz data</span>;
+  }
 
   if (loading) {
     return <span>Loading...</span>;

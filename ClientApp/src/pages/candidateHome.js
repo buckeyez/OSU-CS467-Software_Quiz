@@ -1,19 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
 import { getCandidateInformation } from '../utils/getCandidateInformation';
+const queryString = require('query-string');
 
 export default function CandidateHome() {
   const [loading, setLoading] = useState(true);
   const [candidateAndQuizInformation, setCandidateAndQuizInformation] = useState(null);
+  const location = useLocation();
+  const queryParams = queryString.parse(location.search);
 
-  //   const { user } = useContext(UserContext);
-  const history = useHistory();
+  //https://localhost:5001/candidate-home/?key=4c64482d-8752-407c-8a43-525f7d5f0c33
+  if (!queryParams.key) {
+    return <span>Failed to provide key param</span>;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      const r = await getCandidateInformation('4c64482d-8752-407c-8a43-525f7d5f0c33');
+      const r = await getCandidateInformation(queryParams.key);
 
       setCandidateAndQuizInformation(r);
 
@@ -24,6 +29,10 @@ export default function CandidateHome() {
 
   if (loading) {
     return <span>Loading...</span>;
+  }
+
+  if (!candidateAndQuizInformation) {
+    return <span>There are no quizes for you right now...</span>;
   }
 
   console.log('canidate info>>>>', candidateAndQuizInformation);
