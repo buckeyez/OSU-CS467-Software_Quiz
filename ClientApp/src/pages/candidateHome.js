@@ -11,34 +11,33 @@ export default function CandidateHome() {
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
 
-  //https://localhost:5001/candidate-home/?key=4c64482d-8752-407c-8a43-525f7d5f0c33
-  if (!queryParams.key) {
-    return <span>Failed to provide key param</span>;
-  }
-
   useEffect(() => {
     const fetchData = async () => {
-      const r = await getCandidateInformation(queryParams.key);
-
-      setCandidateAndQuizInformation(r);
-
-      setLoading(false);
+      //https://localhost:5001/candidate-home/?key=4c64482d-8752-407c-8a43-525f7d5f0c33
+      if (!queryParams.key) {
+        //pass
+      } else {
+        const r = await getCandidateInformation(queryParams.key);
+        setCandidateAndQuizInformation(r);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
 
-  if (loading) {
-    return <span>Loading...</span>;
-  }
+  //   if (!candidateAndQuizInformation) {
+  //     return <span>There are no quizes for you right now...</span>;
+  //   }
 
-  if (!candidateAndQuizInformation) {
-    return <span>There are no quizes for you right now...</span>;
+  if (loading || !candidateAndQuizInformation) {
+    return <span>Loading...</span>;
   }
 
   console.log('canidate info>>>>', candidateAndQuizInformation);
   const quiz = candidateAndQuizInformation.quiz;
   const candidate = candidateAndQuizInformation.user;
   const allotment = candidateAndQuizInformation.timeAllotment;
+  console.log('allotment is', allotment);
 
   return (
     <>

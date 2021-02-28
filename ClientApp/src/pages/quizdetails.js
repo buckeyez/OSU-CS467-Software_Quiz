@@ -23,30 +23,35 @@ export default function QuizDetails() {
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
 
+  let quizToGrab;
+  let candidateInformation;
+  let timeAllotment;
+
   //Can use useLocation to get state passed in via react router Link
   const data = useLocation();
-
-  if (!data.state) {
-    return <span>No quiz data</span>;
-  }
-
-  const quizToGrab = data.state.quiz;
-  const candidateInformation = data.state.candidate;
-  const timeAllotment = data.state.allotment;
+  console.log('dat>>>>', data);
 
   //Handles loading quiz questions from the API
   useEffect(() => {
     const fetchData = async () => {
-      //Takes a temporary param right now as quizID
-      const r = await getQuizQuestions(quizToGrab.id);
-      setQuizData(r);
-      if (r.questions.length === 1) {
-        setShowSubmitButton(true);
+      if (!data.state) {
+        //pass
       } else {
-        setShowSubmitButton(false);
-      }
+        console.log('in hereee!!');
+        quizToGrab = data.state.quiz;
+        candidateInformation = data.state.candidate;
+        timeAllotment = data.state.allotment;
 
-      setLoading(false);
+        //Takes a temporary param right now as quizID
+        const r = await getQuizQuestions(quizToGrab.id);
+        setQuizData(r);
+        if (r.questions.length === 1) {
+          setShowSubmitButton(true);
+        } else {
+          setShowSubmitButton(false);
+        }
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -60,6 +65,15 @@ export default function QuizDetails() {
   if (loading) {
     return <span>Loading...</span>;
   }
+
+  //------THIS IS HACKY----------
+  quizToGrab = data.state.quiz;
+  candidateInformation = data.state.candidate;
+  timeAllotment = data.state.allotment;
+  //-----FOR SOME REASON, NEED TO ASSIGN TWICE IN CODE. FIX ABOVE LATEER-------
+
+  console.log('allotment here is', timeAllotment);
+  console.log('quizToGra', quizToGrab);
 
   const handleQuizTimeUp = (minutes, seconds) => {
     setQuizTimeUp(true);
@@ -166,6 +180,7 @@ export default function QuizDetails() {
 
       //Can either route to home, or show quiz completion page.
       //If route to home, we can show banner or drop confetti
+      //Need to pass key in redirect, else candidate-home stuck on 'loading...'
       history.push(ROUTES.CANDIDATE_HOME);
     }
   };
@@ -191,20 +206,5 @@ export default function QuizDetails() {
         {error === false ? null : <p>Not all quiz questions have been answered</p>}
       </MainQuiz.Error>
     </MainQuiz>
-
-    // <>
-    //   <h1>You are taking the {quizData.name} Quiz</h1>
-    //   <h4>
-    //     Time Remaining: {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={10}></Timer>}
-    //   </h4>
-    //   {renderSwitch(questionType)}
-    //   <button onClick={getPrevQuestion}>Prev</button>
-    //   {showSubmitButton === false ? (
-    //     <button onClick={getNextQuestion}>Next</button>
-    //   ) : (
-    //     <button onClick={submitQuiz}>Submit</button>
-    //   )}
-    //   {error === false ? null : <p>Not all quiz questions have been answered</p>}
-    // </>
   );
 }
