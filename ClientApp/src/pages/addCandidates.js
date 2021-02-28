@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import history from '../helpers/history';
 import * as ROUTES from '../constants/routes';
 import axios from 'axios';
+import Candidate from '../components/Candidate'
 
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -25,10 +26,21 @@ export default class AddCandidates extends Component {
 
   componentDidMount() {
     console.log('AddCandidates just mounted ');
-    axios.get(`/Users`).then((response) => {
+    axios.get(`/Roles/Candidate/Users`).then((response) => {
       this.setState({ ...this.state, candidatesPool: response.data });
     });
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.count != this.state.count){
+        axios.get(`/Roles/Candidate/Users`).then((response) => {
+            this.setState({ ...this.state, candidatesPool: response.data });
+          });
+    }
+    console.log('AddCandidates just updated ');
+
+  }
+
 
   handleSubmitUser = (e) => {
     e.preventDefault();
@@ -84,7 +96,11 @@ export default class AddCandidates extends Component {
           </form>
           </div>
           <div>
-          {/* <h3>Existing Candidates</h3> */}
+          <h3>Existing Candidates</h3>
+          <p>Count: {this.state.candidatesPool.length}</p>
+          {this.state.candidatesPool.map((candidate, index) => {
+              return <Candidate candidate={candidate} />
+          })}
 
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
         <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}
