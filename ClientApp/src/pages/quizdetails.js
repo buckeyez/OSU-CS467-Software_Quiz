@@ -23,11 +23,18 @@ export default function QuizDetails() {
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
 
+  //Can use useLocation to get state passed in via react router Link
+  const data = useLocation();
+
+  const quizToGrab = data.state.quiz;
+  const candidateInformation = data.state.candidate;
+  const timeAllotment = data.state.allotment;
+
   //Handles loading quiz questions from the API
   useEffect(() => {
     const fetchData = async () => {
       //Takes a temporary param right now as quizID
-      const r = await getQuizQuestions(1);
+      const r = await getQuizQuestions(quizToGrab.id);
       setQuizData(r);
       if (r.questions.length === 1) {
         setShowSubmitButton(true);
@@ -41,9 +48,6 @@ export default function QuizDetails() {
   }, []);
 
   const history = useHistory();
-  //Can use useLocation to get state passed in via react router Link
-  const data = useLocation();
-  //   console.log(data);
 
   if (loading) {
     return <span>Loading...</span>;
@@ -162,7 +166,7 @@ export default function QuizDetails() {
     <MainQuiz>
       <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
       <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={10}></Timer>}
+        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={timeAllotment}></Timer>}
       </MainQuiz.TimeArea>
 
       <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>

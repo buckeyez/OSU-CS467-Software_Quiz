@@ -6,16 +6,32 @@ import { Welcome, QuizCard } from '../components';
 import { QuizDetails } from '../pages/quizdetails';
 
 export default function CandidateHome() {
-  const fakeQuizAssignments = [
-    {
-      id: 5,
-      Name: 'Finance Quiz',
+  const fakeQuizAssignment = {
+    id: 99,
+    quiz: {
+      id: 1,
+      name: 'Quiz 1',
     },
-    {
-      id: 6,
-      Name: 'English Quiz',
+    user: {
+      id: '81e13701-d3d7-4e0c-a82d-fb5b558f94cf',
+      name: 'panmi',
+      firstName: 'miao',
+      lastName: 'pan',
+      email: 'michellepana@gmail.com',
     },
-  ];
+    timeAllotment: 5,
+  };
+
+  //   const fakeQuizAssignments = [
+  //     {
+  //       id: 5,
+  //       Name: 'Finance Quiz',
+  //     },
+  //     {
+  //       id: 6,
+  //       Name: 'English Quiz',
+  //     },
+  //   ];
 
   //   const { user } = useContext(UserContext);
   const history = useHistory();
@@ -30,30 +46,33 @@ export default function CandidateHome() {
    * each QuizCard component.
    */
 
+  const quiz = fakeQuizAssignment.quiz;
+  const candidate = fakeQuizAssignment.user;
+  const allotment = fakeQuizAssignment.timeAllotment;
+
   return (
     <>
       <Welcome>
-        <Welcome.Title>Welcome [NAME HERE] </Welcome.Title>
+        <Welcome.Title>Welcome {candidate.name}</Welcome.Title>
         <Welcome.TextSmall>You have been assigned the following quiz(s). </Welcome.TextSmall>
         <QuizCard>
-          {fakeQuizAssignments.map((quiz) => {
-            return (
-              <div key={quiz.id}>
-                <QuizCard.Title>{quiz.Name}</QuizCard.Title>
-                <QuizCard.ButtonLink
-                  to={{
-                    pathname: ROUTES.QUIZ_DETAILS,
-                    state: {
-                      name:
-                        'PASS CANDIDATE ID AND QUIZ ID HERE TO GET QUIIZ QUESTIONS ON QUIZ DETAILS PAGE',
-                    },
-                  }}
-                >
-                  Start Quiz
-                </QuizCard.ButtonLink>
-              </div>
-            );
-          })}
+          {
+            <div key={quiz.id}>
+              <QuizCard.Title>{quiz.name}</QuizCard.Title>
+              <QuizCard.ButtonLink
+                to={{
+                  pathname: ROUTES.QUIZ_DETAILS,
+                  state: {
+                    candidate: candidate,
+                    quiz: quiz,
+                    allotment: allotment,
+                  },
+                }}
+              >
+                Start Quiz
+              </QuizCard.ButtonLink>
+            </div>
+          }
         </QuizCard>
       </Welcome>
     </>
