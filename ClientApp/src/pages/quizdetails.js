@@ -64,12 +64,14 @@ export default function QuizDetails() {
   let numberOfQuestions = quizData.questions.length;
 
   const updateQuestionAndAnswersMap = (answerID) => {
-    setQuestionAndAnswerMap(questionAndAnswerMap.set(questionIndex, answerID));
+    setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, answerID)));
     console.log('map of Q:A ', questionAndAnswerMap);
   };
 
   const updateQuestionAndAnswersMapFreeResponse = (e) => {
-    setQuestionAndAnswerMap(questionAndAnswerMap.set(questionIndex, e.target.value));
+    // console.log({ value: e.target.value, questionAndAnswerMap });
+    // console.log('quetsrin index', questionIndex);
+    setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, e.target.value)));
     console.log('map of Q:A ', questionAndAnswerMap);
   };
 
@@ -95,7 +97,7 @@ export default function QuizDetails() {
             questionIndex={questionIndex}
           />
         );
-      case 'True OR False':
+      case 'True or False':
         return (
           <TrueFalseQuizCard
             questionTitle={questionTitle}
