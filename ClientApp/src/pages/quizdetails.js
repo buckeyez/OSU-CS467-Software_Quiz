@@ -59,7 +59,7 @@ export default function QuizDetails() {
   const history = useHistory();
 
   if (!data.state) {
-    return <span>No quiz data</span>;
+    return <span>No quiz data to load...</span>;
   }
 
   if (loading) {
