@@ -7,7 +7,7 @@ export default function MultipleChoiceQuizCard({ ...props }) {
 
   useEffect(() => {
     setChecked(props.questionAndAnswerMap.get(props.questionIndex));
-  }, []);
+  });
 
   const changeRadio = (e) => {
     console.log('e is: ', e.target.value);

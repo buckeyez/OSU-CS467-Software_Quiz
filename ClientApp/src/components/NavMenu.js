@@ -59,6 +59,11 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink tag={Link} className="text-dark" to={ROUTES.EDIT_PROFILE}>
+                    Edit Profile
+                  </NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink tag={Link} className="text-dark" to={ROUTES.HOME}>
                     Home
                   </NavLink>
@@ -71,6 +76,19 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to={ROUTES.QUIZZES}>
                     Quizzes
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                    tag={Link}
+                    className="text-dark"
+                    onClick={() => {
+                      localStorage.removeItem('userData');
+                      window.location.reload();
+                    }}
+                    to={'/logout'}
+                  >
+                    Log Out
                   </NavLink>
                 </NavItem>
               </ul>
