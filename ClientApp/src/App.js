@@ -9,6 +9,7 @@ import CandidateHome from './pages/candidateHome';
 import QuizDetails from './pages/quizdetails';
 import Layout from './components/Layout';
 import Quiz from './components/Quiz';
+import AddCandidates from './pages/addCandidates';
 import EditProfile from './pages/editProfile';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
@@ -82,6 +83,10 @@ export default function App() {
 
             <ProtectedRoute user={user} path={ROUTES.QUIZZES} exact>
               <Quiz />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={user} path={ROUTES.CANDIDATES} exact>
+              <AddCandidates />
             </ProtectedRoute>
 
             {/* <Route path="/new-quiz" component={AddQuestions} /> */}

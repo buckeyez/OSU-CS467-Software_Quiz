@@ -18,6 +18,7 @@ export default class Quiz extends Component {
     this.state = {
       QuizTitle: '',
       timerChecked: false,
+      timeAllotted: "",
       message: '',
       theQuizzes: [],
       currentQuizID: '',
@@ -32,6 +33,9 @@ export default class Quiz extends Component {
       bufferID: '',
       befferName: '',
       refreshAfterUpdate: false,
+      theCandidates: [],
+      selectedCandidate: "",
+      assignedMessage: "",
     };
   }
 
@@ -46,7 +50,11 @@ export default class Quiz extends Component {
       .then(
         axios.get('/Questions').then((response) => {
           this.setState({ ...this.state, questionPool: response.data });
-        })
+        }).then(
+          axios.get('/Roles/Candidate/Users').then((response) => {
+            this.setState({...this.state, theCandidates: response.data})
+          })
+        )
       );
   };
 
@@ -147,6 +155,7 @@ export default class Quiz extends Component {
 
   handleAddQuiz = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (!this.state.QuizTitle) {
       this.setState({ ...this.state, message: 'Quiz Title cannot be blank!' });
       return;
@@ -317,10 +326,44 @@ export default class Quiz extends Component {
       });
   };
 
-  handleSendEmail = (e) => {
+  handleSelectCandidate = (e) => {
+    console.log("in handleSelectCandidate: ", e.target.value)
+    this.setState({...this.state, selectedCandidate: e.target.value})
+  }
+
+  handleTimeAllotment = (e) => {
+    console.log("in time allotment: ", e.target.value)
+    this.setState({...this.state, timeAllotted: e.target.value})
+  }
+
+  handleAssignQuiz = (e) => {
     e.preventDefault();
-    console.log('should send email');
+    e.stopPropagation();
+    let quizID = Number(this.state.bufferID);
+    let timeAllowed = Number(this.state.timeAllotted)
+    console.log('should send email', this.state.bufferID, this.state.selectedCandidate, this.state.timerChecked, this.state.timeAllotted);
+    let payload = {
+      "QuizId": quizID,
+      "UserId": this.state.selectedCandidate,
+      "TimeAllotment": timeAllowed
+    }
+    console.log("payload in assign: ", payload)
+    axios.post(`/Quizzes/Assign`, payload).then((response) => {
+      console.log("response: ", response)
+      this.setState({ ...this.state, assignedMessage: `Quiz ${this.state.bufferID} assigned succesfully! Candidate should have received link to take quiz in email` });
+    }).catch((error) => {
+      console.log("error: ", error.response.data.errors)
+      this.setState({...this.state, assignedMessage: "Not all fields are selected or Quiz assignment already exists!"})
+    }
+    );
   };
+
+  // resetMessage = () => {
+  //   // this.setState({...this.state, assignedMessage: ""})
+  //   this.setState(prevState => {
+  //     return ({...prevState, message: "", assignedMessage: ""})
+  //   })
+  // }
 
   test = () => {
     console.log('test');
@@ -328,7 +371,7 @@ export default class Quiz extends Component {
 
   render() {
     return (
-      <div>
+      <div onClick={this.resetMessage}>
         <h1>Quiz Page</h1>
 
         <div>
@@ -338,7 +381,7 @@ export default class Quiz extends Component {
           <form id="quizTitleBlock">
             <label>Quiz Title</label>
             <input id="quizTitle" value={this.state.QuizTitle} onChange={this.onChange}></input>
-            <label id="timer">
+            {/* <label id="timer">
               Timer:
               <select>
                 <option value="10">10 min</option>
@@ -351,7 +394,7 @@ export default class Quiz extends Component {
             <label id="timerSwitch">
               Timed Quiz
               <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
-            </label>
+            </label> */}
             <button type="submit" onClick={this.handleAddQuiz}>
               Add Quiz
             </button>
@@ -420,12 +463,39 @@ export default class Quiz extends Component {
             {this.state.currentQuizID}
           </h3>
           <form>
-            <label>Name:</label>
-            <input type="email" placeholder="Enter email here..."></input>
-            <button type="submit" onClick={(e) => this.handleSendEmail(e)}>
+            {/* <label>Name:</label> */}
+            <label id="timer">
+              Timer:
+              <select onChange={this.handleTimeAllotment}>
+                <option value="10">10 min</option>
+                <option value="30">30 min</option>
+                <option value="60">60 min</option>
+                <option value="90">90 min</option>
+                <option value="120">120 min</option>
+                <option value="160">160 min</option>
+                <option value="180">180 min</option>
+              </select>
+            </label>
+            <label id="timerSwitch">
+              Timed Quiz
+              <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
+            </label>
+            <label>
+              Assign to:
+              <select onChange={this.handleSelectCandidate}>
+                <option>Select Candidate</option>
+              {this.state.theCandidates.map((candidate, index) => {
+                return (
+                  <option key={index} value={candidate.id}>{candidate.firstName} {candidate.lastName}</option>
+                );
+              })}
+              </select>
+            </label>
+            <button type="submit" onClick={(e) => this.handleAssignQuiz(e)}>
               Send quiz!
             </button>
           </form>
+          {this.state.assignedMessage && <p>{this.state.assignedMessage}</p>}
         </div>
       </div>
     );
