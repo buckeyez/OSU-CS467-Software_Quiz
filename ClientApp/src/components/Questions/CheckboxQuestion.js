@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from 'react';
-import MultipleChoiceQuestion from './MultipleChoiceQuestion';
+import React, { /*Component,*/ useState, useEffect } from 'react';
+//import MultipleChoiceQuestion from './MultipleChoiceQuestion';
 
 const CheckboxQuestion = (props) => {
   const [choiceList, setChoiceList] = useState([{ Value: '', Correct: false }]);
@@ -21,7 +21,7 @@ const CheckboxQuestion = (props) => {
       setChoiceList(newList);
       // console.log("newList in useEffect: ", choiceList)
     }
-  }, []);
+  }, [choiceList, props.answers]);
 
   function handleChange(index, event) {
     const options = [...choiceList];

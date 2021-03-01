@@ -11,8 +11,8 @@ export default function Timer(props) {
       if (seconds > 0) {
         setSeconds(seconds - 1);
       }
-      if (seconds == 0) {
-        if (minutes == 0) {
+      if (seconds === 0) {
+        if (minutes === 0) {
           props.handleQuizTimeUp();
           clearInterval(interval);
         } else {

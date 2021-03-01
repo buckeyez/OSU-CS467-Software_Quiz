@@ -18,7 +18,8 @@ namespace OSU_CS467_Software_Quiz.Services
     public MailService(IOptions<MailSettings> mailSettings)
     {
       _mailSettings = mailSettings.Value;
-      _mailPassword = Environment.GetEnvironmentVariable("MAIL_PWD");
+      //_mailPassword = Environment.GetEnvironmentVariable("MAIL_PWD");
+      _mailPassword = "pdt8hSsasAD7n69XB7g!";
     }
 
     public Task SendQuizAssignmentAsync(QuizAssignments quizAssignment)

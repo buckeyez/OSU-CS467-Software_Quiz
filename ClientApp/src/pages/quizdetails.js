@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context/userContext';
+import React, { /*useContext,*/ useEffect, useState } from 'react';
+//import { UserContext } from '../context/userContext';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import {
@@ -10,7 +10,7 @@ import {
   MainQuiz,
 } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
-import { submitQuiz } from '../utils/submitQuiz';
+//import { submitQuiz } from '../utils/submitQuiz';
 import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
 
 export default function QuizDetails() {
@@ -18,13 +18,13 @@ export default function QuizDetails() {
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
-  const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState('');
-  const [quizTimeUp, setQuizTimeUp] = useState(false);
+  //const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState('');
+  const [/*quizTimeUp,*/ setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
 
-  let quizToGrab;
-  let candidateInformation;
+  //let quizToGrab;
+  //let candidateInformation;
   let timeAllotment;
 
   //Can use useLocation to get state passed in via react router Link
@@ -38,9 +38,9 @@ export default function QuizDetails() {
         //pass
       } else {
         console.log('in hereee!!');
-        quizToGrab = data.state.quiz;
-        candidateInformation = data.state.candidate;
-        timeAllotment = data.state.allotment;
+        const quizToGrab = data.state.quiz;
+        //candidateInformation = data.state.candidate;
+        //timeAllotment = data.state.allotment;
 
         //Takes a temporary param right now as quizID
         const r = await getQuizQuestions(quizToGrab.id);
@@ -54,7 +54,7 @@ export default function QuizDetails() {
       }
     };
     fetchData();
-  }, []);
+  }, [data.state]);
 
   const history = useHistory();
 
@@ -67,13 +67,21 @@ export default function QuizDetails() {
   }
 
   //------THIS IS HACKY----------
-  quizToGrab = data.state.quiz;
-  candidateInformation = data.state.candidate;
+
+  // @Adil the following applies to all cases
+  /*Assignments to the 'timeAllotment' variable from inside React Hook useEffect will be lost
+    after each render. To preserve the value over time, store it in a useRef Hook and keep the
+    mutable value in the '.current' property. Otherwise, you can move this variable directly
+    inside useEffect react-hooks/exhaustive-deps
+  */
+
+  //quizToGrab = data.state.quiz;
+  //candidateInformation = data.state.candidate;
   timeAllotment = data.state.allotment;
   //-----FOR SOME REASON, NEED TO ASSIGN TWICE IN CODE. FIX ABOVE LATEER-------
 
-  console.log('allotment here is', timeAllotment);
-  console.log('quizToGra', quizToGrab);
+  //console.log('allotment here is', timeAllotment);
+  //console.log('quizToGra', quizToGrab);
 
   const handleQuizTimeUp = (minutes, seconds) => {
     setQuizTimeUp(true);
@@ -133,6 +141,8 @@ export default function QuizDetails() {
             questionIndex={questionIndex}
           />
         );
+      default:
+        return;
     }
   };
   console.log(numberOfQuestions);

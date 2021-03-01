@@ -12,7 +12,7 @@ export default function Signin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { user, setUser } = useContext(UserContext);
+  const { /*user,*/ setUser } = useContext(UserContext);
 
   const isInvalid = password === '' || emailAddress === '';
 

@@ -19,7 +19,7 @@ import './custom.css';
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [quizTaker, setQuizTaker] = useState(true);
+  const [quizTaker/*, setQuizTaker*/] = useState(true);
   // const user = null;
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);

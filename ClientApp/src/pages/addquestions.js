@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 
-import Switch from 'react-switch';
+//import Switch from 'react-switch';
 
 // import "./SoftwareQuiz.css"
 // import "./NewQuiz.css"
@@ -36,8 +36,8 @@ export default class AddQuestions extends Component {
     // this is really bad performance
     // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
     if (
-      this.state.forDelete != prevState.forDelete ||
-      this.state.questionPool != prevState.questionPool
+      this.state.forDelete !== prevState.forDelete ||
+      this.state.questionPool !== prevState.questionPool
     ) {
       // if(this.state != prevState){
       // console.log("this and prev: ", this.state, prevState)

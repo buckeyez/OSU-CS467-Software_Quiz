@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const updateUser = async (userInformation) => {
   //Required data for reqeust body
-  const data = {};
+  //const data = {};
   const headers = {};
 
   const response = await axios

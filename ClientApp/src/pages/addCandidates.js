@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import history from '../helpers/history';
-import * as ROUTES from '../constants/routes';
+//import { withRouter } from 'react-router-dom';
+//import history from '../helpers/history';
+//import * as ROUTES from '../constants/routes';
 import axios from 'axios';
 import Candidate from '../components/Candidate'
 
@@ -32,7 +32,7 @@ export default class AddCandidates extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.count != this.state.count){
+    if(prevState.count !== this.state.count){
         axios.get(`/Roles/Candidate/Users`).then((response) => {
             this.setState({ ...this.state, candidatesPool: response.data });
           });

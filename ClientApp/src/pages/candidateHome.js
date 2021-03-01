@@ -23,7 +23,7 @@ export default function CandidateHome() {
       }
     };
     fetchData();
-  }, []);
+  }, [queryParams.key]);
 
   //   if (!candidateAndQuizInformation) {
   //     return <span>There are no quizes for you right now...</span>;
