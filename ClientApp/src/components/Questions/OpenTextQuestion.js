@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
+import React/*, { Component }*/ from 'react';
+//import { withRouter } from 'react-router-dom';
+//import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 // import history from './history'
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';

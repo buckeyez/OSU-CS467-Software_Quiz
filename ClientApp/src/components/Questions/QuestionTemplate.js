@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
+//import { withRouter } from 'react-router-dom';
 // import history from './history'
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -78,14 +78,13 @@ export default class QuestionTemplate extends Component {
     console.log('in checkbox choice: ', choiceList);
     let theAnswer = choiceList;
     this.setState({ ...this.state, answers: theAnswer });
-  }
+  };
 
   handleQuestionDelete = () => {
     console.log('innnnnn delete this question');
     if (!this.state.id) {
-      {
-        console.log('Item not added yet!');
-      }
+      console.log('Item not added yet!');
+
       this.setState({ ...this.state, errorMessage: 'Question not added yet!' });
       return;
     }
@@ -95,11 +94,14 @@ export default class QuestionTemplate extends Component {
 
   handleQuestionSubmit = (event) => {
     //making Axios call
-    if (this.state.id == '') {
+    if (this.state.id === '') {
       console.log('making axios call for ', this.state.questionType);
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
+      if (
+        this.state.questionType === 'Multiple Choice' ||
+        this.state.questionType === 'Select All That Apply'
+      ) {
         payload = {
           Question: {
             Value: this.state.value,
@@ -107,7 +109,7 @@ export default class QuestionTemplate extends Component {
           },
           Answers: this.state.answers,
         };
-      } else if (this.state.questionType == 'Free Response') {
+      } else if (this.state.questionType === 'Free Response') {
         payload = {
           Question: {
             Value: this.state.value,
@@ -120,7 +122,7 @@ export default class QuestionTemplate extends Component {
             },
           ],
         };
-      } else if (this.state.questionType == 'True OR False') {
+      } else if (this.state.questionType === 'True OR False') {
         let answer = this.state.answers[0] === 'true' ? 'true' : 'false';
         let notAnswer = answer === 'true' ? 'false' : 'true';
         console.log('answer, notAnswer: ', answer, notAnswer);
@@ -154,7 +156,10 @@ export default class QuestionTemplate extends Component {
       console.log('item already exist, updating it');
       event.preventDefault();
       let payload;
-      if (this.state.questionType === 'Multiple Choice' || this.state.questionType === "Select All That Apply") {
+      if (
+        this.state.questionType === 'Multiple Choice' ||
+        this.state.questionType === 'Select All That Apply'
+      ) {
         payload = {
           Question: {
             Value: this.state.value,
@@ -162,7 +167,7 @@ export default class QuestionTemplate extends Component {
           },
           Answers: this.state.answers,
         };
-      } else if (this.state.questionType == 'Free Response') {
+      } else if (this.state.questionType === 'Free Response') {
         payload = {
           Question: {
             Value: this.state.value,
@@ -175,7 +180,7 @@ export default class QuestionTemplate extends Component {
             },
           ],
         };
-      } else if (this.state.questionType == 'True OR False') {
+      } else if (this.state.questionType === 'True OR False') {
         let answer = this.state.answers[0] === 'true' ? 'true' : 'false';
         let notAnswer = answer === 'true' ? 'false' : 'true';
         console.log('answer, notAnswer: ', answer, notAnswer);
@@ -235,25 +240,25 @@ export default class QuestionTemplate extends Component {
                 </select>
               </div>
               <div>
-                {this.state.questionType == 'Free Response' && (
+                {this.state.questionType === 'Free Response' && (
                   <OpenTextQuestion
                     answers={this.state.answers}
                     handleOpenTextAnswer={this.handleChangeOpenTextAnswer}
                   />
                 )}
-                {this.state.questionType == 'True OR False' && (
+                {this.state.questionType === 'True OR False' && (
                   <TrueOrFalseQuestion
                     answers={this.state.answers}
                     handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}
                   />
                 )}
-                {this.state.questionType == 'Multiple Choice' && (
+                {this.state.questionType === 'Multiple Choice' && (
                   <MultipleChoiceQuestion
                     answers={this.state.answers}
                     handleMultipleChoiceAnswer={this.handleChangeMultipleChoiceAnswer}
                   />
                 )}
-                {this.state.questionType == 'Select All That Apply' && (
+                {this.state.questionType === 'Select All That Apply' && (
                   <CheckboxQuestion
                     answers={this.state.answers}
                     handleCheckboxChoiceAnswer={this.handleCheckboxChoiceAnswer}
@@ -262,7 +267,7 @@ export default class QuestionTemplate extends Component {
               </div>
               {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
               <button type="submit" onClick={this.handleQuestionSubmit}>
-                {this.state.id == '' ? 'Submit' : 'Update'}
+                {this.state.id === '' ? 'Submit' : 'Update'}
               </button>
               {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
               <button onClick={this.handleQuestionDelete}>Delete</button>

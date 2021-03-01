@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
-import axios from 'axios';
+import React/*, { Component, useState, useEffect }*/ from 'react';
+//import axios from 'axios';
 // import Form from 'reactstrap/lib/Form';
-import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
+//import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 import { Form } from './';
 
 const QuizDisplay = (props) => {

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { /*Component,*/ useState } from 'react';
 // import Form from 'reactstrap/lib/Form';
 
 import { Form } from '../';
@@ -13,13 +13,13 @@ const QuestionDisplay = (props) => {
     setShowDetail(!showDetail);
   };
 
-  const handleChangeOpenTextAnswer = (event) => {
-    console.log('to update answers for Open Text in parent: ', event.target.value);
-  };
+  // const handleChangeOpenTextAnswer = (event) => {
+  //   console.log('to update answers for Open Text in parent: ', event.target.value);
+  // };
 
-  const handleChangeMultipleChoiceAnswer = (choiceList) => {
-    console.log('in multiplr choice: ', choiceList);
-  };
+  // const handleChangeMultipleChoiceAnswer = (choiceList) => {
+  //   console.log('in multiplr choice: ', choiceList);
+  // };
 
   return (
     <div>

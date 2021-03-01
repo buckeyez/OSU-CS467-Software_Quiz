@@ -11,7 +11,7 @@ export default function TrueFalseQuizCard({ ...props }) {
 
   useEffect(() => {
     setChecked(props.questionAndAnswerMap.get(props.questionIndex));
-  });
+  }, [props.questionAndAnswerMap, props.questionIndex]);
 
   const questionCardTitle = () => {
     return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;

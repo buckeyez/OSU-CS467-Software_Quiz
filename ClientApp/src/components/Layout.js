@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React/*, { Component }*/ from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';

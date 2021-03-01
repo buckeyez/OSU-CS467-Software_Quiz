@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React/*, { Component, useState }*/ from 'react';
 // import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 
 const Candidate = (props) => {

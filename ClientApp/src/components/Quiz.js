@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import history from '../helpers/history';
-import * as ROUTES from '../constants/routes';
+//import { withRouter } from 'react-router-dom';
+//import history from '../helpers/history';
+//import * as ROUTES from '../constants/routes';
 import Switch from 'react-switch';
 import axios from 'axios';
 import QuizDisplay from './QuizDisplay';
@@ -62,8 +62,8 @@ export default class Quiz extends Component {
     // this is really bad performance
     // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
     if (
-      this.state.quizCount != prevState.quizCount ||
-      this.state.refreshAfterUpdate != prevState.refreshAfterUpdate
+      this.state.quizCount !== prevState.quizCount ||
+      this.state.refreshAfterUpdate !== prevState.refreshAfterUpdate
     ) {
       // if(this.state != prevState){
       // console.log("this and prev: ", this.state, prevState)
@@ -94,7 +94,7 @@ export default class Quiz extends Component {
             });
           })
         );
-    } else if (this.state.currentQuizID != prevState.currentQuizID) {
+    } else if (this.state.currentQuizID !== prevState.currentQuizID) {
       console.log('prev id, cur id: ' + prevState.currentQuizID, ',' + this.state.currentQuizID);
       console.log(
         'bufferID and bufferName',
@@ -294,7 +294,7 @@ export default class Quiz extends Component {
     e.preventDefault();
     console.log('checkbox changed: ', e.target.nextSibling.value, e.target.checked);
     const options = [...this.state.quizContentsID];
-    let length = options.length;
+    //let length = options.length;
     // for (let i = 0; i < length; i++) {
       if (!options.includes(id)) {
         options.push(id);

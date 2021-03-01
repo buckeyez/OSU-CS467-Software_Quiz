@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
-import { useHistory } from 'react-router-dom';
-import * as ROUTES from '../constants/routes';
+//import { useHistory } from 'react-router-dom';
+//import * as ROUTES from '../constants/routes';
 import { Form } from '../components';
 import validator from 'validator';
 import { updateUser, updateUserPassword } from '../utils/updateUser';
@@ -10,7 +10,7 @@ import { login } from '../utils/loginUser';
 
 export default function EditProfile() {
   const { user, setUser } = useContext(UserContext);
-  const history = useHistory();
+  //const history = useHistory();
   const [updatedFirstName, setUpdatedFirstName] = useState(user.firstName);
   const [updatedLastName, setUpdatedLastName] = useState(user.lastName);
   const [updatedEmail, setUpdatedEmail] = useState(user.email);
