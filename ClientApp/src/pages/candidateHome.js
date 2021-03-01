@@ -1,59 +1,67 @@
-import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../context/userContext';
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
-import { QuizDetails } from '../pages/quizdetails';
+import { getCandidateInformation } from '../utils/getCandidateInformation';
+const queryString = require('query-string');
 
 export default function CandidateHome() {
-  const fakeQuizAssignments = [
-    {
-      id: 5,
-      Name: 'Finance Quiz',
-    },
-    {
-      id: 6,
-      Name: 'English Quiz',
-    },
-  ];
-
-  //   const { user } = useContext(UserContext);
-  const history = useHistory();
+  const [loading, setLoading] = useState(true);
+  const [candidateAndQuizInformation, setCandidateAndQuizInformation] = useState(null);
+  const location = useLocation();
+  const queryParams = queryString.parse(location.search);
 
   useEffect(() => {
-    //Have API call to pull quizes for candidate after they land on this page from their email
-  });
+    const fetchData = async () => {
+      //https://localhost:5001/candidate-home/?key=4c64482d-8752-407c-8a43-525f7d5f0c33
+      if (!queryParams.key) {
+        //pass
+      } else {
+        const r = await getCandidateInformation(queryParams.key);
+        setCandidateAndQuizInformation(r);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  /*TODO: Refactor this code so that we are dynamically obtaining the number of
-   * of quizes assigned to the user. Right now its hard coded. You'd ideally
-   * want to map over the number of quizes on the user object, and then render
-   * each QuizCard component.
-   */
+  //   if (!candidateAndQuizInformation) {
+  //     return <span>There are no quizes for you right now...</span>;
+  //   }
+
+  if (loading || !candidateAndQuizInformation) {
+    return <span>Loading...</span>;
+  }
+
+  console.log('canidate info>>>>', candidateAndQuizInformation);
+  const quiz = candidateAndQuizInformation.quiz;
+  const candidate = candidateAndQuizInformation.user;
+  const allotment = candidateAndQuizInformation.timeAllotment;
+  console.log('allotment is', allotment);
 
   return (
     <>
       <Welcome>
-        <Welcome.Title>Welcome [NAME HERE] </Welcome.Title>
+        <Welcome.Title>Welcome {candidate.name}</Welcome.Title>
         <Welcome.TextSmall>You have been assigned the following quiz(s). </Welcome.TextSmall>
         <QuizCard>
-          {fakeQuizAssignments.map((quiz) => {
-            return (
-              <div key={quiz.id}>
-                <QuizCard.Title>{quiz.Name}</QuizCard.Title>
-                <QuizCard.ButtonLink
-                  to={{
-                    pathname: ROUTES.QUIZ_DETAILS,
-                    state: {
-                      name:
-                        'PASS CANDIDATE ID AND QUIZ ID HERE TO GET QUIIZ QUESTIONS ON QUIZ DETAILS PAGE',
-                    },
-                  }}
-                >
-                  Start Quiz
-                </QuizCard.ButtonLink>
-              </div>
-            );
-          })}
+          {
+            <div key={quiz.id}>
+              <QuizCard.Title>{quiz.name}</QuizCard.Title>
+              <QuizCard.ButtonLink
+                to={{
+                  pathname: ROUTES.QUIZ_DETAILS,
+                  state: {
+                    candidate: candidate,
+                    quiz: quiz,
+                    allotment: allotment,
+                  },
+                }}
+              >
+                Start Quiz
+              </QuizCard.ButtonLink>
+            </div>
+          }
         </QuizCard>
       </Welcome>
     </>

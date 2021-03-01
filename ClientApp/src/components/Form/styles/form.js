@@ -11,7 +11,9 @@ export const Question = styled.section`
 `;
 export const Title = styled.h1``;
 export const Text = styled.p``;
-export const TextSmall = styled.p``;
+export const TextSmall = styled.p`
+  margin-bottom: 0px;
+`;
 export const Link = styled.link``; // styled(ReactRouterLink)``;
 export const Input = styled.input``;
 export const Submit = styled.button``;

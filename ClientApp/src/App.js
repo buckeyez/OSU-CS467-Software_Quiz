@@ -10,6 +10,7 @@ import QuizDetails from './pages/quizdetails';
 import Layout from './components/Layout';
 import Quiz from './components/Quiz';
 import AddCandidates from './pages/addCandidates';
+import EditProfile from './pages/editProfile';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
@@ -55,6 +56,10 @@ export default function App() {
 
             <ProtectedRoute user={user} path={ROUTES.HOME} exact>
               <Home />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={user} path={ROUTES.EDIT_PROFILE} exact>
+              <EditProfile />
             </ProtectedRoute>
 
             <ProtectedRoute user={user} path={ROUTES.SOFTWARE_QUIZ} exact>
