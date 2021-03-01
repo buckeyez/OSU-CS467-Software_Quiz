@@ -78,6 +78,19 @@ export class NavMenu extends Component {
                     Quizzes
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink
+                    tag={Link}
+                    className="text-dark"
+                    onClick={() => {
+                      localStorage.removeItem('userData');
+                      window.location.reload();
+                    }}
+                    to={'/logout'}
+                  >
+                    Log Out
+                  </NavLink>
+                </NavItem>
               </ul>
             </Collapse>
           </Container>
