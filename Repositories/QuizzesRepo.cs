@@ -240,31 +240,55 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
       foreach (AnswerSubmission selection in quizSubmission.UserSelections)
       {
-        var answer = _db.Answers
-          .AsQueryable()
-          .Where(a => a.Id == selection.AnswerId)
-          .FirstOrDefault();
-
         var question = _db.Questions
           .AsQueryable()
           .Where(q => q.Id == selection.QuestionId)
+          .Include(q => q.QuestionAnswers)
+          .ThenInclude(qa => qa.Answer)
           .FirstOrDefault();
 
-        if ((selection.AnswerId != 0 && answer == null) || question == null)
+        if (question == null)
         {
-          Console.WriteLine(
-            $"QuizSubmission: Question ({selection.QuestionId}) or Answer ({selection.AnswerId}) does not exist."
-          );
+          Console.WriteLine($"QuizSubmission: Question ({selection.QuestionId}) does not exist.");
           return null;
         }
 
-        _db.QuizResults.Add(new()
+        if (selection.AnswerIds != null && selection.AnswerIds.Count != 0)
         {
-          Answer = answer,
-          FreeResponse = selection.FreeResponse,
-          Question = question,
-          QuizAssignment = quizAssignmentEntity,
-        });
+          foreach (int answerId in selection.AnswerIds)
+          {
+            var answer = question.QuestionAnswers
+              .AsQueryable()
+              .Where(qa => qa.AnswerId == answerId)
+              .Select(qa => qa.Answer)
+              .FirstOrDefault();
+
+            if (answer == null)
+            {
+              Console.WriteLine(
+                $"QuizSubmission: Answer ({answerId}) does not exist for question({selection.QuestionId})."
+              );
+              return null;
+            }
+
+            _db.QuizResults.Add(new()
+            {
+              Answer = answer,
+              Question = question,
+              QuizAssignment = quizAssignmentEntity,
+            });
+          }
+        }
+        else
+        {
+          _db.QuizResults.Add(new()
+          {
+            FreeResponse = selection.FreeResponse,
+            Question = question,
+            QuizAssignment = quizAssignmentEntity,
+          });
+        }
+
       }
 
       try

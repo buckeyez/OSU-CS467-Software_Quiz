@@ -8,7 +8,7 @@ namespace OSU_CS467_Software_Quiz.Projections
     [Required]
     public int QuestionId { get; set; }
 
-    public int AnswerId { get; set; }
+    public List<int> AnswerIds { get; set; }
 
     public string FreeResponse { get; set; }
   }

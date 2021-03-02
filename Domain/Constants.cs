@@ -8,8 +8,8 @@ namespace OSU_CS467_Software_Quiz.Domain
     {
       bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
       return isDevelopment
-        ? "https://localhost:5001/candidate-home/"
-        : "https://osu-cs467-w21-sotware-quiz.herokuapp.com/candidate-home/";
+        ? "https://localhost:5001/candidate-home"
+        : "https://osu-cs467-w21-sotware-quiz.herokuapp.com/candidate-home";
     }
   }
 }
