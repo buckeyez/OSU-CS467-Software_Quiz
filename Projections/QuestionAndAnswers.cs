@@ -18,7 +18,7 @@ namespace OSU_CS467_Software_Quiz.Projections
       return new()
       {
         Question = Question.Build(question),
-        Answers = question.QuestionAnswers.Select(qa => Answer.Build(qa.Answer)).ToList(),
+        Answers = question.QuestionAnswers?.Select(qa => Answer.Build(qa.Answer)).ToList() ?? new(),
       };
     }
 
