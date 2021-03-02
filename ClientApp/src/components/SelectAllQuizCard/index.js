@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-// import QuizQuestionCard from '../QuizQuestionCard';
 import { QuizQuestionCard } from '../../components';
 
-export default function TrueFalseQuizCard({ ...props }) {
-  const [checked, setChecked] = useState(null);
+export default function SelectAllQuizCard({ ...props }) {
+  const changeChecked = (answerId) => {
+    const answerIdArrays = props.questionAndAnswerMap.get(props.questionIndex);
 
-  const changeRadio = (e) => {
-    setChecked(e.target.value);
-  };
-
-  useEffect(() => {
-    if (props.questionAndAnswerMap.get(props.questionIndex) !== undefined) {
-      setChecked(props.questionAndAnswerMap.get(props.questionIndex)[0]);
+    if (answerIdArrays == undefined) {
+      return false;
+    } else if (answerIdArrays.includes(answerId)) {
+      return true;
     }
-  }, [props.questionAndAnswerMap, props.questionIndex]);
+    return false;
+  };
 
   const questionCardTitle = () => {
     return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
@@ -25,12 +23,11 @@ export default function TrueFalseQuizCard({ ...props }) {
         <div key={answer.id}>
           <QuizQuestionCard.Input
             value={answer.id}
-            type="radio"
+            type="checkbox"
             onChange={(e) => {
-              changeRadio(e);
-              props.updateQuestionAndAnswersMap(answer.id);
+              props.updateQuestionAndAnswersMapSelectMultiple(answer.id);
             }}
-            checked={checked === answer.id}
+            checked={changeChecked(answer.id)}
           ></QuizQuestionCard.Input>
           {answer.value}
         </div>

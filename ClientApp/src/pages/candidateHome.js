@@ -37,6 +37,7 @@ export default function CandidateHome() {
   const quiz = candidateAndQuizInformation.quiz;
   const candidate = candidateAndQuizInformation.user;
   const allotment = candidateAndQuizInformation.timeAllotment;
+  const quizAssignment = candidateAndQuizInformation.id;
   console.log('allotment is', allotment);
 
   return (
@@ -55,6 +56,7 @@ export default function CandidateHome() {
                     candidate: candidate,
                     quiz: quiz,
                     allotment: allotment,
+                    quizAssignment: quizAssignment,
                   },
                 }}
               >

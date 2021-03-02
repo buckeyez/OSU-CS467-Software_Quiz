@@ -6,12 +6,15 @@ export default function MultipleChoiceQuizCard({ ...props }) {
   const [checked, setChecked] = useState(null);
 
   useEffect(() => {
-    setChecked(props.questionAndAnswerMap.get(props.questionIndex));
+    if (props.questionAndAnswerMap.get(props.questionIndex) !== undefined) {
+      setChecked(props.questionAndAnswerMap.get(props.questionIndex)[0]);
+    }
   }, [props.questionAndAnswerMap, props.questionIndex]);
 
   const changeRadio = (e) => {
     console.log('e is: ', e.target.value);
     setChecked(e.target.value);
+    console.log('checked is, ', checked);
   };
 
   const questionCardTitle = () => {

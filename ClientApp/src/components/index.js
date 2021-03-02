@@ -5,5 +5,6 @@ export { default as QuizQuestionCard } from './QuizQuestionCard';
 export { default as MultipleChoiceQuizCard } from './MultipleChoiceQuizCard';
 export { default as OpenTextQuizCard } from './OpenTextQuizCard';
 export { default as TrueFalseQuizCard } from './TrueFalseQuizCard';
+export { default as SelectAllQuizCard } from './SelectAllQuizCard';
 export { default as Timer } from './Timer';
 export { default as MainQuiz } from './MainQuiz';
