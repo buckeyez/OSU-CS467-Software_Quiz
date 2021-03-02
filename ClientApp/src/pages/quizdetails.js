@@ -1,5 +1,4 @@
-import React, { /*useContext,*/ useEffect, useState } from 'react';
-//import { UserContext } from '../context/userContext';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import {
