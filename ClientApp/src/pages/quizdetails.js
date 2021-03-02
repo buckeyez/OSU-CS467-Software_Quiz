@@ -1,5 +1,4 @@
-import React, { /*useContext,*/ useEffect, useState } from 'react';
-//import { UserContext } from '../context/userContext';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import {
@@ -19,13 +18,9 @@ export default function QuizDetails() {
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
   //const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState('');
-  const [/*quizTimeUp,*/ setQuizTimeUp] = useState(false);
+  //   const [quizTimeUp, setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
-
-  //let quizToGrab;
-  //let candidateInformation;
-  let timeAllotment;
 
   //Can use useLocation to get state passed in via react router Link
   const data = useLocation();
@@ -39,8 +34,6 @@ export default function QuizDetails() {
       } else {
         console.log('in hereee!!');
         const quizToGrab = data.state.quiz;
-        //candidateInformation = data.state.candidate;
-        //timeAllotment = data.state.allotment;
 
         //Takes a temporary param right now as quizID
         const r = await getQuizQuestions(quizToGrab.id);
@@ -66,25 +59,10 @@ export default function QuizDetails() {
     return <span>Loading...</span>;
   }
 
-  //------THIS IS HACKY----------
-
-  // @Adil the following applies to all cases
-  /*Assignments to the 'timeAllotment' variable from inside React Hook useEffect will be lost
-    after each render. To preserve the value over time, store it in a useRef Hook and keep the
-    mutable value in the '.current' property. Otherwise, you can move this variable directly
-    inside useEffect react-hooks/exhaustive-deps
-  */
-
-  //quizToGrab = data.state.quiz;
-  //candidateInformation = data.state.candidate;
-  timeAllotment = data.state.allotment;
-  //-----FOR SOME REASON, NEED TO ASSIGN TWICE IN CODE. FIX ABOVE LATEER-------
-
-  //console.log('allotment here is', timeAllotment);
-  //console.log('quizToGra', quizToGrab);
+  const timeAllotment = data.state.allotment;
 
   const handleQuizTimeUp = (minutes, seconds) => {
-    setQuizTimeUp(true);
+    // setQuizTimeUp(true);
     // setTimeToCompleteQuiz(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
     console.log('TIMES UPP!!!!');
     let t = new Date(minutes, seconds);
@@ -103,8 +81,6 @@ export default function QuizDetails() {
   };
 
   const updateQuestionAndAnswersMapFreeResponse = (e) => {
-    // console.log({ value: e.target.value, questionAndAnswerMap });
-    // console.log('quetsrin index', questionIndex);
     setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, e.target.value)));
     console.log('map of Q:A ', questionAndAnswerMap);
   };

@@ -1,5 +1,5 @@
-import React/*, { useEffect, useState }*/ from 'react';
-// import QuizQuestionCard from '../QuizQuestionCard';
+import React from 'react';
+
 import { QuizQuestionCard } from '../../components';
 
 export default function MultipleChoiceQuizCard(props) {
