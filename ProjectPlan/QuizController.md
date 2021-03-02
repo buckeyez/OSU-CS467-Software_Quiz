@@ -167,7 +167,7 @@ Expects **_QuizSubmission_** object in body
   "UserSelections": [
     {
       "QuestionId": int,
-      "AnswerId": int,
+      "AnswerIds": int[],
       "FreeResponse": string
     }
   ]
