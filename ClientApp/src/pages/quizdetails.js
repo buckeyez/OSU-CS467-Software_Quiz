@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { /*useHistory,*/ useLocation } from 'react-router-dom';
-// import * as ROUTES from '../constants/routes';
+import { useHistory, useLocation } from 'react-router-dom';
+import * as ROUTES from '../constants/routes';
 import {
   MultipleChoiceQuizCard,
   OpenTextQuizCard,
@@ -14,22 +14,31 @@ import { submitQuizToBackend } from '../utils/submitQuiz';
 import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
 import { areAllQuestionsAnswered } from '../utils/checkIfAllQuestionsAnswered';
 // import { checkAnswersIfOutOfTime } from '../utils/checkAnswersIfOutOfTime';
+import queryString from 'query-string';
 
 export default function QuizDetails() {
   //Can use useLocation to get state passed in via react router Link
   const data = useLocation();
-  //   const history = useHistory();
+  const history = useHistory();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
-  const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState(data.state.allotment);
+  const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState(
+    data.state === undefined ? 1 : data.state.allotment
+  );
   //   const [quizTimeUp, setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
+  const queryParams = queryString.parse(data.search);
+
   //   console.log('Data from candidate-home route:', data);
+
+  if (data.state === undefined) {
+    data.state = {};
+  }
 
   //Handles initial loading of quiz data via /quizzes/<quiz-id>/partial API
   //Loads data into quizData state for rest of app to use
@@ -69,6 +78,7 @@ export default function QuizDetails() {
           if (submission) {
             console.log('submission returned>>>');
             console.log(submission);
+            history.push(`${ROUTES.SUBMITTED}/?key=${queryParams.key}`);
           }
         } catch (e) {
           console.log('Error submititon quiz: ', e);
@@ -82,6 +92,8 @@ export default function QuizDetails() {
     questionAndAnswerMap,
     quizData,
     timeToCompleteQuiz,
+    queryParams.key,
+    history,
   ]);
 
   if (!data.state) {

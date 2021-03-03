@@ -11,6 +11,7 @@ import Layout from './components/Layout';
 import Quiz from './components/Quiz';
 import AddCandidates from './pages/addCandidates';
 import EditProfile from './pages/editProfile';
+import SubmissionComplete from './pages/submissionComplete';
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
@@ -32,7 +33,7 @@ export default function App() {
 
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
-  // const isCandidate = queryParams.key ? true : false;
+  const isCandidate = queryParams.key ? true : false;
 
   useEffect(() => {
     if (queryParams.key) {
@@ -84,7 +85,22 @@ export default function App() {
              *Can likely use the user object to check if quizes are avaliable
              *Will need a custom implementation of CandidateProductedRoute
              */}
-            {candidateUser && (
+
+            <CandidateContext.Provider value={candidateValue}>
+              <CandidateProtectedRoute user={isCandidate} path={ROUTES.CANDIDATE_HOME} exact>
+                <CandidateHome />
+              </CandidateProtectedRoute>
+
+              <CandidateProtectedRoute user={isCandidate} path={ROUTES.QUIZ_DETAILS} exact>
+                <QuizDetails />
+              </CandidateProtectedRoute>
+
+              <CandidateProtectedRoute user={isCandidate} path={ROUTES.SUBMITTED} exact>
+                <SubmissionComplete />
+              </CandidateProtectedRoute>
+            </CandidateContext.Provider>
+
+            {/* {candidateUser && (
               <CandidateContext.Provider value={candidateValue}>
                 <CandidateProtectedRoute user={candidateUser} path={ROUTES.CANDIDATE_HOME} exact>
                   <CandidateHome />
@@ -92,7 +108,7 @@ export default function App() {
 
                 <Route path={ROUTES.QUIZ_DETAILS} component={QuizDetails} />
               </CandidateContext.Provider>
-            )}
+            )} */}
 
             <Route path="/new-quiz" component={AddQuestions} />
 

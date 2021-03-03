@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Title, Text, TextSmall, ButtonLink } from './styles/QuizCard';
+import { Container, Title, Text, TextSmall, ButtonLink, Button } from './styles/QuizCard';
 
 export default function QuizCard({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -19,4 +19,8 @@ QuizCard.TextSmall = function QuizCardTextSmall({ children, ...restProps }) {
 
 QuizCard.ButtonLink = function QuizCardLink({ children, ...restProps }) {
   return <ButtonLink {...restProps}>{children}</ButtonLink>;
+};
+
+QuizCard.Button = function QuizCardButton({ children, ...restProps }) {
+  return <Button {...restProps}>{children}</Button>;
 };

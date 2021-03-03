@@ -1,4 +1,4 @@
-import React/*, { Component }*/ from 'react';
+import React /*, { Component }*/ from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';
@@ -24,9 +24,10 @@ export default function Layout(props) {
   //Declare paths you don't want the navmenu to render on
   const isCandidateHome = location.pathname.includes(ROUTES.CANDIDATE_HOME);
   const isQuizDetails = location.pathname.includes(ROUTES.QUIZ_DETAILS);
+  const isSubmitted = location.pathname.includes(ROUTES.SUBMITTED);
 
   //Add path you don't want nav menu to render on in the IF condition
-  if (isCandidateHome || isQuizDetails) {
+  if (isCandidateHome || isQuizDetails || isSubmitted) {
     isNavShown = false;
   }
 

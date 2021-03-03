@@ -6,3 +6,4 @@ export const Title = styled.h4``;
 export const Text = styled.p``;
 export const TextSmall = styled.p``;
 export const ButtonLink = styled(ReactRouterLink)``; // styled(ReactRouterLink)``;
+export const Button = styled.button``;
