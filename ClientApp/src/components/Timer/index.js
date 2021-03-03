@@ -13,6 +13,7 @@ export default function Timer(props) {
       }
       if (seconds === 0) {
         if (minutes === 0) {
+          props.handleQuizTimeUp(minutes, seconds);
           clearInterval(interval);
         } else {
           props.handleQuizTimeUp(minutes, seconds);
@@ -29,11 +30,9 @@ export default function Timer(props) {
 
   return (
     <>
-      {minutes === 0 && seconds === 0 ? null : (
-        <div>
-          {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-        </div>
-      )}
+      <div>
+        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+      </div>
     </>
   );
 }

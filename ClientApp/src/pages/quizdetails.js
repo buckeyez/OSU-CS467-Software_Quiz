@@ -24,9 +24,10 @@ export default function QuizDetails() {
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
-  const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState(
+  const [minutesRemain, setMinutesRemain] = useState(
     data.state === undefined ? 1 : data.state.allotment
   );
+  const [secondsRemain, setSecondsRemain] = useState(null);
   //   const [quizTimeUp, setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
@@ -62,6 +63,7 @@ export default function QuizDetails() {
       }
     };
 
+    //Precents user from being able to hit back button and edit quiz after submission
     if (localStorage.getItem('quizSubmitted') === queryParams.key) {
       console.log('Quiz Taken!!');
       setQuizAlreadySubmitted(true);
@@ -79,7 +81,7 @@ export default function QuizDetails() {
         try {
           const submission = await submitQuizToBackend(
             data.state.quizAssignment,
-            timeToCompleteQuiz,
+            minutesRemain,
             userSelections
           );
           if (submission) {
@@ -98,7 +100,7 @@ export default function QuizDetails() {
     data.state.quizAssignment,
     questionAndAnswerMap,
     quizData,
-    timeToCompleteQuiz,
+    minutesRemain,
     queryParams.key,
     history,
   ]);
@@ -121,7 +123,7 @@ export default function QuizDetails() {
   let questionTitle = quizData.questions[questionIndex].question.value;
   let questionAnswers = quizData.questions[questionIndex].answers;
   let numberOfQuestions = quizData.questions.length;
-  const timeAllotment = data.state.allotment;
+  //   const timeAllotment = data.state.allotment;
 
   const updateQuestionAndAnswersMap = (answerID) => {
     setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, [answerID])));
@@ -170,7 +172,12 @@ export default function QuizDetails() {
     console.log(`Min=${minutes} and Sec=${seconds}`);
     let t = new Date(0, minutes, seconds);
     console.log('time is:', t);
-    setTimeToCompleteQuiz(minutes);
+    setMinutesRemain(minutes);
+    setSecondsRemain(seconds);
+
+    if (minutesRemain === 0 && secondsRemain === 0) {
+      setQuizSubmitted(true);
+    }
 
     //TODO: Implemente functionality when timer hits 0
   };
@@ -258,7 +265,7 @@ export default function QuizDetails() {
         'userSelections Array:',
         generateAnswersArrayForSubmission(questionAndAnswerMap, quizData)
       );
-      console.log(`Quiz took ${timeToCompleteQuiz} min to complete`);
+      console.log(`Quiz took ${minutesRemain} min to complete`);
       setQuizSubmitted(true);
 
       //Call this when user is pushed to the Thanks for Submitting Quiz Screen
@@ -270,7 +277,7 @@ export default function QuizDetails() {
     <MainQuiz>
       <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
       <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={timeAllotment}></Timer>}
+        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain}></Timer>}
       </MainQuiz.TimeArea>
 
       <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
