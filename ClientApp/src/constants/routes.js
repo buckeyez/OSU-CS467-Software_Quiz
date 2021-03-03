@@ -9,4 +9,4 @@ export const QUESTIONS = '/questions-page';
 export const QUIZZES = '/quizzes-page';
 export const CANDIDATES = '/candidates-page';
 export const EDIT_PROFILE = '/edit-profile';
-export const SUBMISSION_COMPLETE = '/submission-complete';
+export const SUBMITTED = '/submitted';

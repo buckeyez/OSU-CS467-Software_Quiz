@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
 import { getCandidateInformation } from '../utils/getCandidateInformation';
+// import { CandidateContext } from '../context/candidateContext';
 const queryString = require('query-string');
 
 export default function CandidateHome() {
@@ -24,6 +25,7 @@ export default function CandidateHome() {
     };
     fetchData();
   }, [queryParams.key]);
+  // const { setCandidateUser } = useContext(CandidateContext);
 
   //   if (!candidateAndQuizInformation) {
   //     return <span>There are no quizes for you right now...</span>;
@@ -51,7 +53,7 @@ export default function CandidateHome() {
               <QuizCard.Title>{quiz.name}</QuizCard.Title>
               <QuizCard.ButtonLink
                 to={{
-                  pathname: ROUTES.QUIZ_DETAILS,
+                  pathname: `${ROUTES.QUIZ_DETAILS}/?key=${queryParams.key}`,
                   state: {
                     candidate: candidate,
                     quiz: quiz,
