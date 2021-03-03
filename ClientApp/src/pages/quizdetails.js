@@ -31,6 +31,7 @@ export default function QuizDetails() {
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizAlreadySubmitted, setQuizAlreadySubmitted] = useState(false);
 
   const queryParams = queryString.parse(data.search);
 
@@ -60,8 +61,14 @@ export default function QuizDetails() {
         setLoading(false);
       }
     };
+
+    if (localStorage.getItem('quizSubmitted') === queryParams.key) {
+      console.log('Quiz Taken!!');
+      setQuizAlreadySubmitted(true);
+    }
+
     fetchData();
-  }, [data.state]);
+  }, [data.state, queryParams.key]);
 
   //Handles submitting the quiz via /quizzes/submit api when use pressess submit button
   useEffect(() => {
@@ -102,6 +109,11 @@ export default function QuizDetails() {
 
   if (loading) {
     return <span>Loading...</span>;
+  }
+
+  //This is front end protection only, easy to evade :(
+  if (quizAlreadySubmitted) {
+    return <span>This quiz has already been submitted.</span>;
   }
 
   //   console.log(Information about loaded Quiz: quizData);
