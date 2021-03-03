@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { Welcome, QuizCard } from '../components';
 import { getCandidateInformation } from '../utils/getCandidateInformation';
+// import { Button } from '../components/QuizQuestionCard/styles/QuizQuestionCard';
+// import { CandidateContext } from '../context/candidateContext';
 const queryString = require('query-string');
 
 export default function CandidateHome() {
@@ -10,6 +12,7 @@ export default function CandidateHome() {
   const [candidateAndQuizInformation, setCandidateAndQuizInformation] = useState(null);
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +27,7 @@ export default function CandidateHome() {
     };
     fetchData();
   }, [queryParams.key]);
+  // const { setCandidateUser } = useContext(CandidateContext);
 
   //   if (!candidateAndQuizInformation) {
   //     return <span>There are no quizes for you right now...</span>;
@@ -37,6 +41,7 @@ export default function CandidateHome() {
   const quiz = candidateAndQuizInformation.quiz;
   const candidate = candidateAndQuizInformation.user;
   const allotment = candidateAndQuizInformation.timeAllotment;
+  const quizAssignment = candidateAndQuizInformation.id;
   console.log('allotment is', allotment);
 
   return (
@@ -48,18 +53,19 @@ export default function CandidateHome() {
           {
             <div key={quiz.id}>
               <QuizCard.Title>{quiz.name}</QuizCard.Title>
-              <QuizCard.ButtonLink
-                to={{
-                  pathname: ROUTES.QUIZ_DETAILS,
-                  state: {
+
+              <QuizCard.Button
+                onClick={() => {
+                  history.push(`${ROUTES.QUIZ_DETAILS}/?key=${queryParams.key}`, {
                     candidate: candidate,
                     quiz: quiz,
                     allotment: allotment,
-                  },
+                    quizAssignment: quizAssignment,
+                  });
                 }}
               >
-                Start Quiz
-              </QuizCard.ButtonLink>
+                START QUIZ
+              </QuizCard.Button>
             </div>
           }
         </QuizCard>

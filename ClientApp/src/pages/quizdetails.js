@@ -5,34 +5,50 @@ import {
   MultipleChoiceQuizCard,
   OpenTextQuizCard,
   TrueFalseQuizCard,
+  SelectAllQuizCard,
   Timer,
   MainQuiz,
 } from '../components';
 import { getQuizQuestions } from '../utils/getQuizQuestions';
-//import { submitQuiz } from '../utils/submitQuiz';
+import { submitQuizToBackend } from '../utils/submitQuiz';
 import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
+import { areAllQuestionsAnswered } from '../utils/checkIfAllQuestionsAnswered';
+// import { checkAnswersIfOutOfTime } from '../utils/checkAnswersIfOutOfTime';
+import queryString from 'query-string';
 
 export default function QuizDetails() {
+  //Can use useLocation to get state passed in via react router Link
+  const data = useLocation();
+  const history = useHistory();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
-  //const [timeToCompleteQuiz, setTimeToCompleteQuiz] = useState('');
+  const [minutesRemain, setMinutesRemain] = useState(
+    data.state === undefined ? 1 : data.state.allotment
+  );
+  const [secondsRemain, setSecondsRemain] = useState(null);
   //   const [quizTimeUp, setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizAlreadySubmitted, setQuizAlreadySubmitted] = useState(false);
 
-  //Can use useLocation to get state passed in via react router Link
-  const data = useLocation();
-  console.log('dat>>>>', data);
+  const queryParams = queryString.parse(data.search);
 
-  //Handles loading quiz questions from the API
+  //   console.log('Data from candidate-home route:', data);
+
+  if (data.state === undefined) {
+    data.state = {};
+  }
+
+  //Handles initial loading of quiz data via /quizzes/<quiz-id>/partial API
+  //Loads data into quizData state for rest of app to use
   useEffect(() => {
     const fetchData = async () => {
       if (!data.state) {
         //pass
       } else {
-        console.log('in hereee!!');
         const quizToGrab = data.state.quiz;
 
         //Takes a temporary param right now as quizID
@@ -46,10 +62,48 @@ export default function QuizDetails() {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [data.state]);
 
-  const history = useHistory();
+    //Precents user from being able to hit back button and edit quiz after submission
+    if (localStorage.getItem('quizSubmitted') === queryParams.key) {
+      console.log('Quiz Taken!!');
+      setQuizAlreadySubmitted(true);
+    }
+
+    fetchData();
+  }, [data.state, queryParams.key]);
+
+  //Handles submitting the quiz via /quizzes/submit api when use pressess submit button
+  useEffect(() => {
+    const submit = async () => {
+      if (quizData !== null && quizSubmitted === true) {
+        const userSelections = generateAnswersArrayForSubmission(questionAndAnswerMap, quizData);
+
+        try {
+          const submission = await submitQuizToBackend(
+            data.state.quizAssignment,
+            minutesRemain,
+            userSelections
+          );
+          if (submission) {
+            console.log('submission returned>>>');
+            console.log(submission);
+            history.push(`${ROUTES.SUBMITTED}/?key=${queryParams.key}`);
+          }
+        } catch (e) {
+          console.log('Error submititon quiz: ', e);
+        }
+      }
+    };
+    submit();
+  }, [
+    quizSubmitted,
+    data.state.quizAssignment,
+    questionAndAnswerMap,
+    quizData,
+    minutesRemain,
+    queryParams.key,
+    history,
+  ]);
 
   if (!data.state) {
     return <span>No quiz data to load...</span>;
@@ -59,30 +113,73 @@ export default function QuizDetails() {
     return <span>Loading...</span>;
   }
 
-  const timeAllotment = data.state.allotment;
+  //This is front end protection only, easy to evade :(
+  if (quizAlreadySubmitted) {
+    return <span>This quiz has already been submitted.</span>;
+  }
 
-  const handleQuizTimeUp = (minutes, seconds) => {
-    // setQuizTimeUp(true);
-    // setTimeToCompleteQuiz(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
-    console.log('TIMES UPP!!!!');
-    let t = new Date(minutes, seconds);
-    console.log('time is:', t);
-  };
-
-  console.log(quizData);
+  //   console.log(Information about loaded Quiz: quizData);
   let questionType = quizData.questions[questionIndex].question.type;
   let questionTitle = quizData.questions[questionIndex].question.value;
   let questionAnswers = quizData.questions[questionIndex].answers;
   let numberOfQuestions = quizData.questions.length;
+  //   const timeAllotment = data.state.allotment;
 
   const updateQuestionAndAnswersMap = (answerID) => {
-    setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, answerID)));
+    setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, [answerID])));
     console.log('map of Q:A ', questionAndAnswerMap);
   };
 
   const updateQuestionAndAnswersMapFreeResponse = (e) => {
     setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, e.target.value)));
     console.log('map of Q:A ', questionAndAnswerMap);
+  };
+
+  //   console.log(
+  //     'IF OUT OF TIME QuestionANSWERS MAP',
+  //     checkAnswersIfOutOfTime(questionAndAnswerMap, numberOfQuestions)
+  //   );
+
+  //Handles tracking candidate answer choices for Select Multiple question type
+  //This requires more work becase multiple answers can be selected by user per question
+  //Handles adding/removing multiple answer choices as user checks/unchecks checkboxes
+  const updateQuestionAndAnswersMapSelectMultiple = (answerID) => {
+    // console.log('CALLING MULTI SELECT MAP');
+    let currentAnswersIds = questionAndAnswerMap.get(questionIndex);
+    let arrayOfAnswersIds = [];
+    //The first time, there is no array present at key=questionIndex
+    if (currentAnswersIds === undefined) {
+      arrayOfAnswersIds = [answerID];
+    } else if (currentAnswersIds.includes(answerID)) {
+      //   console.log('Removing exisitn value');
+
+      arrayOfAnswersIds = currentAnswersIds.filter((item) => {
+        return item !== answerID;
+      });
+    } else {
+      //   console.log('Adding another value');
+      arrayOfAnswersIds = currentAnswersIds;
+      arrayOfAnswersIds.push(answerID);
+    }
+    setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, arrayOfAnswersIds)));
+    console.log('map of Q:A ', questionAndAnswerMap);
+  };
+
+  const handleQuizTimeUp = (minutes, seconds) => {
+    // setQuizTimeUp(true);
+    // setTimeToCompleteQuiz(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
+    console.log('TIMES UPP!!!!');
+    console.log(`Min=${minutes} and Sec=${seconds}`);
+    let t = new Date(0, minutes, seconds);
+    console.log('time is:', t);
+    setMinutesRemain(minutes);
+    setSecondsRemain(seconds);
+
+    if (minutesRemain === 0 && secondsRemain === 0) {
+      setQuizSubmitted(true);
+    }
+
+    //TODO: Implemente functionality when timer hits 0
   };
 
   const renderSwitch = (questionType) => {
@@ -117,11 +214,20 @@ export default function QuizDetails() {
             questionIndex={questionIndex}
           />
         );
+      case 'Select All That Apply':
+        return (
+          <SelectAllQuizCard
+            questionTitle={questionTitle}
+            questionAnswers={questionAnswers}
+            updateQuestionAndAnswersMapSelectMultiple={updateQuestionAndAnswersMapSelectMultiple}
+            questionAndAnswerMap={questionAndAnswerMap}
+            questionIndex={questionIndex}
+          />
+        );
       default:
         return;
     }
   };
-  console.log(numberOfQuestions);
   const getNextQuestion = () => {
     if (questionIndex < numberOfQuestions - 1) {
       setQuestionIndex(questionIndex + 1);
@@ -148,26 +254,22 @@ export default function QuizDetails() {
   };
 
   const submitQuiz = async () => {
-    if (questionAndAnswerMap.size !== numberOfQuestions) {
+    if (areAllQuestionsAnswered(questionAndAnswerMap, numberOfQuestions)) {
+      //   console.log('ALL Qs NOT ANSWERED');
       setError(true);
     } else {
       setError(false);
-
+      //   console.log('ALL QS ANSWRED');
       //Need to generate user selections array
-      console.log('ANSWES ARRY', generateAnswersArrayForSubmission(questionAndAnswerMap, quizData));
+      console.log(
+        'userSelections Array:',
+        generateAnswersArrayForSubmission(questionAndAnswerMap, quizData)
+      );
+      console.log(`Quiz took ${minutesRemain} min to complete`);
+      setQuizSubmitted(true);
 
-      //Need to pass quiz assignment id
-
-      //Need to pass time taken (as int??)
-
-      //Need to make call to /submit api to save results
-
-      //Need to make call to E-mail API to send email to employer
-
-      //Can either route to home, or show quiz completion page.
-      //If route to home, we can show banner or drop confetti
-      //Need to pass key in redirect, else candidate-home stuck on 'loading...'
-      history.push(ROUTES.CANDIDATE_HOME);
+      //Call this when user is pushed to the Thanks for Submitting Quiz Screen
+      //   history.replace('/quiz-details', null);
     }
   };
 
@@ -175,7 +277,7 @@ export default function QuizDetails() {
     <MainQuiz>
       <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
       <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={timeAllotment}></Timer>}
+        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain}></Timer>}
       </MainQuiz.TimeArea>
 
       <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>

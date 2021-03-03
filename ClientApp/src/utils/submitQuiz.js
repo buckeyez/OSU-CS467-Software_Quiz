@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const submitQuiz = async (QuizAssignmentId, TimeTaken, UserSelections) => {
+export const submitQuizToBackend = async (QuizAssignmentId, TimeTaken, UserSelections) => {
   //Required data for reqeust body
   const data = {
     QuizAssignmentId: QuizAssignmentId,
