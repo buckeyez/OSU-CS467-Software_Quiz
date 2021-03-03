@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import * as ROUTES from '../constants/routes';
+import { /*useHistory,*/ useLocation } from 'react-router-dom';
+// import * as ROUTES from '../constants/routes';
 import {
   MultipleChoiceQuizCard,
   OpenTextQuizCard,
@@ -13,11 +13,12 @@ import { getQuizQuestions } from '../utils/getQuizQuestions';
 import { submitQuizToBackend } from '../utils/submitQuiz';
 import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
 import { areAllQuestionsAnswered } from '../utils/checkIfAllQuestionsAnswered';
-import { checkAnswersIfOutOfTime } from '../utils/checkAnswersIfOutOfTime';
+// import { checkAnswersIfOutOfTime } from '../utils/checkAnswersIfOutOfTime';
 
 export default function QuizDetails() {
   //Can use useLocation to get state passed in via react router Link
   const data = useLocation();
+  //   const history = useHistory();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [quizData, setQuizData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +31,8 @@ export default function QuizDetails() {
 
   //   console.log('Data from candidate-home route:', data);
 
-  //Handles loading quiz questions from the API
+  //Handles initial loading of quiz data via /quizzes/<quiz-id>/partial API
+  //Loads data into quizData state for rest of app to use
   useEffect(() => {
     const fetchData = async () => {
       if (!data.state) {
@@ -52,9 +54,10 @@ export default function QuizDetails() {
     fetchData();
   }, [data.state]);
 
+  //Handles submitting the quiz via /quizzes/submit api when use pressess submit button
   useEffect(() => {
     const submit = async () => {
-      if (quizData !== null) {
+      if (quizData !== null && quizSubmitted === true) {
         const userSelections = generateAnswersArrayForSubmission(questionAndAnswerMap, quizData);
 
         try {
@@ -73,9 +76,13 @@ export default function QuizDetails() {
       }
     };
     submit();
-  }, [quizSubmitted]);
-
-  const history = useHistory();
+  }, [
+    quizSubmitted,
+    data.state.quizAssignment,
+    questionAndAnswerMap,
+    quizData,
+    timeToCompleteQuiz,
+  ]);
 
   if (!data.state) {
     return <span>No quiz data to load...</span>;
@@ -85,13 +92,12 @@ export default function QuizDetails() {
     return <span>Loading...</span>;
   }
 
-  const timeAllotment = data.state.allotment;
-
   //   console.log(Information about loaded Quiz: quizData);
   let questionType = quizData.questions[questionIndex].question.type;
   let questionTitle = quizData.questions[questionIndex].question.value;
   let questionAnswers = quizData.questions[questionIndex].answers;
   let numberOfQuestions = quizData.questions.length;
+  const timeAllotment = data.state.allotment;
 
   const updateQuestionAndAnswersMap = (answerID) => {
     setQuestionAndAnswerMap(new Map(questionAndAnswerMap.set(questionIndex, [answerID])));
@@ -108,6 +114,9 @@ export default function QuizDetails() {
   //     checkAnswersIfOutOfTime(questionAndAnswerMap, numberOfQuestions)
   //   );
 
+  //Handles tracking candidate answer choices for Select Multiple question type
+  //This requires more work becase multiple answers can be selected by user per question
+  //Handles adding/removing multiple answer choices as user checks/unchecks checkboxes
   const updateQuestionAndAnswersMapSelectMultiple = (answerID) => {
     // console.log('CALLING MULTI SELECT MAP');
     let currentAnswersIds = questionAndAnswerMap.get(questionIndex);
@@ -138,6 +147,8 @@ export default function QuizDetails() {
     let t = new Date(0, minutes, seconds);
     console.log('time is:', t);
     setTimeToCompleteQuiz(minutes);
+
+    //TODO: Implemente functionality when timer hits 0
   };
 
   const renderSwitch = (questionType) => {
@@ -212,28 +223,6 @@ export default function QuizDetails() {
   };
 
   const submitQuiz = async () => {
-    // let isNotAllQuestionsAnswered = false;
-
-    // if (questionAndAnswerMap.size !== numberOfQuestions) {
-    //   isNotAllQuestionsAnswered = true;
-    // }
-
-    // for (let [k, v] of questionAndAnswerMap) {
-    //   const value = questionAndAnswerMap.get(k);
-    //   //check if string
-    //   if (typeof value === String) {
-    //     if (value === '') {
-    //       isNotAllQuestionsAnswered = true;
-    //     }
-    //   }
-
-    //   if (Array.isArray(v)) {
-    //     if (questionAndAnswerMap.get(k).length === 0) {
-    //       isNotAllQuestionsAnswered = true;
-    //     }
-    //   }
-    // }
-
     if (areAllQuestionsAnswered(questionAndAnswerMap, numberOfQuestions)) {
       //   console.log('ALL Qs NOT ANSWERED');
       setError(true);
@@ -250,11 +239,6 @@ export default function QuizDetails() {
 
       //Call this when user is pushed to the Thanks for Submitting Quiz Screen
       //   history.replace('/quiz-details', null);
-
-      //Can either route to home, or show quiz completion page.
-      //If route to home, we can show banner or drop confetti
-      //Need to pass key in redirect, else candidate-home stuck on 'loading...'
-      //   history.push(ROUTES.CANDIDATE_HOME);
     }
   };
 

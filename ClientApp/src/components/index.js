@@ -8,3 +8,4 @@ export { default as TrueFalseQuizCard } from './TrueFalseQuizCard';
 export { default as SelectAllQuizCard } from './SelectAllQuizCard';
 export { default as Timer } from './Timer';
 export { default as MainQuiz } from './MainQuiz';
+export { default as Submitted } from './Submitted';

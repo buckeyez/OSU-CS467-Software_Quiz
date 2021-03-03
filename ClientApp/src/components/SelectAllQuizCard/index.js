@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { QuizQuestionCard } from '../../components';
 
 export default function SelectAllQuizCard({ ...props }) {
   const changeChecked = (answerId) => {
     const answerIdArrays = props.questionAndAnswerMap.get(props.questionIndex);
 
-    if (answerIdArrays == undefined) {
+    if (answerIdArrays === undefined) {
       return false;
     } else if (answerIdArrays.includes(answerId)) {
       return true;
