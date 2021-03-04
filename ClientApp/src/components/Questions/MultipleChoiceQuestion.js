@@ -16,7 +16,7 @@ const MultipleChoiceQuestion = (props) =>{
       setChoiceList(newList)
       // console.log("newList in useEffect: ", choiceList)
     }
-  }, [choiceList, props.answers]) 
+  }, []) 
 
   function handleChange(index, event) {
     const options = [...choiceList];

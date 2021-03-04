@@ -94,6 +94,11 @@ export default class QuestionTemplate extends Component {
 
   handleQuestionSubmit = (event) => {
     //making Axios call
+    if(this.state.value === " " || this.state.questionType === ''){
+      console.log("Need to fill in question and question type!")
+      this.setState({...this.state, errorMessage: "Question or Question Type cannot be empty!"});
+      return;
+    }
     if (this.state.id === '') {
       console.log('making axios call for ', this.state.questionType);
       event.preventDefault();
@@ -122,7 +127,7 @@ export default class QuestionTemplate extends Component {
             },
           ],
         };
-      } else if (this.state.questionType === 'True OR False') {
+      } else if (this.state.questionType === 'True or False') {
         let answer = this.state.answers[0] === 'true' ? 'true' : 'false';
         let notAnswer = answer === 'true' ? 'false' : 'true';
         console.log('answer, notAnswer: ', answer, notAnswer);
@@ -180,7 +185,7 @@ export default class QuestionTemplate extends Component {
             },
           ],
         };
-      } else if (this.state.questionType === 'True OR False') {
+      } else if (this.state.questionType === 'True or False') {
         let answer = this.state.answers[0] === 'true' ? 'true' : 'false';
         let notAnswer = answer === 'true' ? 'false' : 'true';
         console.log('answer, notAnswer: ', answer, notAnswer);
@@ -234,7 +239,7 @@ export default class QuestionTemplate extends Component {
                 <select value={this.state.questionType} onChange={this.handleChange}>
                   <option value="selectChoice">Select Question Type</option>
                   <option value="Multiple Choice">Multiple Choice</option>
-                  <option value="True OR False">True or False</option>
+                  <option value="True or False">True or False</option>
                   <option value="Free Response">Free Response</option>
                   <option value="Select All That Apply">Select All That Apply</option>
                 </select>
@@ -246,7 +251,7 @@ export default class QuestionTemplate extends Component {
                     handleOpenTextAnswer={this.handleChangeOpenTextAnswer}
                   />
                 )}
-                {this.state.questionType === 'True OR False' && (
+                {this.state.questionType === 'True or False' && (
                   <TrueOrFalseQuestion
                     answers={this.state.answers}
                     handleTrueOrFalseAnswer={this.handleChangeOpenTextAnswer}

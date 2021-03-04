@@ -139,11 +139,11 @@ export default class AddQuestions extends Component {
             );
           })}
         </div>
-        <div>
+        {/* <div>
           <button className="addNew" onClick={() => this.addGeneralQuestionTemplate(false)}>
             +
           </button>
-        </div>
+        </div> */}
         <div>
           {!this.state.inputAtTop &&
             this.state.display &&
