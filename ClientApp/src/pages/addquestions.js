@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 // import "./NewQuiz.css"
 import QuestionTemplate from '../components/Questions/QuestionTemplate';
 import QuestionDisplay from '../components/Questions/QuestionDisplay';
+import { Form } from '../components/'
 
 export default class AddQuestions extends Component {
   // static displayName = Counter.name;
@@ -61,8 +62,9 @@ export default class AddQuestions extends Component {
     });
   }
 
-  addGeneralQuestionTemplate = (inputLocation = true) => {
+  addGeneralQuestionTemplate = (e) => {
     console.log('clicked add button');
+    e.preventDefault();
     const questions = [...this.state.questionTemplate];
     let newCount = this.state.count;
     newCount = newCount + 1;
@@ -72,7 +74,7 @@ export default class AddQuestions extends Component {
         ...prevState,
         count: newCount,
         questionTemplate: questions,
-        inputAtTop: inputLocation,
+        inputAtTop: true,
       };
     });
     console.log('questionTemplate: ', this.state.questionTemplate);
@@ -101,7 +103,7 @@ export default class AddQuestions extends Component {
       <div>
         {/* {console.log("hiiiiii")} */}
         {/* {console.log(this.props.history)} */}
-        <h1>Add More Questions to the Question Pool</h1>
+        <h1>Add More Questions</h1>
 
         {/* <div>
           <button class="addQuestionButton">+ Multiple Choice</button>
@@ -119,14 +121,15 @@ export default class AddQuestions extends Component {
             ))}
         </div>
         <div>
-          <button className="addNew" onClick={this.addGeneralQuestionTemplate}>
+          {/* <button className="addNew" onClick={this.addGeneralQuestionTemplate}>
             +
-          </button>
+          </button> */}
+          <Form.AddNewQuestion onClick={(e) => this.addGeneralQuestionTemplate(e)}>+</Form.AddNewQuestion>
         </div>
 
         <div>
           <br></br>
-          <p>Question Pool</p>
+          <h2>Question Pool</h2>
           {/* {console.log("question pool: ", this.state.questionPool)} */}
           {this.state.questionPool.map((question, index) => {
             return (

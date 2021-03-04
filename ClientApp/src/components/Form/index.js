@@ -15,6 +15,7 @@ import {
   QuestionsNextToQuizzes,
   QuizOuter,
   eachQuiz,
+  AddNewQuestion,
 } from './styles/form';
 
 export default function Form({ children, ...restProps }) {
@@ -71,4 +72,8 @@ Form.QuizOuter = function FormQuestion({ children, ...restProps }) {
 
 Form.eachQuiz = function FormQuestion({ children, ...restProps }) {
   return <eachQuiz {...restProps}>{children}</eachQuiz>;
+};
+
+Form.AddNewQuestion = function FormAddNewQuestion({ children, ...restProps }) {
+  return <AddNewQuestion {...restProps}>{children}</AddNewQuestion>;
 };

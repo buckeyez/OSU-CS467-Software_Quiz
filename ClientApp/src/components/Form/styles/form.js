@@ -47,3 +47,24 @@ export const eachQuiz = styled.span`
   display: flex;
   // justify-content: space-between;
 `;
+
+export const AddNewQuestion = styled.button`
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  border: solid 1px lightgrey;
+  box-shadow: 0px 0px 5px grey;
+  margin-right: 50px;
+  margin-top: 30px;
+  &:focus {
+    outline: none;
+    // box-shadow: 0px 0px 2px red;
+  };
+  &:hover {
+    // outline: none;
+    box-shadow: 0px 0px 10px #99c2ff;
+    border: solid 1px #99c2ff;
+    // background: #99c2ff;
+  }
+  
+`;
