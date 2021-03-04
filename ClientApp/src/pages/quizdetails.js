@@ -13,7 +13,6 @@ import { getQuizQuestions } from '../utils/getQuizQuestions';
 import { submitQuizToBackend } from '../utils/submitQuiz';
 import { generateAnswersArrayForSubmission } from '../utils/generateAnswersArray';
 import { areAllQuestionsAnswered } from '../utils/checkIfAllQuestionsAnswered';
-// import { checkAnswersIfOutOfTime } from '../utils/checkAnswersIfOutOfTime';
 import queryString from 'query-string';
 import { getCandidateInformation } from '../utils/getCandidateInformation';
 
@@ -28,7 +27,6 @@ export default function QuizDetails() {
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
   const [minutesRemain, setMinutesRemain] = useState(null);
   const [secondsRemain, setSecondsRemain] = useState(null);
-  //   const [quizTimeUp, setQuizTimeUp] = useState(false);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
   const [candidateTimeUp, setCandidateTimeUp] = useState(false);
