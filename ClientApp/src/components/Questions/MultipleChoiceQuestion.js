@@ -16,6 +16,7 @@ const MultipleChoiceQuestion = (props) =>{
       setChoiceList(newList)
       // console.log("newList in useEffect: ", choiceList)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) 
 
   function handleChange(index, event) {

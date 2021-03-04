@@ -4,24 +4,64 @@ import React, { /*Component,*/ useState, useEffect } from 'react';
 const CheckboxQuestion = (props) => {
   const [choiceList, setChoiceList] = useState([{ Value: '', Correct: false }]);
 
+  // const  populateDataOnce = () =>{ () => {
+  //   if (props.answers.length > 0) {
+  //     let newList = [];
+  //     for (let i = 0; i < props.answers.length; i++) {
+  //       newList.push({ Value: props.answers[i].value, Correct: props.answers[i].correct });
+  //     }
+  //     console.log('----------newList in useEffect: ', choiceList);
+  //     setChoiceList(newList);
+  //     // console.log("newList in useEffect: ", choiceList)
+  //   }
+  // }, []}
+
+
+
   useEffect(() => {
-    console.log(
-      'Use Effect - choiceList: ',
-      choiceList,
-      'answers prop: ',
-      props.answers,
-      props.answers.length
-    );
-    if (props.answers.length > 0) {
-      let newList = [];
-      for (let i = 0; i < props.answers.length; i++) {
-        newList.push({ Value: props.answers[i].value, Correct: props.answers[i].correct });
-      }
-      console.log('----------newList in useEffect: ', choiceList);
-      setChoiceList(newList);
-      // console.log("newList in useEffect: ", choiceList)
+    // console.log(
+    //   'Use Effect - choiceList: ',
+    //   choiceList,
+    //   'answers prop: ',
+    //   props.answers,
+    //   props.answers.length
+    // );
+    // if (props.answers.length > 0) {
+    //   let newList = [];
+    //   for (let i = 0; i < props.answers.length; i++) {
+    //     newList.push({ Value: props.answers[i].value, Correct: props.answers[i].correct });
+    //   }
+    //   console.log('----------newList in useEffect: ', choiceList);
+    //   setChoiceList(newList);
+    //   // console.log("newList in useEffect: ", choiceList)
+    // }
+    // function populateDataOnce(){
+    //   if (props.answers.length > 0) {
+    //     let newList = [];
+    //     for (let i = 0; i < props.answers.length; i++) {
+    //       newList.push({ Value: props.answers[i].value, Correct: props.answers[i].correct });
+    //     }
+    //     console.log('----------newList in useEffect: ', choiceList);
+    //     setChoiceList(newList);
+    //     // console.log("newList in useEffect: ", choiceList)
+    //   }
+    // }
+    const populateDataOnce = () => {
+      if (props.answers.length > 0) {
+        let newList = [];
+        for (let i = 0; i < props.answers.length; i++) {
+          newList.push({ Value: props.answers[i].value, Correct: props.answers[i].correct });
+        }
+        console.log('----------newList in useEffect: ', choiceList);
+        setChoiceList(newList);
+        // console.log("newList in useEffect: ", choiceList)
+      };
     }
+    populateDataOnce()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 
   function handleChange(index, event) {
     const options = [...choiceList];
