@@ -38,27 +38,6 @@ export default function QuizDetails() {
 
   //   console.log('Data from candidate-home route:', data);
 
-  //   const submitQuiz = async () => {
-  //     const userSelections = generateAnswersArrayForSubmission(questionAndAnswerMap, quizData);
-
-  //     if (userSelections) {
-  //       try {
-  //         const submission = await submitQuizToBackend(
-  //           candidateAndQuizInformation.id,
-  //           minutesRemain,
-  //           userSelections
-  //         );
-  //         if (submission) {
-  //           console.log('submission returned>>>');
-  //           console.log(submission);
-  //           history.push(`${ROUTES.SUBMITTED}/?key=${queryParams.key}`);
-  //         }
-  //       } catch (e) {
-  //         console.log('Error submititon quiz: ', e);
-  //       }
-  //     }
-  //   };
-
   //Callback is used bcause reference to submitQuiz can change ever render
   //With callBack, react will only update the function if any of the dependencies are updated
   const submitQuiz = useCallback(async () => {
@@ -196,8 +175,6 @@ export default function QuizDetails() {
     if (minutesRemain === 0 && secondsRemain === 0) {
       setCandidateTimeUp(true);
     }
-
-    //TODO: Implemente functionality when timer hits 0
   };
 
   const renderSwitch = (questionType) => {
