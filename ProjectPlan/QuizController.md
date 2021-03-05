@@ -67,9 +67,9 @@ Returns an array of **_QuestionsAndAnswers_** objects
 ]
 ```
 
-### Get Quiz Assingment via Key
+### Get Quiz Assignment via Key
 
-Suffix:`/Assignment/<key>`
+Suffix: `/Assignment/<key>`
 
 Expects the key that was assigned to the user and quiz assignment (emailed to the user).
 Will be a part of the URL the user clicks `/candidate-home/?key=<key>`.
@@ -91,6 +91,30 @@ Returns **_QuizAssignment_**
     "email": string
   },
   "timeAllotment": int
+}
+```
+
+### Get Quiz Assignment Result
+
+Suffix: `/Results/<key>`
+
+Expects the key that was assigned to the user and quiz assignment (emailed to the user).
+Will be a part of the URL the user clicks `/candidate-result/?key=<key>`.
+
+Returns **_QuizResults_**
+
+```json
+{
+  "User": <user-object>,
+  "Grade": int,
+  "QuestionResults": [
+    {
+      "Question": <question-object>,
+      "Answers": [ <answer-object> ],
+      "UserSelection": [ <answer-object> ],
+      "FreeResponse": string
+    }
+  ]
 }
 ```
 
@@ -124,6 +148,22 @@ Returns an array of **_Quiz_** objects
   {
     "Id": int,
     "Name": string
+  }
+]
+```
+
+### Get Quiz Rankings
+
+Suffix: `/Rankings`
+
+Returns an array of **_QuizRanking_** objects
+
+```json
+[
+  {
+    "User": <user-obj>,
+    "Grade": int,
+    "AssignmentKey": string
   }
 ]
 ```

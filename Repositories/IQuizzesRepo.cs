@@ -13,8 +13,10 @@ namespace OSU_CS467_Software_Quiz.Repositories
     Task<List<Quizzes>> GetQuizzes();
     Task<Quizzes> GetQuiz(int id, bool partial);
     Task<QuizAssignments> GetQuizAssignment(string key);
+    Task<QuizAssignments> GetQuizAssignmentResultsAsync(string key);
     Task<List<QuizAssignments>> GetQuizAssignments();
     Task<List<Quizzes>> GetQuizAssignmentsForUser(string userId);
+    Task<List<QuizAssignments>> GetQuizRankings();
     Task<List<AppUser>> GetUsersAssignedToQuiz(int id);
     Task RemoveQuizAssignmentAsync(int id);
     Task<QuizAssignments> SubmitQuizAsync(QuizSubmission quizSubmission);

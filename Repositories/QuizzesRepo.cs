@@ -169,6 +169,39 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .FirstOrDefaultAsync();
     }
 
+    public async Task<QuizAssignments> GetQuizAssignmentResultsAsync(string key)
+    {
+      var toReturn = await _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Key.ToString() == key)
+        .Include(qa => qa.Quiz)
+          .ThenInclude(q => q.QuizQuestions)
+          .ThenInclude(qq => qq.Question)
+          .ThenInclude(q => q.QuestionAnswers)
+          .ThenInclude(qa => qa.Answer)
+        .FirstOrDefaultAsync();
+      
+      if (toReturn == null)
+      {
+        return null;
+      }
+      
+      _db.Entry(toReturn).Reference(qa => qa.User).Load();
+
+      foreach(var q in toReturn.Quiz.QuizQuestions.Select(qq => qq.Question))
+      {
+        _db.Entry(q).Reference(q => q.Type).Load();
+      }
+
+      _db.Entry(toReturn).Collection(qa => qa.QuizResults).Load();
+      foreach (var qr in toReturn.QuizResults)
+      {
+        _db.Entry(qr).Reference(qr => qr.Answer).Load();
+      }
+
+      return toReturn;
+    }
+
     public Task<List<QuizAssignments>> GetQuizAssignments()
     {
       return _db.QuizAssignments
@@ -194,6 +227,14 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .Where(qa => qa.UserId == userId)
         .Include(q => q.Quiz)
         .Select(qa => qa.Quiz)
+        .ToListAsync();
+    }
+
+    public Task<List<QuizAssignments>> GetQuizRankings()
+    {
+      return _db.QuizAssignments
+        .Include(qa => qa.User)
+        .OrderByDescending(qa => qa.Grade)
         .ToListAsync();
     }
 
@@ -223,6 +264,17 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
     public async Task<QuizAssignments> SubmitQuizAsync(QuizSubmission quizSubmission)
     {
+      var alreadySubmitted = _db.QuizResults
+        .AsQueryable()
+        .Where(qr => qr.QuizAssignmentId == quizSubmission.QuizAssignmentId)
+        .Any();
+
+      if (alreadySubmitted)
+      {
+        Console.WriteLine($"QuizSubmission: Quiz Assignment ({quizSubmission.QuizAssignmentId}) has already been submitted.");
+        return null;
+      }
+
       var quizAssignmentEntity = _db.QuizAssignments
         .AsQueryable()
         .Where(qa => qa.Id == quizSubmission.QuizAssignmentId)
@@ -294,6 +346,8 @@ namespace OSU_CS467_Software_Quiz.Repositories
       try
       {
         await _db.SaveChangesAsync();
+        await GradeQuizAsync(quizSubmission.QuizAssignmentId);
+        await Task.WhenAll(_mailService.SendQuizResultsAsync(quizAssignmentEntity));
       }
       catch (DbUpdateException e)
       {
@@ -427,6 +481,69 @@ namespace OSU_CS467_Software_Quiz.Repositories
       }
 
       return entity;
+    }
+
+    private async Task GradeQuizAsync(int quizAssignmentId)
+    {
+      var qa = _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Id == quizAssignmentId)
+        .Include(qa => qa.Quiz)
+          .ThenInclude(q => q.QuizQuestions)
+          .ThenInclude(qq => qq.Question)
+          .ThenInclude(q => q.QuestionAnswers)
+          .ThenInclude(qa => qa.Answer)
+        .First();
+
+      var questions = qa.Quiz.QuizQuestions
+        .Select(qq => qq.Question)
+        .ToList();
+
+      var responses = _db.QuizResults
+        .AsQueryable()
+        .Where(qr => qr.QuizAssignmentId == quizAssignmentId)
+        .AsEnumerable();
+
+      int gradedCount = 0;
+      int correctCount = 0;
+
+      foreach (var q in questions)
+      {
+        _db.Entry(q).Reference(q => q.Type).Load();
+        if (q.Type.Type == SeedData.FreeResponse)
+        {
+          continue;
+        }
+
+        gradedCount++;
+
+        bool correct = true;
+        var answers = q.QuestionAnswers.Select(qa => qa.Answer).ToList();
+        foreach (var a in answers)
+        {
+          bool answered = responses
+            .Where(r => r.QuestionId == q.Id)
+            .Where(r => r.AnswerId == a.Id)
+            .Any();
+
+          if (answered != a.Correct)
+          {
+            correct = false;
+            break;
+          }
+        }
+
+        if (correct && answers.Count != 0)
+        {
+          correctCount++;
+        }
+      }
+
+      qa.Grade = (int)Math.Round((double)(correctCount * 100) / gradedCount);
+
+      _db.QuizAssignments.Update(qa);
+
+      await _db.SaveChangesAsync();
     }
   }
 }
