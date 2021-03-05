@@ -105,14 +105,14 @@ Returns **_QuizResults_**
 
 ```json
 {
-  User: <user-object>,
-  Grade: int,
-  QuestionResults: [
+  "User": <user-object>,
+  "Grade": int,
+  "QuestionResults": [
     {
-      Question: <question-object>,
-      Answers: [ <answer-object> ],
-      UserSelection: [ <answer-object> ],
-      FreeResponse: string
+      "Question": <question-object>,
+      "Answers": [ <answer-object> ],
+      "UserSelection": [ <answer-object> ],
+      "FreeResponse": string
     }
   ]
 }
@@ -148,6 +148,22 @@ Returns an array of **_Quiz_** objects
   {
     "Id": int,
     "Name": string
+  }
+]
+```
+
+### Get Quiz Rankings
+
+Suffix: `/Rankings`
+
+Returns an array of **_QuizRanking_** objects
+
+```json
+[
+  {
+    "User": <user-obj>,
+    "Grade": int,
+    "AssignmentKey": string
   }
 ]
 ```

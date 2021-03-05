@@ -230,6 +230,14 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .ToListAsync();
     }
 
+    public Task<List<QuizAssignments>> GetQuizRankings()
+    {
+      return _db.QuizAssignments
+        .Include(qa => qa.User)
+        .OrderByDescending(qa => qa.Grade)
+        .ToListAsync();
+    }
+
     public async Task RemoveQuizAssignmentAsync(int id)
     {
       var entity = _db.QuizAssignments

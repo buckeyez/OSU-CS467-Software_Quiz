@@ -164,6 +164,15 @@ namespace OSU_CS467_Software_Quiz.Controllers
         .ToList();
     }
 
+    [HttpGet("Rankings")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<QuizRanking>> GetQuizRankings()
+    {
+      return (await _quizRepo.GetQuizRankings())
+        .Select(qr => QuizRanking.Build(qr))
+        .ToList();
+    }
+
     [HttpGet("{id}/Users")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<User>> GetUsersAssignedToQuiz(int id)
