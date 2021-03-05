@@ -294,6 +294,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
       try
       {
         await _db.SaveChangesAsync();
+        await GradeQuizAsync(quizSubmission.QuizAssignmentId);
       }
       catch (DbUpdateException e)
       {
@@ -427,6 +428,68 @@ namespace OSU_CS467_Software_Quiz.Repositories
       }
 
       return entity;
+    }
+
+    private async Task GradeQuizAsync(int quizAssignmentId)
+    {
+      var qa = _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Id == quizAssignmentId)
+        .Include(qa => qa.Quiz)
+          .ThenInclude(q => q.QuizQuestions)
+          .ThenInclude(qq => qq.Question)
+          .ThenInclude(q => q.QuestionAnswers)
+          .ThenInclude(qa => qa.Answer)
+        .First();
+
+      var questions = qa.Quiz.QuizQuestions
+        .Select(qq => qq.Question)
+        .ToList();
+
+      var responses = _db.QuizResults
+        .AsQueryable()
+        .Where(qr => qr.QuizAssignmentId == quizAssignmentId)
+        .AsEnumerable();
+
+      int gradedCount = 0;
+      int correctCount = 0;
+
+      foreach (var q in questions)
+      {
+        _db.Entry(q).Reference(q => q.Type).Load();
+        if (q.Type.Type == SeedData.FreeResponse)
+        {
+          continue;
+        }
+
+        gradedCount++;
+
+        bool correct = true;
+        foreach (var a in q.QuestionAnswers.Select(qa => qa.Answer).ToList())
+        {
+          bool answered = responses
+            .Where(r => r.QuestionId == q.Id)
+            .Where(r => r.AnswerId == a.Id)
+            .Any();
+
+          if (answered != a.Correct)
+          {
+            correct = false;
+            break;
+          }
+        }
+
+        if (correct)
+        {
+          correctCount++;
+        }
+      }
+
+      qa.Grade = (int)Math.Round((double)(correctCount * 100) / gradedCount);
+
+      _db.QuizAssignments.Update(qa);
+
+      await _db.SaveChangesAsync();
     }
   }
 }

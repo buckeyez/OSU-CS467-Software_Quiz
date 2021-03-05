@@ -10,6 +10,10 @@ namespace OSU_CS467_Software_Quiz.Data
   {
     public const string Admin = "Administrator";
     public const string Candidate = "Candidate";
+    public const string MultipleChoice = "Multiple Choice";
+    public const string SelectAll = "Select All That Apply";
+    public const string TF = "True or False";
+    public const string FreeResponse = "Free Response";
 
     public static void InitializeDb(IServiceProvider serviceProvider)
     {
@@ -17,10 +21,10 @@ namespace OSU_CS467_Software_Quiz.Data
 
       if (!context.QuestionType.Any())
       {
-        context.QuestionType.Add(new() { Type = "Multiple Choice" });
-        context.QuestionType.Add(new() { Type = "Select All That Apply" });
-        context.QuestionType.Add(new() { Type = "True or False" });
-        context.QuestionType.Add(new() { Type = "Free Response" });
+        context.QuestionType.Add(new() { Type = MultipleChoice });
+        context.QuestionType.Add(new() { Type = SelectAll });
+        context.QuestionType.Add(new() { Type = TF });
+        context.QuestionType.Add(new() { Type = FreeResponse });
       }
 
       context.SaveChanges();
