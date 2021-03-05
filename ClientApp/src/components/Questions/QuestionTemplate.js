@@ -175,8 +175,8 @@ export default class QuestionTemplate extends Component {
           Answers: this.state.answers,
         };
       } else if (this.state.questionType === 'Free Response') {
-        console.log("in update to free response: ", this.state.answers[0], typeof(this.state.answers[0]))
-        let theValue = typeof(this.state.answers[0]) === 'object' ? this.state.answers[0].value : this.state.answers[0].toString();
+        console.log("in update to free response: ", this.state.answers[0], this.state.answers[0].value, typeof(this.state.answers[0]), typeof(this.state.answers[0]) === 'object')
+        let theValue = typeof(this.state.answers[0]) === 'object' ? this.state.answers[0].value : this.state.answers[0];
         console.log("theValue: ", theValue)
         payload = {
           Question: {
@@ -185,7 +185,7 @@ export default class QuestionTemplate extends Component {
           },
           Answers: [
             {
-              Value: this.state.answers[0],
+              Value: theValue,
               Correct: true,
             },
           ],

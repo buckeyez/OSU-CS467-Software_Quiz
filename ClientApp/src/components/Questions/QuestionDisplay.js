@@ -20,13 +20,16 @@ const QuestionDisplay = (props) => {
   // const handleChangeMultipleChoiceAnswer = (choiceList) => {
   //   console.log('in multiplr choice: ', choiceList);
   // };
+  var boldStyle = {
+    fontWeight: 'bold'
+  };
 
   return (
     <div>
       <Form.Question>
         <div onClick={handleClick}>
-          <p>Question: {props.question.value}</p>
-          <p>Type: {props.question.type}</p>
+          <p><span style={boldStyle}>Question: &nbsp;</span>{props.question.value}</p>
+          <p><span style={boldStyle}>Type: &nbsp;</span> {props.question.type}</p>
         </div>
         {showDetail && (
           <QuestionTemplate

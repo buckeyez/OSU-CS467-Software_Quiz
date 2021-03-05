@@ -25,8 +25,8 @@ export const QuestionInput = styled.input`
   &:focus {
     outline: none;
     box-shadow: 0 4px 2px -2px lightgray;
-  };
-  
+    background: white;
+  }
 `;
 
 export const QuestionSelect = styled.select`
@@ -37,7 +37,7 @@ export const QuestionSelect = styled.select`
 
   &:focus {
     outline: none;
-  };
+  }
 
   option {
     color: red;
@@ -51,21 +51,34 @@ export const QuestionSelect = styled.select`
   }
 `;
 
-export const QuestionOption = styled.option`
-  background-color: #FFFFFF;
+export const QuizSelect = styled.select`
+  margin-bottom: 8px;
+  border: none;
+  border-bottom: solid 1px lightgrey;
+  width: 200%;
+
+  &:focus {
+    outline: none;
+  }
+
+  option {
+    color: red;
+  }
 `;
 
+export const QuestionOption = styled.option`
+  background-color: #ffffff;
+`;
 
 export const MCInput = styled.input`
-  width: 50%;
+  width: 40%;
   border: none;
   border-bottom: solid 1px lightgrey;
   margin-bottom: 8px;
   &:focus {
     outline: none;
     box-shadow: 0 4px 2px -2px lightgray;
-  };
-  
+  }
 `;
 
 export const Title = styled.h1``;
@@ -83,21 +96,25 @@ export const Link = styled.link``; // styled(ReactRouterLink)``;
 export const Input = styled.input``;
 
 export const Quizzes = styled.div`
-  border: solid 1px black;
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
   display: inline-block;
-  width: 100%;
+  // width: 100%;
+  border: solid 1px lightgrey;
+  box-shadow: 0px 0px 5px lightgrey;
+  min-width: 300px;
 `;
 
 export const QuestionsNextToQuizzes = styled.div`
-  border: solid 1px black;
-  width: 75%;
+  width: 70%;
   border-radius: 10px;
+  border: solid 1px lightgrey;
+  box-shadow: 0px 0px 5px lightgrey;
   padding: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
+  min-width: 300px;
 `;
 
 export const QuizOuter = styled.div`
@@ -106,10 +123,14 @@ export const QuizOuter = styled.div`
   justify-content: space-between;
 `;
 
-export const eachQuiz = styled.span`
-  // border: solid 1px black;
-  display: flex;
-  // justify-content: space-between;
+export const EachQuiz = styled.span`
+  &:hover {
+    font-size: 125%;
+    cursor: pointer;
+  }
+  &:focus {
+    font-size: 125%;
+  }
 `;
 
 export const AddNewQuestion = styled.button`
@@ -120,21 +141,19 @@ export const AddNewQuestion = styled.button`
   box-shadow: 0px 0px 10px darkgrey;
   margin-right: 50px;
   margin-top: 30px;
+  padding: 0px 10px;
   &:focus {
     outline: none;
-  };
+  }
   &:hover {
     // outline: none;
     box-shadow: 0px 0px 15px #99c2ff;
     border: solid 1px #99c2ff;
     // background: #99c2ff;
   }
-  
 `;
 
-
 export const Submit = styled.button`
-  
   background: white;
   border-radius: 10px;
   border: solid 1px lightgrey;
@@ -151,12 +170,10 @@ export const Submit = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
 
 export const DeleteButton = styled.button`
-  
   background: white;
   border-radius: 10px;
   border: solid 1px #f5a2aa;
@@ -171,8 +188,42 @@ export const DeleteButton = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
 
+export const DeleteButtonSmall = styled.button`
+  background: white;
+  border-radius: 5px;
+  border: solid 1px #f5a2aa;
+  box-shadow: 0px 0px 10px #f77986;
+  height: 80%;
+  margin-left: 5px;
 
+  &:hover {
+    box-shadow: 0px 0px 15px red;
+    border: solid 1px lightred;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const Toggle = styled.button`
+  background: white;
+  border-radius: 10px;
+  border: solid 1px lightgrey;
+  box-shadow: 0px 0px 10px lightgreen;
+  margin-right: 5px;
+  margin-left: 5px;
+  // padding: 5px 15px;
+
+  &:hover {
+    // outline: none;
+    box-shadow: 0px 0px 15px green;
+    border: solid 1px lightgreen;
+    // background: #99c2ff;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
