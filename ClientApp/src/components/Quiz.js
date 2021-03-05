@@ -287,7 +287,7 @@ export default class Quiz extends Component {
         console.log('Quiz updated!!!!!!!!!!!!!!!!!');
         this.setState({
           ...this.state,
-          message: 'Question List for quiz updated!',
+          message: `Question List for quiz ${this.state.bufferName} updated! \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0`,
           quizContentsID: toAdd,
         });
         if (toAdd.length > 0 || toDelete.length > 0) {
@@ -480,7 +480,7 @@ export default class Quiz extends Component {
                 {this.state.questionPool.map((question, index) => {
                   return (
                     <div key={index} style={questionPanelStyle}>
-                      <Form.EachQuiz>
+                      {/* <Form.EachQuiz> */}
                         <input
                           type="checkbox"
                           value={question.id}
@@ -496,10 +496,12 @@ export default class Quiz extends Component {
                         <Form.Toggle onClick={(e) => this.isQuestionChecked(e, question.id)}>
                           Toggle
                         </Form.Toggle>
+                        <Form.EachQuiz>
                         {question.value}
+                        </Form.EachQuiz>
                         {/* <p>includes?</p> */}
                         {/* <p>{console.log("includes? ", this.state.quizContents.length > 0 && this.state.quizContents.questions.includes(question.id))}</p> */}
-                      </Form.EachQuiz>
+                      {/* </Form.EachQuiz> */}
                     </div>
                   );
                 })}
