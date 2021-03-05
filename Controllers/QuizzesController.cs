@@ -125,6 +125,26 @@ namespace OSU_CS467_Software_Quiz.Controllers
 
       return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
     }
+    
+    [HttpGet("Results/{key}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetQuizAssignmentResultsAsync(string key)
+    {
+      if (ModelState.IsValid)
+      {
+        var qa = await _quizRepo.GetQuizAssignmentResultsAsync(key);
+
+        if (qa != null)
+        {
+          return Ok(QuizResults.Build(qa));
+        }
+
+        ModelState.AddModelError("Quizzes", $"Quiz assignment key ({key}) could not be found.");
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
 
     [HttpGet("Assignments")]
     [ProducesResponseType(StatusCodes.Status200OK)]

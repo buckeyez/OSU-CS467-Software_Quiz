@@ -169,6 +169,39 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .FirstOrDefaultAsync();
     }
 
+    public async Task<QuizAssignments> GetQuizAssignmentResultsAsync(string key)
+    {
+      var toReturn = await _db.QuizAssignments
+        .AsQueryable()
+        .Where(qa => qa.Key.ToString() == key)
+        .Include(qa => qa.Quiz)
+          .ThenInclude(q => q.QuizQuestions)
+          .ThenInclude(qq => qq.Question)
+          .ThenInclude(q => q.QuestionAnswers)
+          .ThenInclude(qa => qa.Answer)
+        .FirstOrDefaultAsync();
+      
+      if (toReturn == null)
+      {
+        return null;
+      }
+      
+      _db.Entry(toReturn).Reference(qa => qa.User).Load();
+
+      foreach(var q in toReturn.Quiz.QuizQuestions.Select(qq => qq.Question))
+      {
+        _db.Entry(q).Reference(q => q.Type).Load();
+      }
+
+      _db.Entry(toReturn).Collection(qa => qa.QuizResults).Load();
+      foreach (var qr in toReturn.QuizResults)
+      {
+        _db.Entry(qr).Reference(qr => qr.Answer).Load();
+      }
+
+      return toReturn;
+    }
+
     public Task<List<QuizAssignments>> GetQuizAssignments()
     {
       return _db.QuizAssignments
