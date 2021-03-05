@@ -26,8 +26,7 @@ export const QuestionInput = styled.input`
     outline: none;
     box-shadow: 0 4px 2px -2px lightgray;
     background: white;
-  };
-  
+  }
 `;
 
 export const QuestionSelect = styled.select`
@@ -38,7 +37,7 @@ export const QuestionSelect = styled.select`
 
   &:focus {
     outline: none;
-  };
+  }
 
   option {
     color: red;
@@ -60,7 +59,7 @@ export const QuizSelect = styled.select`
 
   &:focus {
     outline: none;
-  };
+  }
 
   option {
     color: red;
@@ -68,20 +67,18 @@ export const QuizSelect = styled.select`
 `;
 
 export const QuestionOption = styled.option`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 `;
 
-
 export const MCInput = styled.input`
-  width: 50%;
+  width: 40%;
   border: none;
   border-bottom: solid 1px lightgrey;
   margin-bottom: 8px;
   &:focus {
     outline: none;
     box-shadow: 0 4px 2px -2px lightgray;
-  };
-  
+  }
 `;
 
 export const Title = styled.h1``;
@@ -130,10 +127,10 @@ export const EachQuiz = styled.span`
   &:hover {
     font-size: 125%;
     cursor: pointer;
-  };
+  }
   &:focus {
     font-size: 125%;
-  };
+  }
 `;
 
 export const AddNewQuestion = styled.button`
@@ -147,19 +144,16 @@ export const AddNewQuestion = styled.button`
   padding: 0px 10px;
   &:focus {
     outline: none;
-  };
+  }
   &:hover {
     // outline: none;
     box-shadow: 0px 0px 15px #99c2ff;
     border: solid 1px #99c2ff;
     // background: #99c2ff;
   }
-  
 `;
 
-
 export const Submit = styled.button`
-  
   background: white;
   border-radius: 10px;
   border: solid 1px lightgrey;
@@ -176,12 +170,10 @@ export const Submit = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
 
 export const DeleteButton = styled.button`
-  
   background: white;
   border-radius: 10px;
   border: solid 1px #f5a2aa;
@@ -196,13 +188,10 @@ export const DeleteButton = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
 
-
 export const DeleteButtonSmall = styled.button`
-  
   background: white;
   border-radius: 5px;
   border: solid 1px #f5a2aa;
@@ -216,12 +205,10 @@ export const DeleteButtonSmall = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
 
 export const Toggle = styled.button`
-  
   background: white;
   border-radius: 10px;
   border: solid 1px lightgrey;
@@ -238,7 +225,5 @@ export const Toggle = styled.button`
   }
   &:focus {
     outline: none;
-  };
-  
+  }
 `;
-

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 //import * as ROUTES from '../constants/routes';
 import axios from 'axios';
 import Candidate from '../components/Candidate'
+import { Form } from '../components'
 
 // import "./SoftwareQuiz.css"
 // import {Button} from 'react-bootstrap';
@@ -55,7 +56,7 @@ export default class AddCandidates extends Component {
         axios.post(`/Users/AddPasswordless`, payload).then((response) => {
             this.setState(prevState => {
                 console.log("in axios post response: ", response)
-                return ({...this.prevState, count: prevState.count+1, message: "Candidate added!"})
+                return ({...this.prevState, count: prevState.count+1, message: "Candidate added!", username: '', firstname: '', lastname: '', email: ''})
             });
           });
     }
@@ -77,29 +78,32 @@ export default class AddCandidates extends Component {
   render() {
     return (
       <div onClick = {this.resetMessage}>
-        <h1>Candidates</h1>
-        {this.state.count}
+        {/* <h1>Candidates</h1>
+        {this.state.count} */}
         <div id="createQuiz">
           <h3>Add Candidate</h3>
+          <br></br>
           <form>
-              <label>Username</label>
-              <input type="text" name="username" onChange={this.handleInputChange}></input>
-              <label>First Name: </label>
-              <input type="text" name="firstname" onChange={this.handleInputChange}></input>
-              <label>Last Name: </label>
-              <input type="text" name="lastname" onChange={this.handleInputChange}></input>
-              <label>Email</label>
-              <input type="email" name="email" onChange={this.handleInputChange}></input>
-              <button type="submit" onClick={(e) => this.handleSubmitUser(e)}>Submit</button>
+              <label>Username: &nbsp;&nbsp;</label>
+              <Form.MCInput type="text" name="username" onChange={this.handleInputChange} value={this.state.username}></Form.MCInput><br></br>
+              <label>First Name: &nbsp;&nbsp;</label>
+              <Form.MCInput type="text" name="firstname" onChange={this.handleInputChange} value={this.state.firstname}></Form.MCInput><br></br>
+              <label>Last Name: &nbsp;&nbsp;</label>
+              <Form.MCInput type="text" name="lastname" onChange={this.handleInputChange} value={this.state.lastname}></Form.MCInput><br></br>
+              <label>Email Address: &nbsp;&nbsp;</label>
+              <Form.MCInput type="email" name="email" onChange={this.handleInputChange} value={this.state.email}></Form.MCInput><br></br>
+              <Form.Submit type="submit" onClick={(e) => this.handleSubmitUser(e)}>Submit</Form.Submit>
               {this.state.message && <p>{this.state.message}</p>}
             
           </form>
           </div>
           <div>
+            <br></br>
           <h3>Existing Candidates</h3>
-          <p>Count: {this.state.candidatesPool.length}</p>
+          <br></br>
+          <p>Total: {this.state.candidatesPool.length}</p>
           {this.state.candidatesPool.map((candidate, index) => {
-              return <Candidate candidate={candidate} />
+              return <Candidate key={index} candidate={candidate} />
           })}
 
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>

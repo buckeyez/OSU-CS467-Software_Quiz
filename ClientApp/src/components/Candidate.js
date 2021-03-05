@@ -1,14 +1,31 @@
-import React/*, { Component, useState }*/ from 'react';
+import React /*, { Component, useState }*/ from 'react';
+import { Form } from './';
 // import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 
 const Candidate = (props) => {
-  
+  var boldStyle = {
+    fontWeight: 'bold',
+  };
+
   return (
-    <div >
-        <p>Username: {props.candidate.name}</p>
-        <p>First Name: {props.candidate.firstName}</p>
-        <p>Last Name: {props.candidate.lastName}</p>
-        <p>Eamil: {props.candidate.email}</p>
+    <div>
+      <Form.Question>
+        <p>
+          <span style={boldStyle}>Username: &nbsp;</span> {props.candidate.name}
+        </p>
+        <p>
+          <span style={boldStyle}>First Name: &nbsp;</span>
+          {props.candidate.firstName}
+        </p>
+        <p>
+          <span style={boldStyle}>Last Name:&nbsp; </span>
+          {props.candidate.lastName}
+        </p>
+        <p>
+          <span style={boldStyle}>Eamil: &nbsp;</span>
+          {props.candidate.email}
+        </p>
+      </Form.Question>
     </div>
   );
 };
