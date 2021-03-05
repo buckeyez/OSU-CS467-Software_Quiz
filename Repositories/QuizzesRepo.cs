@@ -223,6 +223,17 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
     public async Task<QuizAssignments> SubmitQuizAsync(QuizSubmission quizSubmission)
     {
+      var alreadySubmitted = _db.QuizResults
+        .AsQueryable()
+        .Where(qr => qr.QuizAssignmentId == quizSubmission.QuizAssignmentId)
+        .Any();
+
+      if (alreadySubmitted)
+      {
+        Console.WriteLine($"QuizSubmission: Quiz Assignment ({quizSubmission.QuizAssignmentId}) has already been submitted.");
+        return null;
+      }
+
       var quizAssignmentEntity = _db.QuizAssignments
         .AsQueryable()
         .Where(qa => qa.Id == quizSubmission.QuizAssignmentId)
