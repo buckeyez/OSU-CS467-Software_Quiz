@@ -295,6 +295,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
       {
         await _db.SaveChangesAsync();
         await GradeQuizAsync(quizSubmission.QuizAssignmentId);
+        await Task.WhenAll(_mailService.SendQuizResultsAsync(quizAssignmentEntity));
       }
       catch (DbUpdateException e)
       {
