@@ -14,7 +14,12 @@ export default function SelectAllQuizCard({ ...props }) {
   };
 
   const questionCardTitle = () => {
-    return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
+    return (
+      <div>
+        <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>
+        <QuizQuestionCard.TextSmall>({props.questionType})</QuizQuestionCard.TextSmall>
+      </div>
+    );
   };
 
   const renderAnswerChoices = () => {

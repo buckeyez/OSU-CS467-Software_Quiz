@@ -185,6 +185,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'Free Response':
@@ -195,6 +196,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMapFreeResponse={updateQuestionAndAnswersMapFreeResponse}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'True or False':
@@ -205,6 +207,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'Select All That Apply':
@@ -215,6 +218,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMapSelectMultiple={updateQuestionAndAnswersMapSelectMultiple}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       default:

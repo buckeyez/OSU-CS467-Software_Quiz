@@ -16,7 +16,12 @@ export default function TrueFalseQuizCard({ ...props }) {
   }, [props.questionAndAnswerMap, props.questionIndex]);
 
   const questionCardTitle = () => {
-    return <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>;
+    return (
+      <div>
+        <QuizQuestionCard.Title>{props.questionTitle}</QuizQuestionCard.Title>
+        <QuizQuestionCard.TextSmall>({props.questionType})</QuizQuestionCard.TextSmall>
+      </div>
+    );
   };
 
   const renderAnswerChoices = () => {
