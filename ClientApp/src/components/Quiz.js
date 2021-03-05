@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import { withRouter } from 'react-router-dom';
 //import history from '../helpers/history';
 //import * as ROUTES from '../constants/routes';
-import Switch from 'react-switch';
+// import Switch from 'react-switch';
 import axios from 'axios';
 import QuizDisplay from './QuizDisplay';
 import { Form } from './';
@@ -179,7 +179,7 @@ export default class Quiz extends Component {
           ...this.state,
           QuizTitle: '',
           timerChecked: false,
-          message: 'Quiz Added!' + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0',
+          message: 'Quiz Added! \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0',
           quizCount: prevState.quizCount + 1,
         }));
       });
