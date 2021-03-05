@@ -5,21 +5,27 @@ import React/*, { Component, useState, useEffect }*/ from 'react';
 import { Form } from './';
 
 const QuizDisplay = (props) => {
+
+  var quizPanelStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+  };
+
   return (
     <div onClick={props.clicked}>
-      <Form>
-        <form>
+      <Form.EachQuiz>
+        <form style={quizPanelStyle}>
           <label>
             {props.current && '*  '}
             {props.quiz}
           </label>
 
-          <button type="submit" onClick={props.handleQuizDelete}>
-            Delete
-          </button>
+          <Form.DeleteButtonSmall type="submit" onClick={props.handleQuizDelete}>
+            x
+          </Form.DeleteButtonSmall>
         </form>
         {/* {showDetail &&  <QuestionTemplate id={props.question.id} deleteHandle={(id, e) => props.deleteHandle(id, e)}/>} */}
-      </Form>
+      </Form.EachQuiz>
     </div>
   );
 };

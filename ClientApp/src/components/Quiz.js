@@ -82,7 +82,7 @@ export default class Quiz extends Component {
           });
         })
         .then(
-          axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
+          this.state.currentQuizID && axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
             console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
             let IDs = this.populateQuizID(response.data.questions);
             console.log('IDs: ', IDs);
@@ -110,7 +110,7 @@ export default class Quiz extends Component {
       //   });
       // })
       // .then(
-      return axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
+      return this.state.currentQuizID && axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
         console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
         let IDs = this.populateQuizID(response.data.questions);
         let curID =
@@ -172,7 +172,7 @@ export default class Quiz extends Component {
           ...this.state,
           QuizTitle: '',
           timerChecked: false,
-          message: 'Quiz Added!',
+          message: 'Quiz Added!' + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0',
           quizCount: prevState.quizCount + 1,
         }));
       });
@@ -229,6 +229,10 @@ export default class Quiz extends Component {
 
   handleQuizContentUpdate = (e) => {
     e.preventDefault();
+    if(!this.state.bufferID){
+      this.setState({...this.state, message: "No quiz chosen! \xa0\xa0\xa0\xa0\xa0\xa0\xa0"});
+      return;
+    }
     // console.log("To Add: ", this.state.entityIDsToAdd)
     // console.log("To Delete: ", this.state.entityIDsToDelete);
     // console.log("previous sib: ", e.target.previousSibling.children[0].checked)
@@ -350,10 +354,10 @@ export default class Quiz extends Component {
     console.log("payload in assign: ", payload)
     axios.post(`/Quizzes/Assign`, payload).then((response) => {
       console.log("response: ", response)
-      this.setState({ ...this.state, assignedMessage: `Quiz ${this.state.bufferID} assigned succesfully! Candidate should have received link to take quiz in email` });
+      this.setState({ ...this.state, assignedMessage: `Quiz ${this.state.bufferName} assigned succesfully! Candidate should have received link to take the quiz in email.` + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + "X" });
     }).catch((error) => {
       console.log("error: ", error.response.data.errors)
-      this.setState({...this.state, assignedMessage: "Not all fields are selected or Quiz assignment already exists!"})
+      this.setState({...this.state, assignedMessage: "Not all fields are selected or Quiz assignment already exists!" + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + "X"})
     }
     );
   };
@@ -369,18 +373,32 @@ export default class Quiz extends Component {
     console.log('test');
   };
 
+  eraseMessage = () => {
+    this.setState({...this.state, message: '', assignedMessage: ''});
+  }
+
+
+
   render() {
+    var questionPanelStyle = {
+      marginTop: '5px'
+    };
+
+
+
     return (
       <div onClick={this.resetMessage}>
-        <h1>Quiz Page</h1>
+        
 
         <div>
           <h2>Create New Quiz</h2>
         </div>
         <div>
           <form id="quizTitleBlock">
-            <label>Quiz Title</label>
-            <input id="quizTitle" value={this.state.QuizTitle} onChange={this.onChange}></input>
+          <br></br>
+            <h5>Quiz Title</h5>
+            
+            <Form.QuestionInput id="quizTitle" value={this.state.QuizTitle} onChange={this.onChange}></Form.QuestionInput>
             {/* <label id="timer">
               Timer:
               <select>
@@ -395,10 +413,10 @@ export default class Quiz extends Component {
               Timed Quiz
               <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
             </label> */}
-            <button type="submit" onClick={this.handleAddQuiz}>
+            <Form.Submit type="submit" onClick={this.handleAddQuiz}>
               Add Quiz
-            </button>
-            {this.state.message && <p>{this.state.message}</p>}
+            </Form.Submit>
+            {this.state.message && <Form.ErrorMessage onClick ={this.eraseMessage}>{this.state.message}  X</Form.ErrorMessage>}
           </form>
           {/* <h3>{this.state.QuizTitle}</h3> */}
         </div>
@@ -418,7 +436,7 @@ export default class Quiz extends Component {
                       handleQuizDelete={(e) => this.handleQuizDelete(e, quiz.id)}
                       clicked={() => this.handleClickedQuiz(quiz.id, quiz.name)}
                     />
-                    {this.state.currentQuizID}
+                    {/* {this.state.currentQuizID} */}
                     {/* </Form.eachQuiz> */}
                   </div>
                 );
@@ -432,7 +450,8 @@ export default class Quiz extends Component {
               <div id="checkboxes">
                 {this.state.questionPool.map((question, index) => {
                   return (
-                    <div key={index}>
+                    <div key={index} style={questionPanelStyle}> 
+                    <Form.EachQuiz >
                       <input
                         type="checkbox"
                         value={question.id}
@@ -441,61 +460,63 @@ export default class Quiz extends Component {
                         ref={'ref' + question.id}
                         // onClick={() => this.isQuestionChecked(question.id)}
                       ></input>
-                      <button onClick={(e) => this.isQuestionChecked(e, question.id)}>
+                      <Form.Toggle onClick={(e) => this.isQuestionChecked(e, question.id)}>
                         Toggle
-                      </button>
-                      {question.value}-{question.id}
+                      </Form.Toggle>
+                      {question.value}
                       {/* <p>includes?</p> */}
                       {/* <p>{console.log("includes? ", this.state.quizContents.length > 0 && this.state.quizContents.questions.includes(question.id))}</p> */}
+                    </Form.EachQuiz>
                     </div>
                   );
                 })}
               </div>
-              <button type="submit" onClick={this.handleQuizContentUpdate}>
+              <Form.Submit type="submit" onClick={this.handleQuizContentUpdate}>
                 Update
-              </button>
+              </Form.Submit>
             </div>
           </Form.QuestionsNextToQuizzes>
         </Form.QuizOuter>
         <div>
+          <br></br>
           <h3>
-            Selected Quiz: {this.state.bufferID}, {this.state.bufferName},{' '}
-            {this.state.currentQuizID}
+            Selected Quiz: {this.state.bufferName  ? this.state.bufferName : <p> None selected yet </p>}
+            {/* {this.state.currentQuizID} */}
           </h3>
+          <br></br>
           <form>
             {/* <label>Name:</label> */}
             <label id="timer">
-              Timer:
-              <select onChange={this.handleTimeAllotment}>
+              <h6>Timer:</h6>
+              <Form.QuizSelect onChange={this.handleTimeAllotment}>
+                <option value="-1">No Limit</option>
                 <option value="10">10 min</option>
                 <option value="30">30 min</option>
                 <option value="60">60 min</option>
-                <option value="90">90 min</option>
-                <option value="120">120 min</option>
-                <option value="160">160 min</option>
-                <option value="180">180 min</option>
-              </select>
+              </Form.QuizSelect>
             </label>
-            <label id="timerSwitch">
+            {/* <label id="timerSwitch">
               Timed Quiz
               <Switch onChange={this.timerSwitchHandle} checked={this.state.timerChecked} />
-            </label>
+            </label> */}
             <label>
-              Assign to:
-              <select onChange={this.handleSelectCandidate}>
+              <h6>Assign to:</h6>
+              <Form.QuizSelect onChange={this.handleSelectCandidate}>
                 <option>Select Candidate</option>
               {this.state.theCandidates.map((candidate, index) => {
                 return (
                   <option key={index} value={candidate.id}>{candidate.firstName} {candidate.lastName}</option>
                 );
               })}
-              </select>
+              </Form.QuizSelect>
+              
             </label>
-            <button type="submit" onClick={(e) => this.handleAssignQuiz(e)}>
+            <br></br>
+            <Form.Submit type="submit" onClick={(e) => this.handleAssignQuiz(e)}>
               Send quiz!
-            </button>
+            </Form.Submit>
           </form>
-          {this.state.assignedMessage && <p>{this.state.assignedMessage}</p>}
+          {this.state.assignedMessage && <p onClick = {this.eraseMessage}>{this.state.assignedMessage}</p>}
         </div>
       </div>
     );

@@ -10,15 +10,18 @@ import {
   Input,
   Submit,
   DeleteButton,
+  DeleteButtonSmall,
+  Toggle,
   Base,
   Question,
   Quizzes,
   QuestionsNextToQuizzes,
   QuizOuter,
-  eachQuiz,
+  EachQuiz,
   AddNewQuestion,
   QuestionInput,
   QuestionSelect,
+  QuizSelect,
   QuestionOption,
   MCInput,
   ErrorMessage,
@@ -64,8 +67,16 @@ Form.Submit = function FormSubmit({ children, ...restProps }) {
   return <Submit {...restProps}>{children}</Submit>;
 };
 
+Form.Toggle = function FormToggle({ children, ...restProps }) {
+  return <Toggle {...restProps}>{children}</Toggle>;
+};
+
 Form.DeleteButton = function FormDeleteButton({ children, ...restProps }) {
   return <DeleteButton {...restProps}>{children}</DeleteButton>;
+};
+
+Form.DeleteButtonSmall = function FormDeleteButtonSmall({ children, ...restProps }) {
+  return <DeleteButtonSmall {...restProps}>{children}</DeleteButtonSmall>;
 };
 
 Form.Quizzes = function FormQuestion({ children, ...restProps }) {
@@ -80,8 +91,8 @@ Form.QuizOuter = function FormQuestion({ children, ...restProps }) {
   return <QuizOuter {...restProps}>{children}</QuizOuter>;
 };
 
-Form.eachQuiz = function FormQuestion({ children, ...restProps }) {
-  return <eachQuiz {...restProps}>{children}</eachQuiz>;
+Form.EachQuiz = function FormEachQuiz({ children, ...restProps }) {
+  return <EachQuiz {...restProps}>{children}</EachQuiz>;
 };
 
 Form.AddNewQuestion = function FormAddNewQuestion({ children, ...restProps }) {
@@ -98,6 +109,10 @@ Form.MCInput = function FormMCInput({ children, ...restProps }) {
 
 Form.QuestionSelect = function FormQuestionSelect({ children, ...restProps }) {
   return <QuestionSelect {...restProps}>{children}</QuestionSelect>;
+};
+
+Form.QuizSelect = function FormQuizSelect({ children, ...restProps }) {
+  return <QuizSelect {...restProps}>{children}</QuizSelect>;
 };
 
 Form.QuestionOption = function FormQuestionOption({ children, ...restProps }) {
