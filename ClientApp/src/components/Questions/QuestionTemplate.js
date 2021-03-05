@@ -94,8 +94,10 @@ export default class QuestionTemplate extends Component {
 
   handleQuestionSubmit = (event) => {
     //making Axios call
-    if(this.state.value === " " || this.state.questionType === ''){
-      console.log("Need to fill in question and question type!")
+    console.log("this.state.value: ", this.state.value);
+    console.log("this.questiontype: ", this.state.questionType)
+    if(this.state.value === "" || this.state.questionType === ''){
+      console.log("Need to fill in question and question type! ", this.state.value, this.state.questionType)
       this.setState({...this.state, errorMessage: "Question or Question Type cannot be empty!"});
       return;
     }
@@ -173,6 +175,9 @@ export default class QuestionTemplate extends Component {
           Answers: this.state.answers,
         };
       } else if (this.state.questionType === 'Free Response') {
+        console.log("in update to free response: ", this.state.answers[0], typeof(this.state.answers[0]))
+        let theValue = typeof(this.state.answers[0]) === 'object' ? this.state.answers[0].value : this.state.answers[0].toString();
+        console.log("theValue: ", theValue)
         payload = {
           Question: {
             Value: this.state.value,
@@ -229,20 +234,20 @@ export default class QuestionTemplate extends Component {
             {/* <form onSubmit={this.handleQuestionSubmit}> */}
             <Form.Question>
               <div onClick={this.clearErrorMessage}>
-                <input
+                <Form.QuestionInput
                   type="text"
                   name="questionName"
                   value={this.state.value}
                   placeholder="Type Question Here..."
                   onChange={this.handleQuestionValueChange}
-                ></input>
-                <select value={this.state.questionType} onChange={this.handleChange}>
+                ></Form.QuestionInput>
+                <Form.QuestionSelect value={this.state.questionType} onChange={this.handleChange}>
                   <option value="selectChoice">Select Question Type</option>
                   <option value="Multiple Choice">Multiple Choice</option>
                   <option value="True or False">True or False</option>
                   <option value="Free Response">Free Response</option>
                   <option value="Select All That Apply">Select All That Apply</option>
-                </select>
+                </Form.QuestionSelect>
               </div>
               <div>
                 {this.state.questionType === 'Free Response' && (
@@ -270,12 +275,12 @@ export default class QuestionTemplate extends Component {
                   />
                 )}
               </div>
-              {this.state.errorMessage && <p>{this.state.errorMessage}</p>}
-              <button type="submit" onClick={this.handleQuestionSubmit}>
+              {this.state.errorMessage && <Form.ErrorMessage>{this.state.errorMessage}</Form.ErrorMessage>}
+              <Form.Submit type="submit" onClick={this.handleQuestionSubmit}>
                 {this.state.id === '' ? 'Submit' : 'Update'}
-              </button>
+              </Form.Submit>
               {/* <button onClick={() => this.props.deleteHandle(this.state.id)}>delete this question</button> */}
-              <button onClick={this.handleQuestionDelete}>Delete</button>
+              <Form.DeleteButton onClick={this.handleQuestionDelete}>Delete</Form.DeleteButton>
             </Form.Question>
           </Form>
         )}

@@ -103,7 +103,7 @@ export default class AddQuestions extends Component {
       <div>
         {/* {console.log("hiiiiii")} */}
         {/* {console.log(this.props.history)} */}
-        <h1>Add More Questions</h1>
+        <h2>Add More Questions</h2>
 
         {/* <div>
           <button class="addQuestionButton">+ Multiple Choice</button>

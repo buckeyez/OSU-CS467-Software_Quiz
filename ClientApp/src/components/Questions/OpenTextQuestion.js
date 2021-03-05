@@ -1,4 +1,5 @@
 import React/*, { Component }*/ from 'react';
+import { Form } from '../';
 //import { withRouter } from 'react-router-dom';
 //import { TransitionPropTypeKeys } from 'reactstrap/lib/utils';
 // import history from './history'
@@ -10,8 +11,9 @@ import React/*, { Component }*/ from 'react';
 const OpenTextQuestion = (props) => {
   return (
     <div>
-      <input
+      <Form.QuestionInput
         type="text"
+        placeholder="Type preferred response here..."
         value={props.answers[0] ? props.answers[0].value : ''}
         onChange={props.handleOpenTextAnswer}
       />

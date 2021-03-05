@@ -105,30 +105,56 @@ const CheckboxQuestion = (props) => {
     setChoiceList(options);
   }
 
+  var inputStyle = {
+    marginLeft: '8px',
+    width: '50%',
+    border: 'none',
+    borderBottom: 'solid 1px lightgrey',
+    marginBottom: '8px'
+    
+  };
+
+  var addStyle = {
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    border: 'solid 1px lightgrey'
+   
+    
+  };
+
+  var removeStyle = {
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    marginLeft: '5px',
+    border: 'solid 1px grey'
+    
+    
+  };
+
   return (
     <div>
       {choiceList.map((choice, index) => {
         return (
           <div key={`${choice}-${index}`}>
-            <input
+            <input 
               type="checkbox"
               name="checkboxChoice"
               // value={choice.Value}
               checked={choice.Correct ? choice.Correct === true : false}
               onChange={(e) => handleCheckboxChange(index, e)}
             />
-            <input
+            <input style={inputStyle}
               type="text"
               placeholder="Type text here"
               value={choice.Value || ''}
               onChange={(e) => handleChange(index, e)}
             ></input>
             {choiceList.length !== 1 && (
-              <button onClick={(e) => handleRemove(index, e)}>Remove</button>
+              <button style={removeStyle} onClick={(e) => handleRemove(index, e)}>x</button>
             )}
             <br></br>
             {choiceList.length - 1 === index && (
-              <button onClick={() => handleAdd()}>Add More</button>
+              <button style={addStyle} onClick={() => handleAdd()}>+</button>
             )}
           </div>
         );
