@@ -15,8 +15,8 @@ const TrueOrFalseQuestion = (props) => {
   return (
     <div onChange={(e) => handleUpdate(e)}>
       {/* {console.log("answer is ", props.answers[0].value, answer)} */}
-      <input type="radio" name="trueOrFalse" value="true" checked={answer === 'true'} /> True
-      <input type="radio" name="trueOrFalse" value="false" checked={answer === 'false'} />
+      <input type="radio" name="trueOrFalse" value="true" checked={answer === 'true'} readOnly/> True     
+      <input type="radio" name="trueOrFalse" value="false" checked={answer === 'false'} readOnly/>
       False
     </div>
   );

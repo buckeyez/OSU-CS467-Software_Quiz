@@ -16,7 +16,8 @@ const MultipleChoiceQuestion = (props) =>{
       setChoiceList(newList)
       // console.log("newList in useEffect: ", choiceList)
     }
-  }, [choiceList, props.answers]) 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
 
   function handleChange(index, event) {
     const options = [...choiceList];
@@ -64,6 +65,32 @@ const MultipleChoiceQuestion = (props) =>{
 
   }
 
+  var inputStyle = {
+    marginLeft: '8px',
+    width: '50%',
+    border: 'none',
+    borderBottom: 'solid 1px lightgrey',
+    marginBottom: '8px'
+    
+  };
+
+  var addStyle = {
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    border: 'solid 1px lightgrey'
+   
+    
+  };
+
+  var removeStyle = {
+    backgroundColor: 'white',
+    borderRadius: '5px',
+    marginLeft: '5px',
+    border: 'solid 1px grey'
+    
+    
+  };
+
 
 
   return (
@@ -72,15 +99,15 @@ const MultipleChoiceQuestion = (props) =>{
         return(
           <div key={`${choice}-${index}`} >
             <input type="radio" name="multipleChoice" value={choice.Value} checked={choice.Correct === true} onChange={(e) => handleRadioButtonChange(index, e)}/>
-            <input 
+            <input style={inputStyle}
               type="text" 
               placeholder="Type text here"  
               value={choice.Value || ""} 
               onChange={(e) => handleChange(index, e)}>
             </input>
-            {choiceList.length !== 1 && <button onClick={(e) => handleRemove(index, e)}>Remove</button>}
+            {choiceList.length !== 1 && <button style={removeStyle} onClick={(e) => handleRemove(index, e)}>x</button>}
             <br></br>
-            {choiceList.length - 1 === index && <button onClick={() => handleAdd()}>Add More</button>}
+            {choiceList.length - 1 === index && <button  style={addStyle} onClick={() => handleAdd()}>+</button>}
           </div>
         )
       })}

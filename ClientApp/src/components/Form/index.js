@@ -9,12 +9,19 @@ import {
   Link,
   Input,
   Submit,
+  DeleteButton,
   Base,
   Question,
   Quizzes,
   QuestionsNextToQuizzes,
   QuizOuter,
   eachQuiz,
+  AddNewQuestion,
+  QuestionInput,
+  QuestionSelect,
+  QuestionOption,
+  MCInput,
+  ErrorMessage,
 } from './styles/form';
 
 export default function Form({ children, ...restProps }) {
@@ -57,6 +64,10 @@ Form.Submit = function FormSubmit({ children, ...restProps }) {
   return <Submit {...restProps}>{children}</Submit>;
 };
 
+Form.DeleteButton = function FormDeleteButton({ children, ...restProps }) {
+  return <DeleteButton {...restProps}>{children}</DeleteButton>;
+};
+
 Form.Quizzes = function FormQuestion({ children, ...restProps }) {
   return <Quizzes {...restProps}>{children}</Quizzes>;
 };
@@ -72,3 +83,29 @@ Form.QuizOuter = function FormQuestion({ children, ...restProps }) {
 Form.eachQuiz = function FormQuestion({ children, ...restProps }) {
   return <eachQuiz {...restProps}>{children}</eachQuiz>;
 };
+
+Form.AddNewQuestion = function FormAddNewQuestion({ children, ...restProps }) {
+  return <AddNewQuestion {...restProps}>{children}</AddNewQuestion>;
+};
+
+Form.QuestionInput = function FormQuestionInput({ children, ...restProps }) {
+  return <QuestionInput {...restProps}>{children}</QuestionInput>;
+};
+
+Form.MCInput = function FormMCInput({ children, ...restProps }) {
+  return <MCInput {...restProps}>{children}</MCInput>;
+};
+
+Form.QuestionSelect = function FormQuestionSelect({ children, ...restProps }) {
+  return <QuestionSelect {...restProps}>{children}</QuestionSelect>;
+};
+
+Form.QuestionOption = function FormQuestionOption({ children, ...restProps }) {
+  return <QuestionOption {...restProps}>{children}</QuestionOption>;
+};
+
+Form.ErrorMessage = function FormErrorMessage({ children, ...restProps }) {
+  return <ErrorMessage {...restProps}>{children}</ErrorMessage>;
+};
+
+
