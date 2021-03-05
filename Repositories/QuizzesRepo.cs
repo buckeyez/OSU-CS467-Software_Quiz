@@ -518,7 +518,8 @@ namespace OSU_CS467_Software_Quiz.Repositories
         gradedCount++;
 
         bool correct = true;
-        foreach (var a in q.QuestionAnswers.Select(qa => qa.Answer).ToList())
+        var answers = q.QuestionAnswers.Select(qa => qa.Answer).ToList();
+        foreach (var a in answers)
         {
           bool answered = responses
             .Where(r => r.QuestionId == q.Id)
@@ -532,7 +533,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
           }
         }
 
-        if (correct)
+        if (correct && answers.Count != 0)
         {
           correctCount++;
         }
