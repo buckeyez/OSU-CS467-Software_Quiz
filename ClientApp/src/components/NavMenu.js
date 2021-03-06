@@ -85,7 +85,7 @@ export class NavMenu extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to={ROUTES.QUIZ_RESULTS}>
-                    Quiz Results
+                    Quiz Reports
                   </NavLink>
                 </NavItem>
                 <NavItem>

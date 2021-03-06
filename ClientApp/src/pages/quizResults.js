@@ -46,17 +46,26 @@ export default function CandidateRankingsPage() {
 
   return (
     <CandidateResults>
-      <CandidateResults.Title>Quiz REsults Here</CandidateResults.Title>
+      <CandidateResults.Title>Candidate Rankings</CandidateResults.Title>
       {
         //TBD: check submission.completed boolean to enable view candiate butoon
         //TBD: check submission.quizName to display quiz name
         rankings.map((submission) => {
           return (
             <CandidateCard key={submission.assignmentKey}>
-              <CandidateCard.TextSmall>{submission.user.firstName}</CandidateCard.TextSmall>
-              <CandidateCard.TextSmall>Assigned Quiz: [SOME NAME HERE]</CandidateCard.TextSmall>
+              <CandidateCard.TextSmall>
+                {submission.user.firstName} {submission.user.lastName}
+              </CandidateCard.TextSmall>
+
+              <CandidateCard.TextSmall>Grade: {submission.grade}</CandidateCard.TextSmall>
+
+              <CandidateCard.TextSmall>
+                Quiz Submitted: {submission.completed ? 'Yes' : 'No'}
+              </CandidateCard.TextSmall>
 
               <CandidateCard.Button
+                title={'asd'}
+                disabled={!submission.completed}
                 onClick={() => {
                   handleViewCandidate(submission.assignmentKey);
                 }}

@@ -89,12 +89,14 @@ export default function CandidateResultPage() {
     <>
       <CandidateResult>
         <CandidateResult.Title>
-          Quiz Results for {result.user.firstName} {result.user.lastName}
+          Quiz Result for {result.user.firstName} {result.user.lastName}
         </CandidateResult.Title>
+        <CandidateResult.Text>Quiz Name: {result.quizName}</CandidateResult.Text>
+
         <CandidateResult.Text>Score: {result.grade}</CandidateResult.Text>
 
         <CandidateResult.Text>Email: {result.user.email}</CandidateResult.Text>
-        <CandidateResult.Text>Time Taken: {}</CandidateResult.Text>
+        <CandidateResult.Text>Time Taken: {result.timeTaken}</CandidateResult.Text>
         <p>----------------------------------------------------------------------</p>
         {result.questionResults.map((r, index) => {
           return (
