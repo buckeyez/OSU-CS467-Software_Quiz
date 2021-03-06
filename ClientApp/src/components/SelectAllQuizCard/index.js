@@ -32,9 +32,10 @@ export default function SelectAllQuizCard({ ...props }) {
             onChange={(e) => {
               props.updateQuestionAndAnswersMapSelectMultiple(answer.id);
             }}
+            id={answer.id}
             checked={changeChecked(answer.id)}
           ></QuizQuestionCard.Input>
-          {answer.value}
+          <QuizQuestionCard.Label htmlFor={answer.id}>{answer.value}</QuizQuestionCard.Label>
         </div>
       );
     });

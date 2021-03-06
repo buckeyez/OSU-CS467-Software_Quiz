@@ -276,11 +276,9 @@ export default function QuizDetails() {
 
   //TODO: Handle case for timer if minuetsRemain === -1
   return (
-    <div
-      style={{ marginTop: '20%', display: 'flex', justifyContent: 'center', minHeight: '800px' }}
-    >
+    <div style={{ marginTop: '5%', display: 'flex', justifyContent: 'center', minHeight: '800px' }}>
       <MainQuiz>
-        <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
+        <MainQuiz.Title>Quiz In Progress: {quizData.name}</MainQuiz.Title>
         {initialQuizTime === -1 ? null : (
           <MainQuiz.TimeArea>
             {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}

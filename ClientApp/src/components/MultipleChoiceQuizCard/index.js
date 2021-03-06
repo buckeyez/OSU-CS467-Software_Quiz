@@ -37,9 +37,11 @@ export default function MultipleChoiceQuizCard({ ...props }) {
               changeRadio(e);
               props.updateQuestionAndAnswersMap(answer.id);
             }}
+            id={answer.id}
             checked={checked === answer.id}
           ></QuizQuestionCard.Input>
-          {answer.value}
+
+          <QuizQuestionCard.Label htmlFor={answer.id}>{answer.value}</QuizQuestionCard.Label>
         </div>
       );
     });

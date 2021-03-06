@@ -9,7 +9,9 @@ export const Text = styled.p``;
 export const TextSmall = styled.p``;
 export const Button = styled.button``;
 export const RadioInput = styled.input``;
-export const TextArea = styled.textarea``;
+export const TextArea = styled.textarea`
+  font-size: 26px;
+`;
 export const Input = styled.input`
   font-size: 26px;
 `;

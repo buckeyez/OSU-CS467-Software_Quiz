@@ -5,6 +5,7 @@ export const Error = styled.div``;
 export const Title = styled.h1`
   font-size: 64px;
   margin-bottom: 25px;
+  text-align: center;
 `;
 export const Text = styled.p``;
 export const TextSmall = styled.p``;
@@ -12,12 +13,18 @@ export const Link = styled.link``; // styled(ReactRouterLink)``;
 export const Card = styled.div``;
 export const Button = styled.button`
   background: white;
-  color: palevioletred;
+  color: #81d4fa;
   font-size: 1em;
   margin-top: 10px;
   margin-right: 10px;
   padding: 0.25em 1em;
-  border: 2px solid palevioletred;
+  border: 2px solid #81d4fa;
   border-radius: 3px;
+  font-size: 26px;
 `;
-export const TimeArea = styled.div``;
+export const TimeArea = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 80px;
+  font-size: 30px;
+`;
