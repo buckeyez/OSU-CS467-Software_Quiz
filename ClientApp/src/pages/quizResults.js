@@ -46,7 +46,7 @@ export default function CandidateRankingsPage() {
 
   return (
     <CandidateResults>
-      <CandidateResults.Title>Candidate Rankings</CandidateResults.Title>
+      <CandidateResults.Title>Quiz Rankings</CandidateResults.Title>
       {
         //TBD: check submission.completed boolean to enable view candiate butoon
         //TBD: check submission.quizName to display quiz name
@@ -57,21 +57,23 @@ export default function CandidateRankingsPage() {
                 {submission.user.firstName} {submission.user.lastName}
               </CandidateCard.TextSmall>
 
-              <CandidateCard.TextSmall>Grade: {submission.grade}</CandidateCard.TextSmall>
+              <CandidateCard.GradeText>Grade: {submission.grade}</CandidateCard.GradeText>
 
-              <CandidateCard.TextSmall>
+              <CandidateCard.SubmittedText>
                 Quiz Submitted: {submission.completed ? 'Yes' : 'No'}
-              </CandidateCard.TextSmall>
+              </CandidateCard.SubmittedText>
 
-              <CandidateCard.Button
-                title={'asd'}
-                disabled={!submission.completed}
-                onClick={() => {
-                  handleViewCandidate(submission.assignmentKey);
-                }}
-              >
-                View Candidate
-              </CandidateCard.Button>
+              <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+                <CandidateCard.Button
+                  title={'View candidate quiz report if submitted'}
+                  disabled={!submission.completed}
+                  onClick={() => {
+                    handleViewCandidate(submission.assignmentKey);
+                  }}
+                >
+                  View Candidate
+                </CandidateCard.Button>
+              </div>
             </CandidateCard>
           );
         })

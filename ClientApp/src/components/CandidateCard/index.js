@@ -1,5 +1,14 @@
 import React from 'react';
-import { Container, Title, Text, TextSmall, ButtonLink, Button } from './styles/CandidateCard';
+import {
+  Container,
+  Title,
+  Text,
+  TextSmall,
+  ButtonLink,
+  Button,
+  GradeText,
+  SubmittedText,
+} from './styles/CandidateCard';
 
 export default function CandidateCard({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -23,4 +32,12 @@ CandidateCard.ButtonLink = function CandidateCardLink({ children, ...restProps }
 
 CandidateCard.Button = function CandidateCardButton({ children, ...restProps }) {
   return <Button {...restProps}>{children}</Button>;
+};
+
+CandidateCard.GradeText = function CandidateCardGradeText({ children, ...restProps }) {
+  return <GradeText {...restProps}>{children}</GradeText>;
+};
+
+CandidateCard.SubmittedText = function CandidateCardSubmittedText({ children, ...restProps }) {
+  return <SubmittedText {...restProps}>{children}</SubmittedText>;
 };
