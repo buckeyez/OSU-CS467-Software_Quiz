@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 //import * as ROUTES from '../constants/routes';
 import queryString from 'query-string';
 import { getIndividualQuizResult } from '../utils/getIndividualQuizResult';
-import { CandidateResult } from '../components';
+import { CandidateResult, CandidateResultCard } from '../components';
 
 export default function CandidateResultPage() {
   const location = useLocation();
@@ -29,6 +29,10 @@ export default function CandidateResultPage() {
     return <span>Loading...</span>;
   }
 
+  if (!result) {
+    return <span>Unable to get candidate results. No such candidate exists.</span>;
+  }
+
   const checkIfAnswerWasCorrect = (userSelection, freeResponse) => {
     let grade = '';
 
@@ -47,26 +51,78 @@ export default function CandidateResultPage() {
     return grade;
   };
 
-  return (
-    <CandidateResult>
-      <CandidateResult.Title>
-        Quiz Results for {result.user.firstName} {result.user.lastName}
-      </CandidateResult.Title>
-      <CandidateResult.Text>Score: {result.grade}</CandidateResult.Text>
+  const generateUserAnswerChoice = (userSelections, freeResponse) => {
+    let choiceList = [];
 
-      <CandidateResult.Text>Email: {result.user.email}</CandidateResult.Text>
-      <CandidateResult.Text>Time Taken: {}</CandidateResult.Text>
-
-      {result.questionResults.map((r, index) => {
-        return (
-          <div key={r.question.id}>
-            <p>
-              Question {index + 1}: {r.question.value}
-            </p>
-            <p>Grade: {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse)} </p>
+    if (userSelections === null && freeResponse !== null) {
+      return (
+        <CandidateResultCard.AnswerContainer>
+          <div>
+            <CandidateResultCard.TextForAnswer>{freeResponse}</CandidateResultCard.TextForAnswer>
           </div>
-        );
-      })}
-    </CandidateResult>
+        </CandidateResultCard.AnswerContainer>
+      );
+    }
+
+    userSelections.forEach((choice) => {
+      choiceList.push(choice);
+    });
+
+    if (userSelections !== null && freeResponse === null) {
+      return (
+        <CandidateResultCard.AnswerContainer>
+          {choiceList.map((choice) => {
+            return (
+              <div key={choice.id}>
+                <CandidateResultCard.TextForAnswer>
+                  {choice.value}
+                </CandidateResultCard.TextForAnswer>
+              </div>
+            );
+          })}
+        </CandidateResultCard.AnswerContainer>
+      );
+    }
+  };
+
+  return (
+    <>
+      <CandidateResult>
+        <CandidateResult.Title>
+          Quiz Results for {result.user.firstName} {result.user.lastName}
+        </CandidateResult.Title>
+        <CandidateResult.Text>Score: {result.grade}</CandidateResult.Text>
+
+        <CandidateResult.Text>Email: {result.user.email}</CandidateResult.Text>
+        <CandidateResult.Text>Time Taken: {}</CandidateResult.Text>
+        <p>----------------------------------------------------------------------</p>
+        {result.questionResults.map((r, index) => {
+          return (
+            <CandidateResultCard key={r.question.id}>
+              <CandidateResultCard.Text>
+                Question {index + 1}: {r.question.value}{' '}
+              </CandidateResultCard.Text>
+              <CandidateResultCard.AnswerContainer>
+                {r.answers.map((answer) => {
+                  return (
+                    <div key={answer.id}>
+                      <CandidateResultCard.TextForAnswer>
+                        {answer.value} {answer.correct ? '(correct)' : null}
+                      </CandidateResultCard.TextForAnswer>
+                    </div>
+                  );
+                })}
+              </CandidateResultCard.AnswerContainer>
+
+              {<div>User Choice: {generateUserAnswerChoice(r.userSelection, r.freeResponse)}</div>}
+              <CandidateResultCard.TextSmall>
+                Grade: {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse)}
+              </CandidateResultCard.TextSmall>
+              <p>--------------------</p>
+            </CandidateResultCard>
+          );
+        })}
+      </CandidateResult>
+    </>
   );
 }

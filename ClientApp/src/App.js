@@ -88,7 +88,7 @@ export default function App() {
               <CandidateRankingsPage />
             </ProtectedRoute>
 
-            <ProtectedRoute user={user} path={ROUTES.CANDIDATE_RESULT} exact>
+            <ProtectedRoute user={true} path={ROUTES.CANDIDATE_RESULT} exact>
               <CandidateResultPage />
             </ProtectedRoute>
 
