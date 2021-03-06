@@ -15,7 +15,11 @@ export const Container = styled.div`
   //   }
 `;
 export const Title = styled.h4``;
-export const Text = styled.p``;
+export const Text = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
 export const TextSmall = styled.p`
   font-size: 26px;
 `;
@@ -39,10 +43,7 @@ export const Button = styled.button`
 `;
 
 export const GradeText = styled.p`
-  font-weight: bold;
   font-size: 20px;
   margin-bottom: 5px;
 `;
-export const SubmittedText = styled.p`
-  font-weight: bold;
-`;
+export const SubmittedText = styled.p``;

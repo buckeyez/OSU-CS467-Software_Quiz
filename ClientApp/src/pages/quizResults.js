@@ -53,9 +53,11 @@ export default function CandidateRankingsPage() {
         rankings.map((submission) => {
           return (
             <CandidateCard key={submission.assignmentKey}>
-              <CandidateCard.TextSmall>
+              <CandidateCard.TextSmall>{submission.quizName}</CandidateCard.TextSmall>
+
+              <CandidateCard.Text>
                 {submission.user.firstName} {submission.user.lastName}
-              </CandidateCard.TextSmall>
+              </CandidateCard.Text>
 
               <CandidateCard.GradeText>Grade: {submission.grade}</CandidateCard.GradeText>
 
