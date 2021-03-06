@@ -8,6 +8,7 @@ namespace OSU_CS467_Software_Quiz.Projections
     public bool Completed { get; set; }
     public int Grade { get; set; }
     public string AssignmentKey { get; set; }
+    public string QuizName { get; set; }
 
     public static QuizRanking Build(QuizAssignments quizAssignment)
     {
@@ -17,6 +18,7 @@ namespace OSU_CS467_Software_Quiz.Projections
         Completed = quizAssignment.Submitted,
         Grade = quizAssignment.Grade,
         AssignmentKey = quizAssignment.Key.ToString(),
+        QuizName = quizAssignment.Quiz.Name,
       };
     }
   }
