@@ -12,8 +12,8 @@ export const TextSmall = styled.p``;
 export const Link = styled.link``; // styled(ReactRouterLink)``;
 export const Card = styled.div``;
 export const Button = styled.button`
-  background: white;
-  color: #81d4fa;
+  background: #81d4fa;
+  color: white;
   font-size: 1em;
   margin-top: 10px;
   margin-right: 10px;
