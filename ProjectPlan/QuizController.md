@@ -107,6 +107,8 @@ Returns **_QuizResults_**
 {
   "User": <user-object>,
   "Grade": int,
+  "QuizName": string,
+  "TimeTaken": int,
   "QuestionResults": [
     {
       "Question": <question-object>,
@@ -162,6 +164,7 @@ Returns an array of **_QuizRanking_** objects
 [
   {
     "User": <user-obj>,
+    "Completed": bool,
     "Grade": int,
     "AssignmentKey": string
   }

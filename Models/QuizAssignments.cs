@@ -10,6 +10,7 @@ namespace OSU_CS467_Software_Quiz.Models
     public int TimeAllotment { get; set; }
     public int TimeTaken { get; set; }
     public int Grade { get; set; }
+    public bool Submitted { get; set; }
 
     public string UserId { get; set; }
     public AppUser User { get; set; }

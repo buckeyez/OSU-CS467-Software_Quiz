@@ -37,6 +37,8 @@ namespace OSU_CS467_Software_Quiz.Projections
   {
     public User User { get; set; }
     public int Grade { get; set; }
+    public string QuizName { get; set; }
+    public int TimeTaken { get; set; }
     public List<QuestionResult> QuestionResults { get; set; }
 
     public static QuizResults Build(QuizAssignments quizAssignment)
@@ -73,6 +75,8 @@ namespace OSU_CS467_Software_Quiz.Projections
       {
         User = User.Build(quizAssignment.User),
         Grade = quizAssignment.Grade,
+        QuizName = quizAssignment.Quiz.Name,
+        TimeTaken = quizAssignment.TimeTaken,
         QuestionResults = results,
       };
     }

@@ -264,10 +264,11 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
     public async Task<QuizAssignments> SubmitQuizAsync(QuizSubmission quizSubmission)
     {
-      var alreadySubmitted = _db.QuizResults
+      var alreadySubmitted = _db.QuizAssignments
         .AsQueryable()
-        .Where(qr => qr.QuizAssignmentId == quizSubmission.QuizAssignmentId)
-        .Any();
+        .Where(qa => qa.Id == quizSubmission.QuizAssignmentId)
+        .Select(qa => qa.Submitted)
+        .FirstOrDefault();
 
       if (alreadySubmitted)
       {
@@ -288,6 +289,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
         return null;
       }
 
+      quizAssignmentEntity.Submitted = true;
       quizAssignmentEntity.TimeTaken = quizSubmission.TimeTaken;
 
       foreach (AnswerSubmission selection in quizSubmission.UserSelections)
