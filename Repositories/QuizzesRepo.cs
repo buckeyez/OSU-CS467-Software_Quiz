@@ -234,6 +234,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
     {
       return _db.QuizAssignments
         .Include(qa => qa.User)
+        .Include(qa => qa.Quiz)
         .OrderByDescending(qa => qa.Grade)
         .ToListAsync();
     }

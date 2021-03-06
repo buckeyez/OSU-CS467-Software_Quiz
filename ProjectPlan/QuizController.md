@@ -166,7 +166,8 @@ Returns an array of **_QuizRanking_** objects
     "User": <user-obj>,
     "Completed": bool,
     "Grade": int,
-    "AssignmentKey": string
+    "AssignmentKey": string,
+    "QuizName": string
   }
 ]
 ```
