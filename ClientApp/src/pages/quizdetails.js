@@ -276,27 +276,34 @@ export default function QuizDetails() {
 
   //TODO: Handle case for timer if minuetsRemain === -1
   return (
-    <MainQuiz>
-      <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
-      {initialQuizTime === -1 ? null : (
-        <MainQuiz.TimeArea>
-          {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
-        </MainQuiz.TimeArea>
-      )}
+    <div
+      style={{ marginTop: '20%', display: 'flex', justifyContent: 'center', minHeight: '800px' }}
+    >
+      <MainQuiz>
+        <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
+        {initialQuizTime === -1 ? null : (
+          <MainQuiz.TimeArea>
+            {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
+          </MainQuiz.TimeArea>
+        )}
 
-      <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
-      <MainQuiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
-        Prev
-      </MainQuiz.Button>
+        <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
+        <MainQuiz.Button
+          disabled={numberOfQuestions === 1 ? true : false}
+          onClick={getPrevQuestion}
+        >
+          Prev
+        </MainQuiz.Button>
 
-      {showSubmitButton === false ? (
-        <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
-      ) : (
-        <MainQuiz.Button onClick={handleSubmit}>Submit</MainQuiz.Button>
-      )}
-      <MainQuiz.Error>
-        {error === false ? null : <p>Not all quiz questions have been answered</p>}
-      </MainQuiz.Error>
-    </MainQuiz>
+        {showSubmitButton === false ? (
+          <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
+        ) : (
+          <MainQuiz.Button onClick={handleSubmit}>Submit</MainQuiz.Button>
+        )}
+        <MainQuiz.Error>
+          {error === false ? null : <p>Not all quiz questions have been answered</p>}
+        </MainQuiz.Error>
+      </MainQuiz>
+    </div>
   );
 }

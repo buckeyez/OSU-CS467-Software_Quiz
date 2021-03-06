@@ -7,6 +7,7 @@ import {
   Button,
   TextArea,
   Input,
+  Label,
 } from './styles/QuizQuestionCard';
 
 export default function QuizQuestionCard({ children, ...restProps }) {
@@ -35,4 +36,8 @@ QuizQuestionCard.TextArea = function QuizQuestionCardTextArea({ children, ...res
 
 QuizQuestionCard.Input = function QuizQuestionCardInput({ children, ...restProps }) {
   return <Input {...restProps}>{children}</Input>;
+};
+
+QuizQuestionCard.Label = function QuizQuestionCardLabel({ children, ...restProps }) {
+  return <Label {...restProps}>{children}</Label>;
 };
