@@ -26,6 +26,7 @@ export default function QuizDetails() {
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
   const [minutesRemain, setMinutesRemain] = useState(null);
+  const [initialQuizTime, setInitialQuizTime] = useState(null);
   const [secondsRemain, setSecondsRemain] = useState(null);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
@@ -54,7 +55,7 @@ export default function QuizDetails() {
     try {
       const submission = await submitQuizToBackend(
         candidateAndQuizInformation.id,
-        minutesRemain,
+        initialQuizTime - minutesRemain,
         userSelections
       );
       if (submission) {
@@ -83,6 +84,7 @@ export default function QuizDetails() {
       const quizID = candidate.quiz.id;
       setCandidateAndQuizInformation(candidate);
       setMinutesRemain(candidate.timeAllotment);
+      setInitialQuizTime(candidate.timeAllotment);
 
       const r = await getQuizQuestions(quizID);
       setQuizData(r);
@@ -167,6 +169,7 @@ export default function QuizDetails() {
     console.log(`Min=${minutes} and Sec=${seconds}`);
     let t = new Date(0, minutes, seconds);
     console.log('time is:', t);
+    console.log('Completing quiz took min:', initialQuizTime - minutes);
     setMinutesRemain(minutes);
     setSecondsRemain(seconds);
 
@@ -276,7 +279,7 @@ export default function QuizDetails() {
     <MainQuiz>
       <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
       <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain}></Timer>}
+        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
       </MainQuiz.TimeArea>
 
       <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>

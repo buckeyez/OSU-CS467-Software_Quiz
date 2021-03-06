@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { UserContext } from '../context/userContext';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 //import { useHistory } from 'react-router-dom';
 //import * as ROUTES from '../constants/routes';
 import queryString from 'query-string';
@@ -9,7 +8,6 @@ import { CandidateResult } from '../components';
 
 export default function CandidateResultPage() {
   const location = useLocation();
-  const history = useHistory();
   const queryParams = queryString.parse(location.search);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +23,7 @@ export default function CandidateResultPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [queryParams.key]);
 
   if (loading) {
     return <span>Loading...</span>;

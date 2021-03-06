@@ -1,18 +1,18 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { UserContext } from '../context/userContext';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 //import { useHistory } from 'react-router-dom';
 //import * as ROUTES from '../constants/routes';
 import * as ROUTES from '../constants/routes';
 import { CandidateResults } from '../components';
 import { CandidateCard } from '../components';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 import { getRankings } from '../utils/getRankings';
 
 export default function CandidateRankingsPage() {
-  const location = useLocation();
+  //   const location = useLocation();
   const history = useHistory();
-  const queryParams = queryString.parse(location.search);
+  //   const queryParams = queryString.parse(location.search);
   const [rankings, setRankings] = useState(null);
   const [loading, setLoading] = useState(true);
 
