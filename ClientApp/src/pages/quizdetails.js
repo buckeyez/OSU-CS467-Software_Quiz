@@ -36,7 +36,6 @@ export default function QuizDetails() {
   const queryParams = queryString.parse(data.search);
 
   //   console.log('Data from candidate-home route:', data);
-
   //Callback is used bcause reference to submitQuiz can change ever render
   //With callBack, react will only update the function if any of the dependencies are updated
   const submitQuiz = useCallback(async () => {
@@ -55,7 +54,7 @@ export default function QuizDetails() {
     try {
       const submission = await submitQuizToBackend(
         candidateAndQuizInformation.id,
-        initialQuizTime - minutesRemain,
+        initialQuizTime === -1 ? -1 : initialQuizTime - minutesRemain,
         userSelections
       );
       if (submission) {
@@ -73,6 +72,7 @@ export default function QuizDetails() {
     queryParams.key,
     questionAndAnswerMap,
     quizData,
+    initialQuizTime,
   ]);
 
   useEffect(() => {
@@ -278,9 +278,11 @@ export default function QuizDetails() {
   return (
     <MainQuiz>
       <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
-      <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
-      </MainQuiz.TimeArea>
+      {initialQuizTime === -1 ? null : (
+        <MainQuiz.TimeArea>
+          {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
+        </MainQuiz.TimeArea>
+      )}
 
       <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
       <MainQuiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
