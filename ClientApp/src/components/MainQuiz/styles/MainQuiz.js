@@ -21,6 +21,10 @@ export const Button = styled.button`
   border: 2px solid #81d4fa;
   border-radius: 3px;
   font-size: 26px;
+
+  &: disabled {
+    opacity: 0.5;
+  }
 `;
 export const TimeArea = styled.div`
   display: flex;
