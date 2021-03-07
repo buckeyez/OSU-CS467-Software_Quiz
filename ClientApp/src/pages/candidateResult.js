@@ -37,14 +37,14 @@ export default function CandidateResultPage() {
     let grade = '';
 
     if (userSelection === null && freeResponse !== null) {
-      return (grade = 'Manual Grading Required');
+      return (grade = <p style={{ backgroundColor: '#FFE0B2' }}>Manual Grading Required</p>);
     }
 
     userSelection.forEach((choice) => {
       if (choice.correct) {
-        grade = 'correct';
+        grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
       } else {
-        grade = 'incorrect';
+        grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
       }
     });
 
