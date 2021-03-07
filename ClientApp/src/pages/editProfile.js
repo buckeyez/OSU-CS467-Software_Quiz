@@ -16,11 +16,18 @@ export default function EditProfile() {
   const [updatedEmail, setUpdatedEmail] = useState(user.email);
   const [updatedPassword, setUpdatedPassword] = useState('');
   const [sendingData, setSendingData] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const updateGeneralInformation = async (event) => {
     event.preventDefault();
 
     const isValidEmail = validator.isEmail(updatedEmail);
+
+    if (updatedFirstName === '' || updatedLastName === '') {
+      setError(true);
+      return;
+    }
 
     if (isValidEmail) {
       const updatedInforamtion = {
@@ -32,9 +39,12 @@ export default function EditProfile() {
       };
       try {
         setSendingData(true);
+        setSuccess(false);
+        setError(false);
         const updatedUser = await updateUser(updatedInforamtion);
         if (updatedUser) {
           setSendingData(false);
+          setSuccess(true);
           console.log('updated user response>', updatedUser);
           setUser(updatedUser);
           storeUserSessionToLocalStorage(updatedUser);
@@ -46,6 +56,8 @@ export default function EditProfile() {
         setSendingData(false);
         console.log('error', e);
       }
+    } else {
+      setError(true);
     }
   };
 
@@ -63,7 +75,9 @@ export default function EditProfile() {
 
     if (isValidPassword) {
       try {
+        setSuccess(false);
         setSendingData(true);
+        setError(false);
         const newUserPassword = await updateUserPassword(user.id, updatedPassword);
         if (newUserPassword === 200) {
           console.log('password updated', newUserPassword);
@@ -72,6 +86,7 @@ export default function EditProfile() {
             const user = await login(updatedEmail, updatedPassword);
             if (user) {
               setSendingData(false);
+              setSuccess(true);
               console.log('user after updating pw', user);
               setUser(user);
               storeUserSessionToLocalStorage(user);
@@ -87,10 +102,12 @@ export default function EditProfile() {
         setSendingData(false);
         console.log('error', e);
       }
+    } else {
+      setError(true);
     }
   };
 
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <Form>
@@ -128,6 +145,15 @@ export default function EditProfile() {
           </Form.Submit>
         </Form.Base>
       </Form>
+
+      {success && <p>Profile successfully updated.</p>}
+      {error && (
+        <p>
+          One or more of the required fields are empty, or you've entered an invalid email/password.
+          A valid password must contain at least 1 non-alpha ,1 uppercase and 1 lowercase
+          characters.
+        </p>
+      )}
     </>
   );
 }
