@@ -142,7 +142,11 @@ namespace OSU_CS467_Software_Quiz.Repositories
         .Where(qq => qq.QuestionId == id)
         .ToList();
 
-      await DeleteQuestionAsync(id);
+      if (!await DeleteQuestionAsync(id))
+      {
+        return null;
+      }
+      
       var question = await AddQuestionAsync(updatedQuestion);
 
       foreach (QuizQuestions qq in quizQuestions)
