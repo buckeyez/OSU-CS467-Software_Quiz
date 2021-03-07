@@ -67,7 +67,6 @@ namespace OSU_CS467_Software_Quiz.Controllers
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<List<Question>> GetQuestions()
     {
       var questions = await _questionsRepo.GetQuestions();
@@ -76,6 +75,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
 
     [HttpPost("Delete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteAsync([FromQuery][Required] int id)
     {
       if (ModelState.IsValid)
