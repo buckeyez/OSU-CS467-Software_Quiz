@@ -4,6 +4,7 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
+  text-align: center;
 `;
 export const Title = styled.h4`
   text-align: center;
