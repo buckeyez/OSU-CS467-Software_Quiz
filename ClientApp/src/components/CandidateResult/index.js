@@ -1,5 +1,14 @@
 import React from 'react';
-import { Container, Title, Text, TextSmall, ButtonLink, Button } from './styles/CandidateResult';
+import {
+  Container,
+  Title,
+  Text,
+  TextSmall,
+  ButtonLink,
+  Button,
+  QuizTitle,
+  ScoreText,
+} from './styles/CandidateResult';
 
 export default function CandidateResult({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>;
@@ -23,4 +32,12 @@ CandidateResult.ButtonLink = function CandidateResultLink({ children, ...restPro
 
 CandidateResult.Button = function CandidateResultButton({ children, ...restProps }) {
   return <Button {...restProps}>{children}</Button>;
+};
+
+CandidateResult.QuizTitle = function CandidateResultQuizTitle({ children, ...restProps }) {
+  return <QuizTitle {...restProps}>{children}</QuizTitle>;
+};
+
+CandidateResult.ScoreText = function CandidateResultScoreText({ children, ...restProps }) {
+  return <ScoreText {...restProps}>{children}</ScoreText>;
 };

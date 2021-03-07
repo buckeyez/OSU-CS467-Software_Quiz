@@ -16,8 +16,26 @@ export const Container = styled.div`
 `;
 export const AnswerContainer = styled.div``;
 export const Title = styled.h4``;
-export const Text = styled.p``;
+export const Text = styled.p`
+  font-size: 26px;
+`;
 export const TextSmall = styled.p``;
-export const TextForAnswer = styled.p``;
+export const TextForAnswer = styled.p`
+  font-size: 18px;
+  margin-bottom: 1px;
+`;
 export const ButtonLink = styled(ReactRouterLink)``; // styled(ReactRouterLink)``;
 export const Button = styled.button``;
+export const UserChoiceText = styled.p`
+  margin-top: 25px;
+  margin-bottom: 0px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+export const GradeText = styled.p`
+  margin-top: 10px;
+  margin-bottom: 0px;
+  font-size: 20px;
+  font-weight: bold;
+`;

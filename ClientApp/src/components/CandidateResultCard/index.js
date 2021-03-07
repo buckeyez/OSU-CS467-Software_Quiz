@@ -8,6 +8,8 @@ import {
   Button,
   TextForAnswer,
   AnswerContainer,
+  UserChoiceText,
+  GradeText,
 } from './styles/CandidateResultCard';
 
 export default function CandidateResultCard({ children, ...restProps }) {
@@ -46,4 +48,15 @@ CandidateResultCard.AnswerContainer = function CandidateResultCardAnswerContaine
   ...restProps
 }) {
   return <AnswerContainer {...restProps}>{children}</AnswerContainer>;
+};
+
+CandidateResultCard.UserChoiceText = function CandidateResultCardUserChoiceText({
+  children,
+  ...restProps
+}) {
+  return <UserChoiceText {...restProps}>{children}</UserChoiceText>;
+};
+
+CandidateResultCard.GradeText = function CandidateResultCardGradeText({ children, ...restProps }) {
+  return <GradeText {...restProps}>{children}</GradeText>;
 };

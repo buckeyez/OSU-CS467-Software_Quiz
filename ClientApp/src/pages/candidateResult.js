@@ -91,13 +91,11 @@ export default function CandidateResultPage() {
         <CandidateResult.Title>
           Quiz Result for {result.user.firstName} {result.user.lastName}
         </CandidateResult.Title>
-        <CandidateResult.Text>Quiz Name: {result.quizName}</CandidateResult.Text>
-
-        <CandidateResult.Text>Score: {result.grade}</CandidateResult.Text>
+        <CandidateResult.ScoreText>Score: {result.grade}</CandidateResult.ScoreText>
+        <CandidateResult.QuizTitle>Quiz Name: {result.quizName}</CandidateResult.QuizTitle>
 
         <CandidateResult.Text>Email: {result.user.email}</CandidateResult.Text>
-        <CandidateResult.Text>Time Taken: {result.timeTaken}</CandidateResult.Text>
-        <p>----------------------------------------------------------------------</p>
+        <CandidateResult.Text>Time Taken: {result.timeTaken} minutes</CandidateResult.Text>
         {result.questionResults.map((r, index) => {
           return (
             <CandidateResultCard key={r.question.id}>
@@ -116,11 +114,13 @@ export default function CandidateResultPage() {
                 })}
               </CandidateResultCard.AnswerContainer>
 
-              {<div>User Choice: {generateUserAnswerChoice(r.userSelection, r.freeResponse)}</div>}
-              <CandidateResultCard.TextSmall>
-                Grade: {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse)}
-              </CandidateResultCard.TextSmall>
-              <p>--------------------</p>
+              <CandidateResultCard.UserChoiceText>
+                User Choice(s):
+              </CandidateResultCard.UserChoiceText>
+              {generateUserAnswerChoice(r.userSelection, r.freeResponse)}
+
+              <CandidateResultCard.GradeText>Grade:</CandidateResultCard.GradeText>
+              {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse)}
             </CandidateResultCard>
           );
         })}
