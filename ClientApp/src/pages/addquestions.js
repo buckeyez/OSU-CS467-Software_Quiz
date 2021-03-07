@@ -95,10 +95,17 @@ export default class AddQuestions extends Component {
       this.setState((prevState) => {
         return { ...prevState };
       })
-    );
+    ).catch(error => {
+      console.log("error:  deleteError")
+    })
   };
 
   render() {
+
+    var centerStyle = {
+      textAlign: 'center'
+    };
+
     return (
       <div>
         {/* {console.log("hiiiiii")} */}
@@ -167,6 +174,7 @@ export default class AddQuestions extends Component {
         </div> */}
         {/* <p aria-live="polite">Current count: <strong>{this.state.currentCount}</strong></p>
         <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button> */}
+        <p style={centerStyle}>-------------------------------</p>
       </div>
     );
   }

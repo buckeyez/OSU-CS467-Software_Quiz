@@ -221,7 +221,10 @@ export default class QuestionTemplate extends Component {
           // console.log("res: ", res, res.data.question.id);
           // console.log("the id should be: ", res.data.question.id);
           // this.setState({...this.state, id: res.data.question.id});
-        });
+        }).catch((error) => {
+            console.log("Update error: ", error.data)
+            this.setState({...this.state, errorMessage: "Question is applied to an existing quiz. Cannot update or delete."})
+        })
     }
   };
 
