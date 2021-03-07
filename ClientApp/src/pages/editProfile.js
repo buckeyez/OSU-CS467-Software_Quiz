@@ -7,6 +7,11 @@ import validator from 'validator';
 import { updateUser, updateUserPassword } from '../utils/updateUser';
 import { storeUserSessionToLocalStorage } from '../utils/storeSession';
 import { login } from '../utils/loginUser';
+import {
+  EditProfileInputStyle,
+  EditFormMarginTop,
+  EditFormBaseStyle,
+} from '../pages/styles/customPageStyles';
 
 export default function EditProfile() {
   const { user, setUser } = useContext(UserContext);
@@ -16,11 +21,18 @@ export default function EditProfile() {
   const [updatedEmail, setUpdatedEmail] = useState(user.email);
   const [updatedPassword, setUpdatedPassword] = useState('');
   const [sendingData, setSendingData] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const updateGeneralInformation = async (event) => {
     event.preventDefault();
 
     const isValidEmail = validator.isEmail(updatedEmail);
+
+    if (updatedFirstName === '' || updatedLastName === '') {
+      setError(true);
+      return;
+    }
 
     if (isValidEmail) {
       const updatedInforamtion = {
@@ -32,9 +44,12 @@ export default function EditProfile() {
       };
       try {
         setSendingData(true);
+        setSuccess(false);
+        setError(false);
         const updatedUser = await updateUser(updatedInforamtion);
         if (updatedUser) {
           setSendingData(false);
+          setSuccess(true);
           console.log('updated user response>', updatedUser);
           setUser(updatedUser);
           storeUserSessionToLocalStorage(updatedUser);
@@ -46,6 +61,8 @@ export default function EditProfile() {
         setSendingData(false);
         console.log('error', e);
       }
+    } else {
+      setError(true);
     }
   };
 
@@ -63,7 +80,9 @@ export default function EditProfile() {
 
     if (isValidPassword) {
       try {
+        setSuccess(false);
         setSendingData(true);
+        setError(false);
         const newUserPassword = await updateUserPassword(user.id, updatedPassword);
         if (newUserPassword === 200) {
           console.log('password updated', newUserPassword);
@@ -72,6 +91,7 @@ export default function EditProfile() {
             const user = await login(updatedEmail, updatedPassword);
             if (user) {
               setSendingData(false);
+              setSuccess(true);
               console.log('user after updating pw', user);
               setUser(user);
               storeUserSessionToLocalStorage(user);
@@ -87,47 +107,78 @@ export default function EditProfile() {
         setSendingData(false);
         console.log('error', e);
       }
+    } else {
+      setError(true);
     }
   };
 
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <Form>
         <Form.Title>Edit Profile</Form.Title>
 
         <Form.Base onSubmit={updateGeneralInformation} method="POST">
-          <Form.Input
-            value={updatedFirstName}
-            onChange={({ target }) => setUpdatedFirstName(target.value.trim())}
-          />
-          <Form.Input
-            value={updatedLastName}
-            onChange={({ target }) => setUpdatedLastName(target.value.trim())}
-          />
-          <Form.Input
-            value={updatedEmail}
-            onChange={({ target }) => setUpdatedEmail(target.value.trim())}
-          />
+          <div style={{ ...EditFormBaseStyle }}>
+            <Form.FormLabel>
+              First Name:
+              <Form.Input
+                value={updatedFirstName}
+                onChange={({ target }) => setUpdatedFirstName(target.value.trim())}
+                style={{ ...EditProfileInputStyle }}
+              />
+            </Form.FormLabel>
+            <Form.FormLabel>
+              Last Name:
+              <Form.Input
+                value={updatedLastName}
+                onChange={({ target }) => setUpdatedLastName(target.value.trim())}
+                style={{ ...EditProfileInputStyle }}
+              />
+            </Form.FormLabel>
+
+            <Form.FormLabel>
+              Email Address:
+              <Form.Input
+                value={updatedEmail}
+                onChange={({ target }) => setUpdatedEmail(target.value.trim())}
+                style={{ ...EditProfileInputStyle }}
+              />
+            </Form.FormLabel>
+          </div>
           <Form.Submit type="submit" disabled={sendingData}>
-            Update profile
+            Update Profile
           </Form.Submit>
         </Form.Base>
       </Form>
 
       <Form>
         <Form.Base onSubmit={updatePassword} method="POST">
-          <Form.Input
-            placeholder="Update password here..."
-            value={updatedPassword}
-            onChange={({ target }) => setUpdatedPassword(target.value.trim())}
-          />
-
+          <div style={{ ...EditFormBaseStyle }}>
+            <Form.FormLabel>
+              Password:
+              <Form.Input
+                placeholder="Update password here..."
+                value={updatedPassword}
+                onChange={({ target }) => setUpdatedPassword(target.value.trim())}
+                style={{ ...EditProfileInputStyle, ...EditFormMarginTop }}
+              />
+            </Form.FormLabel>
+          </div>
           <Form.Submit type="submit" disabled={sendingData}>
-            Update password
+            Update Password
           </Form.Submit>
         </Form.Base>
       </Form>
+
+      {success && <p>Profile successfully updated.</p>}
+      {error && (
+        <p>
+          One or more of the required fields are empty, or you've entered an invalid email/password.
+          A valid password must be 8 characters long, contain at least 1 non-alpha ,1 uppercase and
+          1 lowercase character.
+        </p>
+      )}
     </>
   );
 }

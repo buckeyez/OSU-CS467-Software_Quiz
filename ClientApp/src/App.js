@@ -12,6 +12,9 @@ import Quiz from './components/Quiz';
 import AddCandidates from './pages/addCandidates';
 import EditProfile from './pages/editProfile';
 import SubmissionComplete from './pages/submissionComplete';
+import CandidateRankingsPage from './pages/quizResults.js';
+import CandidateResultPage from './pages/candidateResult.js';
+
 import * as ROUTES from './constants/routes';
 import { IsUserRedirect, ProtectedRoute, CandidateProtectedRoute } from './helpers/routes';
 import { UserContext } from './context/userContext';
@@ -79,6 +82,14 @@ export default function App() {
 
             <ProtectedRoute user={user} path={ROUTES.SOFTWARE_QUIZ} exact>
               <SoftwareQuiz />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={user} path={ROUTES.QUIZ_RESULTS} exact>
+              <CandidateRankingsPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute user={true} path={ROUTES.CANDIDATE_RESULT} exact>
+              <CandidateResultPage />
             </ProtectedRoute>
 
             {/*Need a better way to verify if user is candidate quiz taker
