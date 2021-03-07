@@ -108,6 +108,10 @@ export default function Signup() {
               value={password}
               onChange={({ target }) => setPassword(target.value.trim())}
             />
+            <p style={{ fontSize: '12px' }}>
+              A valid password must be 8 characters long, contain at least 1 non-alpha ,1 uppercase
+              and 1 lowercase character
+            </p>
             <Form.Submit style={{ ...buttonStyle }} disabled={isInvalid} type="submit">
               Sign Up
             </Form.Submit>

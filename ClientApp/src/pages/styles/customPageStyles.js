@@ -40,3 +40,21 @@ export const buttonStyle = {
   color: 'white',
   cursor: 'pointer',
 };
+
+export const EditProfileInputStyle = {
+  width: '40%',
+  border: 'none',
+  borderBottom: 'solid 1px lightgrey',
+  marginBottom: '8px',
+  marginLeft: '10px',
+};
+
+export const EditFormMarginTop = {
+  marginTop: '25px',
+};
+
+export const EditFormBaseStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  maxWidth: '450px',
+};

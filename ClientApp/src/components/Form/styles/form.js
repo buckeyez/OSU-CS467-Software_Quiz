@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 export const Container = styled.div``;
 export const Error = styled.div``;
 export const Base = styled.form``;
+export const FormLabel = styled.label``;
 export const Question = styled.section`
   // border: solid 1px black;
   padding: 15px;
