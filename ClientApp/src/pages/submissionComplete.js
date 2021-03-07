@@ -18,7 +18,11 @@ export default function SubmissionComplete() {
   return (
     <Submitted>
       <Submitted.Title>Thank You For Your Submission!</Submitted.Title>
-      <Submitted.Text>🎉</Submitted.Text>
+      <Submitted.Text>
+        <span role="img" aria-label="Party">
+          🎉
+        </span>
+      </Submitted.Text>
     </Submitted>
   );
 }
