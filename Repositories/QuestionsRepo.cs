@@ -56,8 +56,18 @@ namespace OSU_CS467_Software_Quiz.Repositories
       return questionEntry.Entity;
     }
 
-    public async Task DeleteQuestionAsync(int id)
+    public async Task<bool> DeleteQuestionAsync(int id)
     {
+      var used = _db.QuizResults
+        .AsQueryable()
+        .Where(qr => qr.QuestionId == id)
+        .Any();
+
+      if (used)
+      {
+        return false;
+      }
+
       var question = _db.Questions
         .AsQueryable()
         .Where(q => q.Id == id)
@@ -67,7 +77,7 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
       if (question == null)
       {
-        return;
+        return false;
       }
 
       foreach (Answers answer in question.QuestionAnswers.Select(qa => qa.Answer).ToList())
@@ -83,7 +93,10 @@ namespace OSU_CS467_Software_Quiz.Repositories
       catch (DbUpdateException e)
       {
         Console.WriteLine($"{e.Source}: {e.Message}");
+        return false;
       }
+
+      return true;
     }
 
     public async Task<List<Answers>> GetQuestionAnswersAsync(int id)

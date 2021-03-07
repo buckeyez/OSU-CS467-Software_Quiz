@@ -67,6 +67,7 @@ namespace OSU_CS467_Software_Quiz.Controllers
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<List<Question>> GetQuestions()
     {
       var questions = await _questionsRepo.GetQuestions();
@@ -74,7 +75,23 @@ namespace OSU_CS467_Software_Quiz.Controllers
     }
 
     [HttpPost("Delete")]
-    public async Task DeleteAsync([FromQuery][Required] int id) => await _questionsRepo.DeleteQuestionAsync(id);
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteAsync([FromQuery][Required] int id)
+    {
+      if (ModelState.IsValid)
+      {
+        var deleted = await _questionsRepo.DeleteQuestionAsync(id);
+
+        if (deleted)
+        {
+          return Ok();
+        }
+
+        ModelState.AddModelError("DbUpdate Error", "Failed to delete question, id is used in another table.");
+      }
+
+      return _apiBehaviorOptions.Value.InvalidModelStateResponseFactory(ControllerContext);
+    }
 
     [HttpPost("Update")]
     [ProducesResponseType(StatusCodes.Status302Found)]
