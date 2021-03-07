@@ -6,6 +6,12 @@ import validator from 'validator';
 import * as ROUTES from '../constants/routes';
 import { useHistory } from 'react-router-dom';
 import { storeUserSessionToLocalStorage } from '../utils/storeSession';
+import {
+  containerStyle,
+  baseStyle,
+  inputStyle,
+  buttonStyle,
+} from '../pages/styles/customPageStyles';
 
 export default function Signup() {
   const history = useHistory();
@@ -17,6 +23,13 @@ export default function Signup() {
   const [error, setError] = useState('');
 
   const { /*user,*/ setUser } = useContext(UserContext);
+
+  const isInvalid =
+    userName === '' ||
+    firstName === '' ||
+    lastName === '' ||
+    password === '' ||
+    emailAddress === '';
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -53,45 +66,54 @@ export default function Signup() {
   };
 
   return (
-    <>
+    <div style={{ ...containerStyle }}>
       <Form>
         {error && <Form.Error>{error}</Form.Error>}
         <Form.Title>Sign up</Form.Title>
         <Form.Base onSubmit={handleSignUp} method="POST">
-          <Form.Input
-            placeholder="User name"
-            value={userName}
-            onChange={({ target }) => setUserName(target.value.trim())}
-          />
+          <div style={{ ...baseStyle }}>
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="User name"
+              value={userName}
+              onChange={({ target }) => setUserName(target.value.trim())}
+            />
 
-          <Form.Input
-            placeholder="First name"
-            value={firstName}
-            onChange={({ target }) => setFirstName(target.value.trim())}
-          />
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="First name"
+              value={firstName}
+              onChange={({ target }) => setFirstName(target.value.trim())}
+            />
 
-          <Form.Input
-            placeholder="Last name"
-            value={lastName}
-            onChange={({ target }) => setLastName(target.value.trim())}
-          />
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="Last name"
+              value={lastName}
+              onChange={({ target }) => setLastName(target.value.trim())}
+            />
 
-          <Form.Input
-            placeholder="Email address"
-            value={emailAddress}
-            onChange={({ target }) => setEmailAddress(target.value.trim())}
-          />
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="Email address"
+              value={emailAddress}
+              onChange={({ target }) => setEmailAddress(target.value.trim())}
+            />
 
-          <Form.Input
-            type="password"
-            placeholder="Password"
-            autocomplete="off"
-            value={password}
-            onChange={({ target }) => setPassword(target.value.trim())}
-          />
-          <Form.Submit type="submit">Sign Up</Form.Submit>
+            <Form.Input
+              style={{ ...inputStyle }}
+              type="password"
+              placeholder="Password"
+              autocomplete="off"
+              value={password}
+              onChange={({ target }) => setPassword(target.value.trim())}
+            />
+            <Form.Submit style={{ ...buttonStyle }} disabled={isInvalid} type="submit">
+              Sign Up
+            </Form.Submit>
+          </div>
         </Form.Base>
       </Form>
-    </>
+    </div>
   );
 }

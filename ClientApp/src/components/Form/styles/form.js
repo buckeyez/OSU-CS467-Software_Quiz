@@ -81,7 +81,9 @@ export const MCInput = styled.input`
   }
 `;
 
-export const Title = styled.h1``;
+export const Title = styled.h1`
+  padding-bottom: 15px;
+`;
 export const Text = styled.p``;
 export const TextSmall = styled.p`
   margin-bottom: 0px;
@@ -170,6 +172,9 @@ export const Submit = styled.button`
   }
   &:focus {
     outline: none;
+  }
+  &: disabled {
+    opacity: 0.5;
   }
 `;
 

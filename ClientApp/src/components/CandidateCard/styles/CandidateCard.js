@@ -35,10 +35,14 @@ export const Button = styled.button`
   border-radius: 3px;
   font-size: 18px;
 
-  &:disabled {
-    background: #e0e0e0;
-    border: 2px solid #e0e0e0;
-    color: black;
+  //   &:disabled {
+  //     background: #e0e0e0;
+  //     border: 2px solid #e0e0e0;
+  //     color: black;
+  //   }
+
+  &: disabled {
+    opacity: 0.5;
   }
 `;
 
