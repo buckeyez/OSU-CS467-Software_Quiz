@@ -10,3 +10,5 @@ export const QUIZZES = '/quizzes-page';
 export const CANDIDATES = '/candidates-page';
 export const EDIT_PROFILE = '/edit-profile';
 export const SUBMITTED = '/submitted';
+export const QUIZ_RESULTS = '/quiz-results';
+export const CANDIDATE_RESULT = '/candidate-result';

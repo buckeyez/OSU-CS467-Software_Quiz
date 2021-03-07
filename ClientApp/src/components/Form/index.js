@@ -25,6 +25,7 @@ import {
   QuestionOption,
   MCInput,
   ErrorMessage,
+  FormLabel,
 } from './styles/form';
 
 export default function Form({ children, ...restProps }) {
@@ -121,4 +122,8 @@ Form.QuestionOption = function FormQuestionOption({ children, ...restProps }) {
 
 Form.ErrorMessage = function FormErrorMessage({ children, ...restProps }) {
   return <ErrorMessage {...restProps}>{children}</ErrorMessage>;
+};
+
+Form.FormLabel = function FormFormLabel({ children, ...restProps }) {
+  return <FormLabel {...restProps}>{children}</FormLabel>;
 };

@@ -26,16 +26,17 @@ export default function QuizDetails() {
   const [loading, setLoading] = useState(true);
   const [questionAndAnswerMap, setQuestionAndAnswerMap] = useState(new Map());
   const [minutesRemain, setMinutesRemain] = useState(null);
+  const [initialQuizTime, setInitialQuizTime] = useState(null);
   const [secondsRemain, setSecondsRemain] = useState(null);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
   const [error, setError] = useState(false);
   const [candidateTimeUp, setCandidateTimeUp] = useState(false);
   const [quizAlreadySubmitted, setQuizAlreadySubmitted] = useState(false);
+  const [submittingQuiz, setSubmittingQuiz] = useState(false);
 
   const queryParams = queryString.parse(data.search);
 
   //   console.log('Data from candidate-home route:', data);
-
   //Callback is used bcause reference to submitQuiz can change ever render
   //With callBack, react will only update the function if any of the dependencies are updated
   const submitQuiz = useCallback(async () => {
@@ -52,17 +53,22 @@ export default function QuizDetails() {
     const userSelections = generateAnswersArrayForSubmission(questionAndAnswerMap, quizData);
 
     try {
+      setSubmittingQuiz(true);
       const submission = await submitQuizToBackend(
         candidateAndQuizInformation.id,
-        minutesRemain,
+        initialQuizTime === -1 ? -1 : initialQuizTime - minutesRemain,
         userSelections
       );
       if (submission) {
+        setSubmittingQuiz(false);
         console.log('submission returned>>>');
         console.log(submission);
         history.push(`${ROUTES.SUBMITTED}/?key=${queryParams.key}`);
+      } else {
+        setSubmittingQuiz(false);
       }
     } catch (e) {
+      setSubmittingQuiz(false);
       console.log('Error submititon quiz: ', e);
     }
   }, [
@@ -72,6 +78,7 @@ export default function QuizDetails() {
     queryParams.key,
     questionAndAnswerMap,
     quizData,
+    initialQuizTime,
   ]);
 
   useEffect(() => {
@@ -83,6 +90,7 @@ export default function QuizDetails() {
       const quizID = candidate.quiz.id;
       setCandidateAndQuizInformation(candidate);
       setMinutesRemain(candidate.timeAllotment);
+      setInitialQuizTime(candidate.timeAllotment);
 
       const r = await getQuizQuestions(quizID);
       setQuizData(r);
@@ -167,6 +175,7 @@ export default function QuizDetails() {
     console.log(`Min=${minutes} and Sec=${seconds}`);
     let t = new Date(0, minutes, seconds);
     console.log('time is:', t);
+    console.log('Completing quiz took min:', initialQuizTime - minutes);
     setMinutesRemain(minutes);
     setSecondsRemain(seconds);
 
@@ -185,6 +194,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'Free Response':
@@ -195,6 +205,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMapFreeResponse={updateQuestionAndAnswersMapFreeResponse}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'True or False':
@@ -205,6 +216,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMap={updateQuestionAndAnswersMap}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       case 'Select All That Apply':
@@ -215,6 +227,7 @@ export default function QuizDetails() {
             updateQuestionAndAnswersMapSelectMultiple={updateQuestionAndAnswersMapSelectMultiple}
             questionAndAnswerMap={questionAndAnswerMap}
             questionIndex={questionIndex}
+            questionType={questionType}
           />
         );
       default:
@@ -269,25 +282,34 @@ export default function QuizDetails() {
 
   //TODO: Handle case for timer if minuetsRemain === -1
   return (
-    <MainQuiz>
-      <MainQuiz.Title>You are taking {quizData.name} Quiz</MainQuiz.Title>
-      <MainQuiz.TimeArea>
-        {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain}></Timer>}
-      </MainQuiz.TimeArea>
+    <div style={{ marginTop: '5%', display: 'flex', justifyContent: 'center', minHeight: '800px' }}>
+      <MainQuiz>
+        <MainQuiz.Title>Quiz In Progress: {quizData.name}</MainQuiz.Title>
+        {initialQuizTime === -1 ? null : (
+          <MainQuiz.TimeArea>
+            {<Timer handleQuizTimeUp={handleQuizTimeUp} quizStartTime={minutesRemain - 1}></Timer>}
+          </MainQuiz.TimeArea>
+        )}
 
-      <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
-      <MainQuiz.Button disabled={numberOfQuestions === 1 ? true : false} onClick={getPrevQuestion}>
-        Prev
-      </MainQuiz.Button>
+        <MainQuiz.Card>{renderSwitch(questionType)}</MainQuiz.Card>
+        <MainQuiz.Button
+          disabled={numberOfQuestions === 1 ? true : false}
+          onClick={getPrevQuestion}
+        >
+          Prev
+        </MainQuiz.Button>
 
-      {showSubmitButton === false ? (
-        <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
-      ) : (
-        <MainQuiz.Button onClick={handleSubmit}>Submit</MainQuiz.Button>
-      )}
-      <MainQuiz.Error>
-        {error === false ? null : <p>Not all quiz questions have been answered</p>}
-      </MainQuiz.Error>
-    </MainQuiz>
+        {showSubmitButton === false ? (
+          <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
+        ) : (
+          <MainQuiz.Button onClick={handleSubmit} disabled={submittingQuiz}>
+            Submit
+          </MainQuiz.Button>
+        )}
+        <MainQuiz.Error>
+          {error === false ? null : <p>Not all quiz questions have been answered</p>}
+        </MainQuiz.Error>
+      </MainQuiz>
+    </div>
   );
 }

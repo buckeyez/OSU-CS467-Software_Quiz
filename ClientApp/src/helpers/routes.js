@@ -32,7 +32,7 @@ export function ProtectedRoute({ user, children, ...rest }) {
         }
 
         if (!user) {
-          return <Redirect to={{ pathname: 'signin', state: { from: location } }} />;
+          return <Redirect to={{ pathname: '/signin', state: { from: location } }} />;
         }
 
         return null;

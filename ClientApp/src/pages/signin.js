@@ -5,6 +5,12 @@ import * as ROUTES from '../constants/routes';
 import { UserContext } from '../context/userContext';
 import { login } from '../utils/loginUser';
 import { storeUserSessionToLocalStorage } from '../utils/storeSession';
+import {
+  containerStyle,
+  baseStyle,
+  inputStyle,
+  buttonStyle,
+} from '../pages/styles/customPageStyles';
 
 export default function Signin() {
   const history = useHistory();
@@ -33,31 +39,35 @@ export default function Signin() {
   };
 
   return (
-    <>
+    <div style={{ ...containerStyle }}>
       <Form>
         {error && <Form.Error>{error}</Form.Error>}
         <Form.Title>Sign In</Form.Title>
 
         <Form.Base onSubmit={handleSignIn} method="POST">
-          <Form.Input
-            placeholder="Email address"
-            value={emailAddress}
-            onChange={({ target }) => setEmailAddress(target.value.trim())}
-          />
+          <div style={{ ...baseStyle }}>
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="Email address"
+              value={emailAddress}
+              onChange={({ target }) => setEmailAddress(target.value.trim())}
+            />
 
-          <Form.Input
-            placeholder="Password"
-            type="password"
-            autoComplete="off"
-            value={password}
-            onChange={({ target }) => setPassword(target.value.trim())}
-          />
+            <Form.Input
+              style={{ ...inputStyle }}
+              placeholder="Password"
+              type="password"
+              autoComplete="off"
+              value={password}
+              onChange={({ target }) => setPassword(target.value.trim())}
+            />
 
-          <Form.Submit disabled={isInvalid} type="submit">
-            Sign In
-          </Form.Submit>
+            <Form.Submit style={{ ...buttonStyle }} disabled={isInvalid} type="submit">
+              Sign In
+            </Form.Submit>
+          </div>
         </Form.Base>
       </Form>
-    </>
+    </div>
   );
 }

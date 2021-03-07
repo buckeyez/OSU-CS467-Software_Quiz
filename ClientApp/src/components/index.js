@@ -9,3 +9,7 @@ export { default as SelectAllQuizCard } from './SelectAllQuizCard';
 export { default as Timer } from './Timer';
 export { default as MainQuiz } from './MainQuiz';
 export { default as Submitted } from './Submitted';
+export { default as CandidateCard } from './CandidateCard';
+export { default as CandidateResult } from './CandidateResult';
+export { default as CandidateResults } from './CandidateResults';
+export { default as CandidateResultCard } from './CandidateResultCard';

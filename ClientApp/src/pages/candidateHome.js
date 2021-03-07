@@ -45,10 +45,10 @@ export default function CandidateHome() {
   console.log('allotment is', allotment);
 
   return (
-    <>
+    <div style={{ marginTop: '5%', display: 'flex', justifyContent: 'center', minHeight: '800px' }}>
       <Welcome>
-        <Welcome.Title>Welcome {candidate.name}</Welcome.Title>
-        <Welcome.TextSmall>You have been assigned the following quiz(s). </Welcome.TextSmall>
+        <Welcome.Title>Welcome {candidate.firstName}</Welcome.Title>
+        <Welcome.TextSmall>You have been assigned the following quiz(s): </Welcome.TextSmall>
         <QuizCard>
           {
             <div key={quiz.id}>
@@ -70,6 +70,6 @@ export default function CandidateHome() {
           }
         </QuizCard>
       </Welcome>
-    </>
+    </div>
   );
 }
