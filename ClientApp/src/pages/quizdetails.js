@@ -32,6 +32,7 @@ export default function QuizDetails() {
   const [error, setError] = useState(false);
   const [candidateTimeUp, setCandidateTimeUp] = useState(false);
   const [quizAlreadySubmitted, setQuizAlreadySubmitted] = useState(false);
+  const [submittingQuiz, setSubmittingQuiz] = useState(false);
 
   const queryParams = queryString.parse(data.search);
 
@@ -52,17 +53,22 @@ export default function QuizDetails() {
     const userSelections = generateAnswersArrayForSubmission(questionAndAnswerMap, quizData);
 
     try {
+      setSubmittingQuiz(true);
       const submission = await submitQuizToBackend(
         candidateAndQuizInformation.id,
         initialQuizTime === -1 ? -1 : initialQuizTime - minutesRemain,
         userSelections
       );
       if (submission) {
+        setSubmittingQuiz(false);
         console.log('submission returned>>>');
         console.log(submission);
         history.push(`${ROUTES.SUBMITTED}/?key=${queryParams.key}`);
+      } else {
+        setSubmittingQuiz(false);
       }
     } catch (e) {
+      setSubmittingQuiz(false);
       console.log('Error submititon quiz: ', e);
     }
   }, [
@@ -296,7 +302,9 @@ export default function QuizDetails() {
         {showSubmitButton === false ? (
           <MainQuiz.Button onClick={getNextQuestion}>Next</MainQuiz.Button>
         ) : (
-          <MainQuiz.Button onClick={handleSubmit}>Submit</MainQuiz.Button>
+          <MainQuiz.Button onClick={handleSubmit} disabled={submittingQuiz}>
+            Submit
+          </MainQuiz.Button>
         )}
         <MainQuiz.Error>
           {error === false ? null : <p>Not all quiz questions have been answered</p>}
