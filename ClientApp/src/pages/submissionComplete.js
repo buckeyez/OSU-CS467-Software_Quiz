@@ -17,7 +17,8 @@ export default function SubmissionComplete() {
 
   return (
     <Submitted>
-      <Submitted.Title>Thank you for your submission</Submitted.Title>
+      <Submitted.Title>Thank You For Your Submission!</Submitted.Title>
+      <Submitted.Text>🎉</Submitted.Text>
     </Submitted>
   );
 }
