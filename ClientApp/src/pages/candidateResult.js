@@ -85,6 +85,16 @@ export default function CandidateResultPage() {
     }
   };
 
+  const generateTimeTakeCopy = (time) => {
+    if (time === -1) {
+      return 'Untimed';
+    } else if (time === 0) {
+      return 'Under 1 minute';
+    } else {
+      return `${time} minutes`;
+    }
+  };
+
   return (
     <>
       <CandidateResult>
@@ -95,7 +105,9 @@ export default function CandidateResultPage() {
         <CandidateResult.QuizTitle>Quiz Name: {result.quizName}</CandidateResult.QuizTitle>
 
         <CandidateResult.Text>Email: {result.user.email}</CandidateResult.Text>
-        <CandidateResult.Text>Time Taken: {result.timeTaken} minutes</CandidateResult.Text>
+        <CandidateResult.Text>
+          Time Taken: {generateTimeTakeCopy(result.timeTaken)}
+        </CandidateResult.Text>
         {result.questionResults.map((r, index) => {
           return (
             <CandidateResultCard key={r.question.id}>
