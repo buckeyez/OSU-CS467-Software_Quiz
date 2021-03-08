@@ -18,7 +18,7 @@ export default class Quiz extends Component {
     this.state = {
       QuizTitle: '',
       timerChecked: false,
-      timeAllotted: '',
+      timeAllotted: -1,
       message: '',
       theQuizzes: [],
       currentQuizID: '',
@@ -525,6 +525,7 @@ export default class Quiz extends Component {
             <label id="timer">
               <h6>Timer:</h6>
               <Form.QuizSelect onChange={this.handleTimeAllotment}>
+                {/* <option value="-2">Select Timer</option> */}
                 <option value="-1">No Limit</option>
                 <option value="10">10 min</option>
                 <option value="30">30 min</option>

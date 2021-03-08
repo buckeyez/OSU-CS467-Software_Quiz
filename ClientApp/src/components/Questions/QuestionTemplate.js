@@ -89,7 +89,19 @@ export default class QuestionTemplate extends Component {
       return;
     }
     this.props.deleteHandle(this.state.id);
-    this.setState({ ...this.state, deleteButtonValue: 'Click again to confirm delete' });
+    let url = '/Questions/Delete?id=' + this.state.id;
+    console.log('url: ', url);
+    axios.post(url).then(
+      console.log('deleted from child'),
+      // this.setState((prevState) => {
+      //   return { ...prevState };
+      // })
+    ).catch(error => {
+      console.log("error:  deleteError")
+      this.setState({...this.state, errorMessage: "Question is applied to an existing quiz. Cannot update or delete."})
+      // this.updateChildErrorMessage();
+    })
+    // this.setState({ ...this.state, deleteButtonValue: 'Click again to confirm delete' });
   };
 
   handleQuestionSubmit = (event) => {

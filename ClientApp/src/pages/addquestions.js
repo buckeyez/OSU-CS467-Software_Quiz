@@ -23,15 +23,28 @@ export default class AddQuestions extends Component {
       canAdd: true,
     };
     this.incrementCounter = this.incrementCounter.bind(this);
+    // this.updateRefsArray(this.state.questionPool);
+    // this.questionTemplateChild = React.createRef([]);
     // this.onChange = this.onChange.bind(this);
+  
   }
+
+  // updateRefsArray = (questions) => {
+  //   this.refsArray = questions.map((question, index) => React.createRef());
+  //   console.log("refsArray: ", this.refsArray)
+  // }
 
   componentDidMount() {
     console.log('AddQuestions just mounted ');
     axios.get(`/Questions`).then((response) => {
-      this.setState({ ...this.state, questionPool: response.data });
-    });
+      this.setState({ ...this.state, questionPool: response.data },
+      
+      );
+    })
+    // .then(console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", this.questionTemplate),
+    // this.updateRefsArray(this.state.questionPool));
   }
+  //this.questionTemplateChild.current = this.questionTemplateChild.current.slice(0, this.questionPool.length)
 
   componentDidUpdate(prevProps, prevState) {
     // this is really bad performance
@@ -88,17 +101,25 @@ export default class AddQuestions extends Component {
     // const newQuestionList = oldQuestionList.filter( question => question.id != id);
     // this.setState({...this.state, questionTemplate: newQuestionList});
     // console.log("after resetting state: ", this.state);
-    let url = '/Questions/Delete?id=' + id;
-    console.log('url: ', url);
-    axios.post(url).then(
-      console.log('deleted'),
-      this.setState((prevState) => {
-        return { ...prevState };
-      })
-    ).catch(error => {
-      console.log("error:  deleteError")
-    })
+
+
+    // let url = '/Questions/Delete?id=' + id;
+    // console.log('url: ', url);
+    // axios.post(url).then(
+    //   console.log('deleted'),
+    //   this.setState((prevState) => {
+    //     return { ...prevState };
+    //   })
+    // ).catch(error => {
+    //   console.log("error:  deleteError")
+    //   // this.updateChildErrorMessage();
+    // })
   };
+
+  // updateChildErrorMessage = () => {
+  //   console.log("we are here");
+  //   this.refsArray[0].current.handleUpdateErrorMassageFromParent();
+  // }
 
   render() {
 
@@ -121,7 +142,9 @@ export default class AddQuestions extends Component {
           {this.state.inputAtTop &&
             this.state.display &&
             Array.from(Array(this.state.questionTemplate.length)).map((x, index) => (
-              <QuestionTemplate
+              <QuestionTemplate 
+                // ref={el => this.questionTemplateChild.current[index] = el} 
+                // ref={this.refsArray[index]}
                 key={index}
                 deleteHandle={(id, e) => this.deleteGeneralQuestion(id, e)}
               />
