@@ -118,6 +118,7 @@ export default function Home() {
               <li>
                 Go to the <b>Quizzes</b> tab in Navbar
               </li>
+              <li><b>Add a quiz</b> - Fill in <b>Quiz Title</b> and click <b>Add Quiz</b></li>
               <li>
                 <b>Select the quiz</b> - Find the quiz under <b>Quiz Pool</b> and click on it
               </li>
