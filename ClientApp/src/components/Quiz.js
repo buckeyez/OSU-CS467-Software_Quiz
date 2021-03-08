@@ -369,13 +369,18 @@ export default class Quiz extends Component {
   };
 
   handleTimeAllotment = (e) => {
-    console.log('in time allotment: ', e.target.value);
+    console.log('in time allotment: ', e.target.value, this.state.quizContentsID);
     this.setState({ ...this.state, timeAllotted: e.target.value });
   };
 
   handleAssignQuiz = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log("checking the quesion list length: ",this.state.quizContentsID, this.state.quizContentsID.length )
+    if(this.state.quizContentsID.length === 0){
+      this.setState({...this.state, assignedMessage: 'No quiz selected or selected quiz includes no questions. Please assign questions to this quiz first.'});
+      return;
+    }
     let quizID = Number(this.state.bufferID);
     let timeAllowed = Number(this.state.timeAllotted);
     console.log(
@@ -615,7 +620,7 @@ export default class Quiz extends Component {
             </Form.Submit>
           </form>
           {this.state.assignedMessage && (
-            <p onClick={this.eraseMessage}>{this.state.assignedMessage}</p>
+            <Form.ErrorMessage onClick={this.eraseMessage}>{this.state.assignedMessage}</Form.ErrorMessage>
           )}
         </div>
         <br></br>

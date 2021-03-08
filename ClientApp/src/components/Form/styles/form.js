@@ -91,7 +91,7 @@ export const TextSmall = styled.p`
 `;
 
 export const ErrorMessage = styled.p`
-  color: red;
+  color: #a64dff;
   opacity: 0.5s;
   // transition: visibility 0s, opacity 1s linear;
 `;
