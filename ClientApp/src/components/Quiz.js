@@ -36,6 +36,8 @@ export default class Quiz extends Component {
       theCandidates: [],
       selectedCandidate: '',
       assignedMessage: '',
+      showInstructions: false,
+      showUpdateButton: true,
     };
   }
 
@@ -81,6 +83,7 @@ export default class Quiz extends Component {
               theQuizzes: response.data,
               currentQuizID: prevState.currentQuizID,
               bufferID: prevState.bufferID,
+              showUpdateButton: true,
             };
           });
         })
@@ -95,6 +98,7 @@ export default class Quiz extends Component {
                 quizContents: response.data.questions,
                 quizContentsID: IDs,
                 bufferID: prevState.bufferID,
+                showUpdateButton: true,
               });
             })
         );
@@ -115,24 +119,40 @@ export default class Quiz extends Component {
       // })
       // .then(
       return (
-        this.state.currentQuizID &&
-        axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
-          console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
-          let IDs = this.populateQuizID(response.data.questions);
-          let curID =
-            prevState.currentQuizID === '' ? this.state.currentQuizID : prevState.currentQuizID;
-          let curName =
-            prevState.bufferName === this.state.bufferName
-              ? prevState.bufferName
-              : this.state.bufferName;
-          this.setState({
-            ...prevState,
-            quizContents: response.data.questions,
-            quizContentsID: IDs,
-            bufferID: curID,
-            bufferName: curName,
+        axios.get(`/Quizzes`)
+        .then((response) => {
+          // console.log("res[pmnsee: ", response.data);
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              theQuizzes: response.data,
+              currentQuizID: prevState.currentQuizID,
+              bufferID: prevState.bufferID,
+              showUpdateButton: true,
+            };
           });
-        })
+        }).then(
+          this.state.currentQuizID &&
+          axios.get('/Quizzes/' + this.state.currentQuizID + '/true').then((response) => {
+            console.log('in get quiz content: ', this.populateQuizID(response.data.questions));
+            let IDs = this.populateQuizID(response.data.questions);
+            let curID =
+              prevState.currentQuizID === '' ? this.state.currentQuizID : prevState.currentQuizID;
+            let curName =
+              prevState.bufferName === this.state.bufferName
+                ? prevState.bufferName
+                : this.state.bufferName;
+            this.setState({
+              ...prevState,
+              quizContents: response.data.questions,
+              quizContentsID: IDs,
+              bufferID: curID,
+              bufferName: curName,
+              showUpdateButton: true,
+            });
+          })
+        )
+
       );
     }
     console.log('bufferID: ', this.state.bufferID);
@@ -236,8 +256,13 @@ export default class Quiz extends Component {
 
   handleQuizContentUpdate = (e) => {
     e.preventDefault();
+    console.log("is it assigned???? ", this.isQuizAssigned());
     if (!this.state.bufferID) {
       this.setState({ ...this.state, message: 'No quiz chosen! \xa0\xa0\xa0\xa0\xa0\xa0\xa0' });
+      return;
+    }
+    if(this.isQuizAssigned()){
+      this.setState({ ...this.state, message: `Quiz ${this.state.bufferName} already assigned to candidates! Cannot update. \xa0\xa0\xa0\xa0\xa0\xa0\xa0` });
       return;
     }
     // console.log("To Add: ", this.state.entityIDsToAdd)
@@ -289,6 +314,7 @@ export default class Quiz extends Component {
           ...this.state,
           message: `Question List for quiz ${this.state.bufferName} updated! \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0`,
           quizContentsID: toAdd,
+          // showUpdateButton: false
         });
         if (toAdd.length > 0 || toDelete.length > 0) {
           console.log('need to refresh after update');
@@ -338,7 +364,7 @@ export default class Quiz extends Component {
   };
 
   handleSelectCandidate = (e) => {
-    console.log('in handleSelectCandidate: ', e.target.value);
+    console.log('in handleSelectCandidate: ', e.target.value, e.target.label, e.target.option);
     this.setState({ ...this.state, selectedCandidate: e.target.value });
   };
 
@@ -371,6 +397,7 @@ export default class Quiz extends Component {
         console.log('response: ', response);
         this.setState({
           ...this.state,
+          showUpdateButton: false,
           assignedMessage:
             `Quiz ${this.state.bufferName} assigned succesfully! Candidate should have received link to take the quiz in email.` +
             '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0' +
@@ -404,6 +431,23 @@ export default class Quiz extends Component {
     this.setState({ ...this.state, message: '', assignedMessage: '' });
   };
 
+  isQuizAssigned = () => {
+    console.log("in heeeeere")
+    for(var i = 0; i < this.state.theQuizzes.length; i++){
+      console.log("compare: ", this.state.theQuizzes[i].id, this.state.bufferID, Number(this.state.theQuizzes[i].id), Number(this.state.bufferID) )
+      if(Number(this.state.theQuizzes[i].id) === Number(this.state.bufferID)){
+        console.log("in isQuizAssigned: ", this.state.theQuizzes[i].isAssigned);
+        return this.state.theQuizzes[i].isAssigned;
+      }
+    }
+  }
+
+  toggleInstructions = () => {
+    let show = this.state.showInstructions;
+    this.setState({...this.state, showInstructions: !show});
+
+  }
+
   render() {
     var questionPanelStyle = {
       marginTop: '5px',
@@ -411,6 +455,19 @@ export default class Quiz extends Component {
 
     return (
       <div onClick={this.resetMessage}>
+        <div onClick={this.toggleInstructions}> 
+        {/* <h4>Instructions</h4> */}
+        <Form.Submit >{this.state.showInstructions ? 'Hide Instructions' : 'Show Instructions'}</Form.Submit>
+          {this.state.showInstructions &&<Form.Question>
+          
+          <p><b>1. Add a quiz</b> - Fill in <b>Quiz Title</b> and click <b>Add Quiz</b></p>
+          <p><b>2. Select the quiz</b> - Find the quiz under <b>Quiz Pool</b> and click on it</p>
+          <p><b>3. Select/Update question list for the quiz </b>- Now that the quiz is selected, under <b>Question Pool</b>, add/delete questions to assign to the quiz by selecting/unselecting them with <b>Toggle</b>, then click <b>Update</b>. If a quiz has already been assigned to a candidate, then it cannot be updated</p>
+          <p><b>4. Assign the quiz </b>- With the quiz selected, pick the Timer and Candidate and click <b>Send Quiz</b></p>
+          </Form.Question>}
+          <br></br>
+          <br></br>
+        </div>
         <div>
           <h2>Create New Quiz</h2>
         </div>
@@ -454,7 +511,9 @@ export default class Quiz extends Component {
             <Form.Quizzes>
               <h4>Quiz Pool</h4>
               {this.state.theQuizzes.map((quiz, index) => {
+                console.log("check if quiz is assigned: ", quiz.isAssigned)
                 return (
+                  
                   <div key={index}>
                     {/* <QuizDisplay quiz={quiz}/> */}
                     {/* <Form.eachQuiz> */}
@@ -506,16 +565,17 @@ export default class Quiz extends Component {
                   );
                 })}
               </div>
+              {this.state.showUpdateButton && 
               <Form.Submit type="submit" onClick={this.handleQuizContentUpdate}>
-                Update
-              </Form.Submit>
+                {this.isQuizAssigned() ? 'Quiz already assigned - Cannot Update' : 'Update' }
+              </Form.Submit>}
             </div>
           </Form.QuestionsNextToQuizzes>
         </Form.QuizOuter>
         <div>
           <br></br>
           <h3>
-            Selected Quiz:{' '}
+            Assign Selected Quiz:{' '}
             {this.state.bufferName ? this.state.bufferName : <p> None selected yet </p>}
             {/* {this.state.currentQuizID} */}
           </h3>
@@ -551,7 +611,7 @@ export default class Quiz extends Component {
             </label>
             <br></br>
             <Form.Submit type="submit" onClick={(e) => this.handleAssignQuiz(e)}>
-              Send quiz!
+              Send Quiz!
             </Form.Submit>
           </form>
           {this.state.assignedMessage && (
