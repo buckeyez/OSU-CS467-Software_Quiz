@@ -68,7 +68,7 @@ export default class AddQuestions extends Component {
         // console.log("res[pmnsee: ", response.data);
         this.setState((prevState) => {
           var questionData = [...response.data]
-          var test = questionData.sort(function(a, b){
+           questionData.sort(function(a, b){
             return a.id - b.id;
           })
           return { ...prevState, questionPool: questionData };
