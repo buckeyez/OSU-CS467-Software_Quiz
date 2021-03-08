@@ -156,7 +156,9 @@ namespace OSU_CS467_Software_Quiz.Repositories
 
     public Task<List<Quizzes>> GetQuizzes()
     {
-      return _db.Quizzes.ToListAsync();
+      return _db.Quizzes
+        .Include(q => q.QuizAssignments)
+        .ToListAsync();
     }
 
     public Task<QuizAssignments> GetQuizAssignment(string key)
