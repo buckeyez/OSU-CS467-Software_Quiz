@@ -99,7 +99,7 @@ export default function Home() {
 
       <div onClick={() => toggleInstructions('quiz')}>
         <Form.Submit>
-          {quiz ? 'Hide Create and Assign Quizzes' : '2. Create and Assign Quizzes'}
+          {quiz ? 'Hide Create and Assign Quizzes' : '3. Create and Assign Quizzes'}
         </Form.Submit>
         {quiz && (
           <Form.Question>
@@ -112,7 +112,7 @@ export default function Home() {
             </ol>
 
             <p>
-              <b>Create and assign quizzes</b>
+              <b>To create and assign quizzes</b>
             </p>
             <ol>
               <li>
@@ -138,7 +138,7 @@ export default function Home() {
       </div>
 
       <div onClick={() => toggleInstructions('report')}>
-        <Form.Submit>{report ? 'Hide View Quiz Reports' : '3. View Quiz Reports'}</Form.Submit>
+        <Form.Submit>{report ? 'Hide View Quiz Reports' : '4. View Quiz Reports'}</Form.Submit>
         {report && (
           <Form.Question>
             <p>
