@@ -81,6 +81,13 @@ export default class AddQuestions extends Component {
     }
   }
 
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state,callback)=>{
+        return;
+    };
+}
+
   incrementCounter() {
     this.setState({
       currentCount: this.state.currentCount + 1,
