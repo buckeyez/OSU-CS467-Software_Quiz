@@ -34,10 +34,18 @@ export default class AddQuestions extends Component {
   //   console.log("refsArray: ", this.refsArray)
   // }
 
+  //sort questionPool by id
+
+
   componentDidMount() {
     console.log('AddQuestions just mounted ');
     axios.get(`/Questions`).then((response) => {
-      this.setState({ ...this.state, questionPool: response.data },
+      var questionData = [...response.data]
+      questionData.sort(function(a, b){
+        return a.id - b.id;
+      })
+      console.log("QuestionData: ", questionData)
+      this.setState({ ...this.state, questionPool: questionData },
       
       );
     })
@@ -59,7 +67,11 @@ export default class AddQuestions extends Component {
       return axios.get(`/Questions`).then((response) => {
         // console.log("res[pmnsee: ", response.data);
         this.setState((prevState) => {
-          return { ...prevState, questionPool: response.data };
+          var questionData = [...response.data]
+           questionData.sort(function(a, b){
+            return a.id - b.id;
+          })
+          return { ...prevState, questionPool: questionData };
         });
       });
       //     .then(response => {
