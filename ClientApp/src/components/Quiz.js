@@ -63,6 +63,13 @@ export default class Quiz extends Component {
       );
   };
 
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state,callback)=>{
+        return;
+    };
+}
+
   componentDidUpdate(prevProps, prevState) {
     // this is really bad performance
     // console.log("---------for delete, this.state, prevSte: ", this.state.forDelete, prevState.forDelete);
