@@ -224,6 +224,8 @@ namespace OSU_CS467_Software_Quiz.Migrations
                     Key = table.Column<Guid>(type: "uuid", nullable: false),
                     TimeAllotment = table.Column<int>(type: "integer", nullable: false),
                     TimeTaken = table.Column<int>(type: "integer", nullable: false),
+                    Grade = table.Column<int>(type: "integer", nullable: false),
+                    Submitted = table.Column<bool>(type: "boolean", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     QuizId = table.Column<int>(type: "integer", nullable: false)
                 },
