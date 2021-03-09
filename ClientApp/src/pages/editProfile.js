@@ -12,7 +12,6 @@ import {
   EditFormMarginTop,
   EditFormBaseStyle,
 } from '../pages/styles/customPageStyles';
-import { Button } from '../components/QuizCard/styles/QuizCard';
 
 export default function EditProfile() {
   const { user, setUser } = useContext(UserContext);
