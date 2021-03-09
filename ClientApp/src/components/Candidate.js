@@ -7,11 +7,20 @@ const Candidate = (props) => {
     fontWeight: 'bold',
   };
 
+  var keepRight = {
+    float: 'right',
+    // margin: '20px',
+    // paddingBottom: '20px'
+    // marginBottom: '50px'
+  }
+
   return (
     <div>
-      <Form.Question>
+      <Form.Question onClick={props.clicked}>
+        {/* onClick={props.clicked} */}
         <p>
           <span style={boldStyle}>Username: &nbsp;</span> {props.candidate.name}
+          <span><Form.DeleteButtonSmall onClick={(e) => props.deleteUser(props.candidate.id, e)} style={keepRight} type="submit" >X</Form.DeleteButtonSmall></span>
         </p>
         <p>
           <span style={boldStyle}>First Name: &nbsp;</span>
@@ -24,7 +33,9 @@ const Candidate = (props) => {
         <p>
           <span style={boldStyle}>Eamil: &nbsp;</span>
           {props.candidate.email}
+          
         </p>
+        
       </Form.Question>
     </div>
   );
