@@ -4,7 +4,7 @@ import { UserContext } from '../context/userContext';
 //import * as ROUTES from '../constants/routes';
 import { Form } from '../components';
 import validator from 'validator';
-import { updateUser, updateUserPassword } from '../utils/updateUser';
+import { updateUser, updateUserPassword, deleteAdminUser } from '../utils/updateUser';
 import { storeUserSessionToLocalStorage } from '../utils/storeSession';
 import { login } from '../utils/loginUser';
 import {
@@ -23,6 +23,7 @@ export default function EditProfile() {
   const [sendingData, setSendingData] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
   const updateGeneralInformation = async (event) => {
     event.preventDefault();
@@ -112,6 +113,30 @@ export default function EditProfile() {
     }
   };
 
+  const handleConfirmDelete = () => {
+    setConfirmDeleteAccount(!confirmDeleteAccount);
+  };
+
+  const handleDeleteAccount = async (userID) => {
+    if (!confirmDeleteAccount) {
+      return;
+    }
+
+    try {
+      setSendingData(true);
+      const deletedAdminAccount = await deleteAdminUser(userID);
+
+      if (deletedAdminAccount === 200) {
+        setSendingData(false);
+        localStorage.removeItem('userData');
+        window.location.reload();
+      }
+    } catch (e) {
+      setSendingData(false);
+      console.log(e);
+    }
+  };
+
   // console.log(user);
   return (
     <>
@@ -169,6 +194,34 @@ export default function EditProfile() {
             Update Password
           </Form.Submit>
         </Form.Base>
+      </Form>
+
+      <Form>
+        <Form.Base>
+          <Form.TextSmall style={{ fontSize: '16px', fontWeight: 'bold', marginTop: '50px' }}>
+            NOTE: The below action CANNOT BE UNDONE. You will be taken back to the sign-in page.
+          </Form.TextSmall>
+          <div>
+            <Form.FormLabel>
+              <Form.Input
+                type="checkbox"
+                onChange={() => {
+                  handleConfirmDelete();
+                }}
+              ></Form.Input>
+              Confirm that you want to delete your account.
+            </Form.FormLabel>
+          </div>
+        </Form.Base>
+        <Form.Submit
+          disabled={!confirmDeleteAccount}
+          style={{ color: '#e53935', fontWeight: 'bold', marginTop: '5px' }}
+          onClick={() => {
+            handleDeleteAccount(user.id);
+          }}
+        >
+          Delete Account
+        </Form.Submit>
       </Form>
 
       {success && <p>Profile successfully updated.</p>}
