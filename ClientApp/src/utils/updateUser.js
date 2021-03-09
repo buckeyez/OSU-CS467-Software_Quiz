@@ -34,3 +34,21 @@ export const updateUserPassword = async (userID, password) => {
     return undefined;
   }
 };
+
+export const deleteAdminUser = async (userID) => {
+  //Required data for reqeust body
+  const data = {};
+  const headers = {};
+
+  const response = await axios
+    .post(`/users/delete?id=${userID}`, data, headers)
+    .catch((e) => console.log(e));
+
+  //If user exists, return user object, else undefined
+  if (response) {
+    console.log('response is', response);
+    return response.status;
+  } else {
+    return undefined;
+  }
+};
