@@ -60,12 +60,16 @@ export default class AddCandidates extends Component {
         return
     }else{
         let payload = {"Name": this.state.username, "FirstName": this.state.firstname, "LastName": this.state.lastname, "Email": this.state.email, "Password": null}
-        axios.post(`/Users/AddPasswordless`, payload).then((response) => {
+        axios.post(`/Users/AddPasswordless`, payload)
+        .then((response) => {
             this.setState(prevState => {
                 console.log("in axios post response: ", response)
                 return ({...this.prevState, count: prevState.count+1, message: "Candidate added!", username: '', firstname: '', lastname: '', email: ''})
             });
-          });
+          }).catch((error) => {
+            console.log("errorrr")
+            this.setState({...this.state, message: "The email already exist for a candidate. Please enter a unique email."})
+          })
     }
 
     console.log("in submit user: ", e.target, e.target.previousSibling.value)
@@ -100,7 +104,7 @@ export default class AddCandidates extends Component {
               <label>Email Address: &nbsp;&nbsp;</label>
               <Form.MCInput type="email" name="email" onChange={this.handleInputChange} value={this.state.email}></Form.MCInput><br></br>
               <Form.Submit type="submit" onClick={(e) => this.handleSubmitUser(e)}>Submit</Form.Submit>
-              {this.state.message && <p>{this.state.message}</p>}
+              {this.state.message && <Form.ErrorMessage>{this.state.message}</Form.ErrorMessage>}
             
           </form>
           </div>
