@@ -73,7 +73,7 @@ export default class AddCandidates extends Component {
             });
           }).catch((error) => {
             console.log("errorrr")
-            this.setState({...this.state, message: "The username/email already exist for a candidate. Please enter a unique value."})
+            this.setState({...this.state, message: "The username/email already exist for an account. Please enter a unique value."})
           })
     }else if(this.state.button==="Update"){
       console.log("in update")
