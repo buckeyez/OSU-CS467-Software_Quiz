@@ -78,7 +78,7 @@ export default function Home() {
       </div>
 
       <div onClick={() => toggleInstructions('candidate')}>
-        <Form.Submit>{quiz ? 'Hide Add Candidates' : '2. Add Candidates'}</Form.Submit>
+        <Form.Submit>{candidate ? 'Hide Add Candidates' : '2. Add Candidates'}</Form.Submit>
         {candidate && (
           <Form.Question>
             <p>
