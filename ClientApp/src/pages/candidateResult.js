@@ -33,20 +33,52 @@ export default function CandidateResultPage() {
     return <span>Unable to get candidate results. No such candidate exists.</span>;
   }
 
-  const checkIfAnswerWasCorrect = (userSelection, freeResponse) => {
-    let grade = '';
+  const checkIfAnswerWasCorrect = (userSelection, freeResponse, answers) => {
+    let grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
 
+    //If its a freeResponse object, then manaul grading is required
     if (userSelection === null && freeResponse !== null) {
       return (grade = <p style={{ backgroundColor: '#FFE0B2' }}>Manual Grading Required</p>);
     }
 
-    userSelection.forEach((choice) => {
-      if (choice.correct) {
+    //If there is more than 1 userSelection object, we know its a multi select answer
+    if (userSelection.length > 1) {
+      const trueAnswersArray = [];
+      const trueChoicesArray = [];
+
+      //Check how many true answers there should be
+      answers.forEach((answer) => {
+        if (answer.correct) {
+          trueAnswersArray.push(answer);
+        }
+      });
+
+      //Check how many true answers the user actualy selected
+      userSelection.forEach((choice) => {
+        if (choice.correct) {
+          trueChoicesArray.push(choice);
+        }
+      });
+
+      //Does the number of true answers there should be,
+      //match the number of true answers the user selected?
+      //If so, they've selected all corret answers, return Correct
+      //else, they've not selected all correct answers, return Incorrect
+      if (trueAnswersArray.length === trueChoicesArray.length) {
         grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
       } else {
         grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
       }
-    });
+    } else {
+      //If there is only 1 userSelection object
+      userSelection.forEach((choice) => {
+        if (choice.correct) {
+          grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
+        } else {
+          grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
+        }
+      });
+    }
 
     return grade;
   };
@@ -132,7 +164,7 @@ export default function CandidateResultPage() {
               {generateUserAnswerChoice(r.userSelection, r.freeResponse)}
 
               <CandidateResultCard.GradeText>Grade:</CandidateResultCard.GradeText>
-              {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse)}
+              {checkIfAnswerWasCorrect(r.userSelection, r.freeResponse, r.answers)}
             </CandidateResultCard>
           );
         })}
