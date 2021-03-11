@@ -209,7 +209,7 @@ export default function EditProfile() {
                   handleConfirmDelete();
                 }}
               ></Form.Input>
-              Confirm that you want to delete your account.
+              <span> Confirm that you want to delete your account.</span>
             </Form.FormLabel>
           </div>
         </Form.Base>

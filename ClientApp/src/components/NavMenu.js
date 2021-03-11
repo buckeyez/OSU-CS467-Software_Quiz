@@ -39,7 +39,7 @@ export class NavMenu extends Component {
         >
           <Container>
             <NavbarBrand tag={Link} to="/">
-              OSU_CS647_Software_Quiz
+              OSU_CS467_Software_Quiz
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse
