@@ -42,7 +42,7 @@ export default function CandidateResultPage() {
     }
 
     //If there is more than 1 userSelection object, we know its a multi select answer
-    if (userSelection.length > 1) {
+    if (answers.length >= 1) {
       const trueAnswersArray = [];
       const trueChoicesArray = [];
 
@@ -69,16 +69,17 @@ export default function CandidateResultPage() {
       } else {
         grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
       }
-    } else {
-      //If there is only 1 userSelection object
-      userSelection.forEach((choice) => {
-        if (choice.correct) {
-          grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
-        } else {
-          grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
-        }
-      });
     }
+    // else {
+    //   //If there is only 1 userSelection object
+    //   userSelection.forEach((choice) => {
+    //     if (choice.correct) {
+    //       grade = <p style={{ backgroundColor: '#DCEDC8' }}>Correct</p>;
+    //     } else {
+    //       grade = <p style={{ backgroundColor: '#ffcdd2' }}>Incorrect</p>;
+    //     }
+    //   });
+    // }
 
     return grade;
   };
